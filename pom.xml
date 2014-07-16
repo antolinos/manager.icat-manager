@@ -41,6 +41,7 @@
     <module>icat-manager.test</module>
     <module>icat-manager.feature</module>
     <module>icat-manager.site</module>
+    <module>icat-manager.product</module>
   </modules>
 
   <build>
@@ -78,6 +79,11 @@
 
     <pluginManagement>
       <plugins>
+		<plugin>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>tycho-p2-director-plugin</artifactId>
+			<version>${tycho.version}</version>
+		</plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-packaging-plugin</artifactId>
