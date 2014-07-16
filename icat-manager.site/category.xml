@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/icat-manager.feature_0.0.0.jar" id="icat-manager.feature" version="0.0.0">
+    <category name="icat-manager"/>
+   </feature>
+   <feature url="features/icat-manager.feature.source_0.0.0.jar" id="icat-manager.feature.source" version="0.0.0">
+    <category name="icat-manager Developer Resources"/>
+   </feature>
+</site>

@@ -1,0 +1,9 @@
+target/
+.settings/
+.classpath
+.project
+.pydevproject
+*.pyc
+activemq-data/
+log/
+
