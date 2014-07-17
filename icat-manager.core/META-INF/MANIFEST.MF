@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: icat-manager Core Plugin
 Bundle-SymbolicName: icat-manager.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: fr.esrf.icat.manager.core.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
-Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.e4.ui.workbench,
+ org.eclipse.e4.core.commands,
+ org.eclipse.e4.core.di
