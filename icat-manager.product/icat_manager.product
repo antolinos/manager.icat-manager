@@ -11,7 +11,7 @@
 
    <windowImages/>
 
-   <launcher>
+   <launcher name="IcatManager">
       <solaris/>
       <win useIco="false">
          <bmp/>
