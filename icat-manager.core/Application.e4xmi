@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmi:id="_2FGD8AzxEeSdFquAzlE5Gg" elementId="icat-manager.product.application">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_8V3zkAzzEeSdFquAzlE5Gg" elementId="icat-manager.core.window.main" label="ICAT Manager" x="0" y="0" width="600" height="400">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_8V3zkAzzEeSdFquAzlE5Gg" elementId="icat-manager.core.window.main" label="ICAT Manager" x="0" y="0" width="800" height="640">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_jNaswBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.perspectivestack.default">
       <children xsi:type="advanced:Perspective" xmi:id="_m6sPwBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.perspective.default" selectedElement="_ujXRUBGmEeS4Ovmd0tDIfg" label="ICAT Management">
         <children xsi:type="basic:PartSashContainer" xmi:id="_ujXRUBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.partsashcontainer.maindivide" selectedElement="_4DIsgBGoEeS4Ovmd0tDIfg" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_4DIsgBGoEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.serverstack" selectedElement="_xCuPsBGmEeS4Ovmd0tDIfg">
+          <children xsi:type="basic:PartStack" xmi:id="_4DIsgBGoEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.serverstack" containerData="30" selectedElement="_xCuPsBGmEeS4Ovmd0tDIfg">
             <children xsi:type="basic:Part" xmi:id="_xCuPsBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.part.servers" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.ServerPart" label="ICAT Servers">
               <toolbar xmi:id="_5X5VcBGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.toolbar.server"/>
             </children>
           </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_6EkDoBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.partsashcontainer.datadivide" selectedElement="_Ghp2cBGnEeS4Ovmd0tDIfg">
-            <children xsi:type="basic:PartStack" xmi:id="_Ghp2cBGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.mainstack"/>
-            <children xsi:type="basic:PartStack" xmi:id="_AOhZkBGpEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.consolestack" selectedElement="_A-NcABGnEeS4Ovmd0tDIfg">
+          <children xsi:type="basic:PartSashContainer" xmi:id="_6EkDoBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.partsashcontainer.datadivide" containerData="70" selectedElement="_Ghp2cBGnEeS4Ovmd0tDIfg">
+            <children xsi:type="basic:PartStack" xmi:id="_Ghp2cBGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.mainstack" containerData="70">
+              <tags>NoAutoCollapse</tags>
+            </children>
+            <children xsi:type="basic:PartStack" xmi:id="_AOhZkBGpEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.consolestack" containerData="30" selectedElement="_A-NcABGnEeS4Ovmd0tDIfg">
               <children xsi:type="basic:Part" xmi:id="_A-NcABGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.part.console" label="Console"/>
             </children>
           </children>
@@ -20,7 +22,6 @@
     </children>
     <mainMenu xmi:id="_U5fkAA2cEeSdFquAzlE5Gg" elementId="icat-manager.core.menu.main"/>
   </children>
-  <descriptors xmi:id="_L2NyQBGlEeS4Ovmd0tDIfg" elementId="icat-manager.core.partdescriptor.0"/>
   <addons xmi:id="_2FGrAAzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_2FGrAQzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_2FGrAgzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

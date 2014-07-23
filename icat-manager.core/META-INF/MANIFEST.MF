@@ -7,7 +7,9 @@ Bundle-Activator: fr.esrf.icat.manager.core.ICATManagerActivator
 Bundle-Vendor: ESRF
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.e4.ui.di,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.e4.ui.workbench,
+ org.eclipse.e4.ui.model.workbench
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,

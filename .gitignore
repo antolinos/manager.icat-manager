@@ -5,6 +5,7 @@ target/
 activemq-data/
 log/
 workspace/
+**/lib/
 **/lib/*
 .metadata/*
 sample.gif

@@ -16,7 +16,7 @@ public class ICATServer {
 		super();
 		this.serverURL = serverURL;
 		this.accessible = false;
-		this.version = "";
+		this.version = "4.3.1";
 		
 	}
 		

@@ -1,44 +1,65 @@
 package fr.esrf.icat.manager.core.icatserver;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 public class IcatServerContentProvider implements ITreeContentProvider {
 
+	private List<ICATServer> _icatList;
+	
+	private Map<String, Class<?>> _managedEntities; 
+	
+	public IcatServerContentProvider() {
+		super();
+		_icatList = new ArrayList<ICATServer>();
+		_icatList.add(new ICATServer("https://ovm-icat-sandbox.esrf.fr:8181"));
+		_managedEntities = new HashMap<String, Class<?>>();
+		try {
+			_managedEntities.put("Instrument", Class.forName("fr.esrf.icat.manager.entities.InstrumentManager"));
+			_managedEntities.put("Parameter", Class.forName("fr.esrf.icat.manager.entities.ParameterManager"));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		// TODO Auto-generated method stub
+		if (inputElement instanceof List) {
+			return ((List<?>) inputElement).toArray();
+		}
 		return null;
 	}
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		// TODO Auto-generated method stub
-		return null;
+		return _managedEntities.keySet().toArray();
 	}
 
 	@Override
 	public Object getParent(Object element) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean hasChildren(Object element) {
-		// TODO Auto-generated method stub
-		return false;
+		return (element instanceof ICATServer);
+	}
+
+	public Object getRoot() {
+		return _icatList;
 	}
 
 }
