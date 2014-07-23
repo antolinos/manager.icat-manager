@@ -1,8 +1,0 @@
-target/
-/workspace/
-workspace/.metadata/
-.settings/
-.classpath
-.project
-log/
-lib/
