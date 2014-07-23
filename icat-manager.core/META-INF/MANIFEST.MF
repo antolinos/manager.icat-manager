@@ -3,8 +3,16 @@ Bundle-ManifestVersion: 2
 Bundle-Name: icat-manager Core Plugin
 Bundle-SymbolicName: icat-manager.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.eclipse.e4.ui.workbench,
- org.eclipse.e4.core.commands,
- org.eclipse.e4.core.di
+Bundle-Activator: fr.esrf.icat.manager.core.ICATManagerActivator
 Bundle-Vendor: ESRF
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.e4.ui.di,
+ org.eclipse.jface
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .,
+ lib/apache-log4j-extras-1.2.17.jar,
+ lib/icat-client-api-0.2.jar,
+ lib/log4j-1.2.17.jar,
+ lib/slf4j-api-1.7.5.jar,
+ lib/slf4j-log4j12-1.7.5.jar

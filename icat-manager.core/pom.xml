@@ -13,4 +13,35 @@
   <name>icat-manager :: core</name>
   <description>icat-manager Core Plugin</description>
 
+  <dependencies>
+  	<dependency>
+  		<groupId>fr.esrf.icat</groupId>
+  		<artifactId>icat-client-api</artifactId>
+  		<version>0.2</version>
+  	</dependency>
+  </dependencies>
+
+  <build>
+	<plugins>
+		<plugin>
+		 <groupId>org.apache.maven.plugins</groupId>
+		 <artifactId>maven-dependency-plugin</artifactId>
+		 <executions>
+		  <execution>
+		   <id>copy-dependencies</id>
+		   <phase>process-resources</phase>
+		   <goals>
+		    <goal>copy-dependencies</goal>
+		   </goals>
+		   <configuration>
+		    <excludeTransitive>false</excludeTransitive>
+		    <overWriteSnapshots>true</overWriteSnapshots>
+		    <outputDirectory>${basedir}/lib</outputDirectory>
+		   </configuration>
+		  </execution>
+		 </executions>
+		</plugin>
+	</plugins>
+  </build>
+
 </project>
