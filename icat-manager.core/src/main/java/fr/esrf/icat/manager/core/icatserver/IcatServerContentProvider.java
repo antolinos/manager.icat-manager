@@ -1,30 +1,18 @@
 package fr.esrf.icat.manager.core.icatserver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import fr.esrf.icat.manager.core.ICATDataService;
+
 public class IcatServerContentProvider implements ITreeContentProvider {
 
-	private List<ICATServer> _icatList;
-	
-	private Map<String, Class<?>> _managedEntities; 
+	ICATDataService service;
 	
 	public IcatServerContentProvider() {
 		super();
-		_icatList = new ArrayList<ICATServer>();
-		_icatList.add(new ICATServer("https://ovm-icat-sandbox.esrf.fr:8181"));
-		_managedEntities = new HashMap<String, Class<?>>();
-		try {
-			_managedEntities.put("Instrument", Class.forName("fr.esrf.icat.manager.entities.InstrumentManager"));
-			_managedEntities.put("Parameter", Class.forName("fr.esrf.icat.manager.entities.ParameterManager"));
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		service = ICATDataService.getInstance();
 	}
 
 	@Override
@@ -45,21 +33,19 @@ public class IcatServerContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		return _managedEntities.keySet().toArray();
+		return (parentElement instanceof ICATServer) && ((ICATServer)parentElement).isConnected() 
+						? service.getEntityList((ICATServer)parentElement).toArray()
+						: null;
 	}
 
 	@Override
 	public Object getParent(Object element) {
-		return null;
+		return element instanceof ICATEntity ? ((ICATEntity)element).getServer() : null;
 	}
 
 	@Override
 	public boolean hasChildren(Object element) {
-		return (element instanceof ICATServer);
-	}
-
-	public Object getRoot() {
-		return _icatList;
+		return (element instanceof ICATServer) && ((ICATServer)element).isConnected();
 	}
 
 }

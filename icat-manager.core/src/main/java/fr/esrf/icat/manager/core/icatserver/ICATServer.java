@@ -1,23 +1,18 @@
 package fr.esrf.icat.manager.core.icatserver;
 
-import fr.esrf.icat.client.ICATClient;
-
 public class ICATServer {
 
 	private String serverURL;
 	
 	private String version;
 	
-	private boolean accessible;
+	private boolean connected;
 	
-	private ICATClient client;
-
 	public ICATServer(String serverURL) {
 		super();
 		this.serverURL = serverURL;
-		this.accessible = false;
 		this.version = "4.3.1";
-		
+		this.connected = false; 
 	}
 		
 	public String getServerURL() {
@@ -27,5 +22,13 @@ public class ICATServer {
 	public String getVersion() {
 		return version;
 	}
+	
+	public boolean isConnected(){
+		return connected;
+	}
 
+	public void setConnected(boolean connected) {
+		this.connected = connected;
+	}
+	
 }

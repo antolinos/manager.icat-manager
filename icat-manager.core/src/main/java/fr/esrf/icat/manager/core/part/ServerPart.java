@@ -21,6 +21,8 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
+import fr.esrf.icat.manager.core.ICATDataService;
+import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 import fr.esrf.icat.manager.core.icatserver.ICATServer;
 import fr.esrf.icat.manager.core.icatserver.IcatServerContentProvider;
 import fr.esrf.icat.manager.core.icatserver.IcatServerLabelProvider;
@@ -29,6 +31,7 @@ public class ServerPart {
 	
 	private TreeViewer viewer;
 	private IcatServerContentProvider icatContentProvider;
+	private ICATDataService service;
 	
 	@Inject
 	private EPartService partService;
@@ -39,17 +42,14 @@ public class ServerPart {
 	@Inject
 	private MWindow window;
 	
-	@Inject
-	public ServerPart() {
-	}
-	
 	@PostConstruct
 	public void postConstruct(final Composite parent) {
+		service = ICATDataService.getInstance();
 	    viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 	    icatContentProvider = new IcatServerContentProvider();
 		viewer.setContentProvider(icatContentProvider);
 	    viewer.setLabelProvider(new IcatServerLabelProvider());
-	    viewer.setInput(icatContentProvider.getRoot());
+	    viewer.setInput(service.getServerList());
 	    viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    	  @Override
 	    	  public void doubleClick(DoubleClickEvent event) {
@@ -57,17 +57,35 @@ public class ServerPart {
 	    	    IStructuredSelection thisSelection = (IStructuredSelection) event.getSelection(); 
 	    	    Object selectedNode = thisSelection.getFirstElement(); 
 	    	    if(selectedNode instanceof ICATServer) {
-	    	    	viewer.setExpandedState(selectedNode, !viewer.getExpandedState(selectedNode));
-	    	    } else {
+	    	    	ICATServer server = (ICATServer)selectedNode;
+	    	    	if(!server.isConnected()) {
+	    	    		service.connect(server, parent.getShell());
+	    	    	}
+	    	    	if(server.isConnected()) {
+		    	    	viewer.setExpandedState(selectedNode, !viewer.getExpandedState(selectedNode));
+	    	    	}
+	    	    } else if (selectedNode instanceof ICATEntity){
+	    	    	ICATEntity entity = (ICATEntity)selectedNode;
+	    	    	String partID = "icat-manager.core.part.data:" + entity.getServer().getServerURL() + ":" + entity.getEntityName();
+	    	    	MPart mPart = (MPart) modelService.find(partID, window);
+	    	    	if(null != mPart) {
+		    	        partService. showPart(mPart, PartState.ACTIVATE);
+		    	        System.out.println("Showing existing part: " + partID);
+		    	        return;
+	    	    	}
 	    	    	MPartStack partstack = (MPartStack) modelService.find("icat-manager.core.partstack.mainstack", window);
-	    	    	MPart mPart = modelService.createModelElement(MPart.class);
+	    	    	mPart = modelService.createModelElement(MPart.class);
 	    	    	mPart.setCloseable(true);
 	    	        mPart.setLabel("Testing");
-	    	        mPart.setElementId("icat-manager.core.part.data:");
+	    	        mPart.setElementId(partID);
 	    	        mPart.setContributionURI("bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.DataPart");
+	    	        mPart.setLabel(entity.getEntityName() + "[" + entity.getServer().getServerURL() + "]");
+	    	        mPart.setObject(entity);
 	    	        partstack.getChildren().add(mPart);
 	    	        partService. showPart(mPart, PartState.ACTIVATE);
-	    	        System.out.println(mPart.getObject().getClass());
+	    	        System.out.println("Creating new part " + partID);
+	    	    } else {
+	    	    	// do nothing
 	    	    }
 	    	  }
 	    	});
