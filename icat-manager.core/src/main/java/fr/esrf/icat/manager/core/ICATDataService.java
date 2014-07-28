@@ -9,6 +9,8 @@ import java.util.Map;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.esrf.icat.client.ICATClient;
 import fr.esrf.icat.client.ICATClientException;
@@ -19,6 +21,8 @@ import fr.esrf.icat.manager.core.icatserver.ICATServer;
 import fr.esrf.icat.manager.core.part.ConnectionDialog;
 
 public class ICATDataService {
+
+	private final static Logger LOG = LoggerFactory.getLogger(ICATDataService.class);
 
 	private final static ICATDataService instance = new ICATDataService();
 	
@@ -54,7 +58,7 @@ public class ICATDataService {
 			}
 			return entityList;
 		} catch (ICATClientException e) {
-			e.printStackTrace();
+			LOG.error("Unable to retrieve entity list from " + server.getServerURL(), e);
 			return null;
 		}
 	}
@@ -118,7 +122,7 @@ public class ICATDataService {
 			client.init();
 			server.setConnected(true);
 		} catch (ICATClientException e) {
-			e.printStackTrace();
+			LOG.warn("Unable to connect user " + client.getIcatUsername(), e);
 			MessageDialog.openError(shell, "Connection error", "Error connecting to ICAT:\n" + e.getMessage());
 			return;
 		}

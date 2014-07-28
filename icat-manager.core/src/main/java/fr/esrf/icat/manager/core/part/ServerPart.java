@@ -20,6 +20,8 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.esrf.icat.manager.core.ICATDataService;
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
@@ -29,6 +31,8 @@ import fr.esrf.icat.manager.core.icatserver.IcatServerLabelProvider;
 
 public class ServerPart {
 	
+	private final static Logger LOG = LoggerFactory.getLogger(ServerPart.class);
+
 	private TreeViewer viewer;
 	private IcatServerContentProvider icatContentProvider;
 	private ICATDataService service;
@@ -69,8 +73,9 @@ public class ServerPart {
 	    	    	String partID = "icat-manager.core.part.data:" + entity.getServer().getServerURL() + ":" + entity.getEntityName();
 	    	    	MPart mPart = (MPart) modelService.find(partID, window);
 	    	    	if(null != mPart) {
-		    	        partService. showPart(mPart, PartState.ACTIVATE);
-		    	        System.out.println("Showing existing part: " + partID);
+		    	        mPart.setObject(entity);
+		    	        partService.showPart(mPart, PartState.ACTIVATE);
+		    	        LOG.debug("Showing existing part: " + partID);
 		    	        return;
 	    	    	}
 	    	    	MPartStack partstack = (MPartStack) modelService.find("icat-manager.core.partstack.mainstack", window);
@@ -79,13 +84,13 @@ public class ServerPart {
 	    	        mPart.setLabel("Testing");
 	    	        mPart.setElementId(partID);
 	    	        mPart.setContributionURI("bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.DataPart");
-	    	        mPart.setLabel(entity.getEntityName() + "[" + entity.getServer().getServerURL() + "]");
+	    	        mPart.setLabel(entity.getEntityName() + " [" + entity.getServer().getServerURL() + "]");
 	    	        mPart.setObject(entity);
 	    	        partstack.getChildren().add(mPart);
 	    	        partService. showPart(mPart, PartState.ACTIVATE);
-	    	        System.out.println("Creating new part " + partID);
+	    	        LOG.debug("Creating new part " + partID);
 	    	    } else {
-	    	    	// do nothing
+	    	        LOG.warn("Selected element is neither an ICAT server nor an ICAT entity !");
 	    	    }
 	    	  }
 	    	});
