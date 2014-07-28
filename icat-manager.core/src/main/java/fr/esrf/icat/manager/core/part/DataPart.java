@@ -72,7 +72,7 @@ public class DataPart {
 				public String getText(Object element) {
 					try {
 						final WrappedEntityBean wrapped = (WrappedEntityBean)element;
-						Object object = wrapped.get(field);
+						final Object object = wrapped.get(field);
 						if(null == object) {
 							return EMPTY_STRING;
 						}
