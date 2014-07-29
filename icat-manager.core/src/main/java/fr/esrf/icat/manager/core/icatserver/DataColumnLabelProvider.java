@@ -17,12 +17,7 @@ public class DataColumnLabelProvider extends ColumnLabelProvider {
 
 	private static final String STRING_NONE = "None";
 	private static final String READ_ERROR = "READ ERROR";
-	private static final String EMPTY_STRING = "";
 	private static final String STRING_ENTITIES = " Entities";
-
-	private static final String NAME_FIELD = "name";
-	private static final String ID_FIELD = "id";
-	
 
 	private final String field;
 
@@ -37,7 +32,7 @@ public class DataColumnLabelProvider extends ColumnLabelProvider {
 			final WrappedEntityBean wrapped = (WrappedEntityBean)element;
 			final Object object = wrapped.get(field);
 			if(null == object) {
-				return EMPTY_STRING;
+				return ICATEntity.EMPTY_STRING;
 			}
 			// Associations
 			if(wrapped.isAssociation(field)) {
@@ -50,10 +45,10 @@ public class DataColumnLabelProvider extends ColumnLabelProvider {
 			// Entity
 			if(wrapped.isEntity(field)) {
 				WrappedEntityBean entity = (WrappedEntityBean) object;
-				if(entity.exists(NAME_FIELD)) {
-					return entity.get(NAME_FIELD).toString();
+				if(entity.exists(ICATEntity.NAME_FIELD)) {
+					return entity.get(ICATEntity.NAME_FIELD).toString();
 				}
-				return entity.get(ID_FIELD).toString();
+				return entity.get(ICATEntity.ID_FIELD).toString();
 			}
 			// all others
 			return object.toString();

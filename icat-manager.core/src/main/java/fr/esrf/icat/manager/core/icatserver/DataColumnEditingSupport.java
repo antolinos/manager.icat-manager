@@ -10,6 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
+import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -24,8 +25,6 @@ import fr.esrf.icat.manager.core.ICATDataService;
 public class DataColumnEditingSupport extends EditingSupport {
 
 	private final static Logger LOG = LoggerFactory.getLogger(DataColumnEditingSupport.class);
-
-	private static final String EMPTY_STRING = "";
 
 	private TableViewer viewer;
 	private String field;
@@ -49,7 +48,12 @@ public class DataColumnEditingSupport extends EditingSupport {
 		if(null == editor) {
 			WrappedEntityBean w = (WrappedEntityBean)element;
 			if(w.isEntity(field)) {
-				this.editor = null; //TODO
+				final ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(viewer.getTable());
+				final ICATEntity entity = new ICATEntity(server, w.getReturnType(field).getSimpleName());
+				combo.setContentProvider(new EntityContentProvider(entity));
+				combo.setLabelProvider(new EntityLabelProvider());
+				combo.setInput(entity);
+				this.editor = combo;
 			} else if(clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
 				this.editor = new CheckboxCellEditor(viewer.getTable());
 			} else if(Calendar.class.isAssignableFrom(clazz)
@@ -80,7 +84,7 @@ public class DataColumnEditingSupport extends EditingSupport {
 		try {
 			Object o = w.get(field);
 			if(null == o && w.getReturnType(field).equals(String.class)) {
-				return EMPTY_STRING;
+				return ICATEntity.EMPTY_STRING;
 			}
 			if(o instanceof Calendar) {
 				return ((Calendar)o).getTime();
@@ -124,7 +128,7 @@ public class DataColumnEditingSupport extends EditingSupport {
 			ICATDataService.getInstance().getClient(server).update(w);
 			viewer.update(element, null);
 		} catch (Exception e) {
-			LOG.error("Error setting " + field + " at " + o.toString() + " for " + element.toString(), e);
+			LOG.error("Error setting " + field + " at " + o + " for " + element, e);
 		}
 	}
 
