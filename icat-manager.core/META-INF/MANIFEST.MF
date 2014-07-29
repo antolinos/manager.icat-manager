@@ -10,7 +10,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.e4.ui.workbench,
  org.eclipse.e4.ui.model.workbench,
- org.eclipse.e4.core.contexts
+ org.eclipse.e4.core.contexts,
+ org.eclipse.nebula.jface.cdatetime,
+ org.eclipse.nebula.widgets.cdatetime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
