@@ -7,8 +7,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.esrf.icat.client.ICATClient;
 import fr.esrf.icat.client.ICATClientException;
+import fr.esrf.icat.client.SimpleICATClient;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
 import fr.esrf.icat.manager.core.ICATDataService;
 
@@ -28,7 +28,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 
 	private void loadContent() {
 		try {
-			ICATClient client = ICATDataService.getInstance().getClient(this.entity.getServer());
+			SimpleICATClient client = ICATDataService.getInstance().getClient(this.entity.getServer());
 			List<WrappedEntityBean> search = client.search(this.entity.getEntityName() + QUERY_SUFFIX);
 			content = null == search ? null : search.toArray();
 		} catch (ICATClientException e) {

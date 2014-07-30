@@ -12,9 +12,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.esrf.icat.client.ICATClient;
+import fr.esrf.icat.client.SimpleICATClient;
 import fr.esrf.icat.client.ICATClientException;
-import fr.esrf.icat.client.v4_3_1.ICATClientImpl;
+import fr.esrf.icat.client.dynamic.DynamicSimpleICATClient;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 import fr.esrf.icat.manager.core.icatserver.ICATServer;
@@ -28,7 +28,7 @@ public class ICATDataService {
 	
 	private List<ICATServer> serverList;
 	
-	private Map<ICATServer, ICATClient> clientMap;
+	private Map<ICATServer, SimpleICATClient> clientMap;
 	
 	public static ICATDataService getInstance() {
 		return instance;
@@ -49,7 +49,7 @@ public class ICATDataService {
 	}
 	
 	public List<ICATEntity> getEntityList(final ICATServer server) {
-		ICATClient client = getClient(server);
+		SimpleICATClient client = getClient(server);
 		try {
 			List<String> entityNames = client.getEntityNames();
 			List<ICATEntity> entityList = new LinkedList<>();
@@ -63,8 +63,8 @@ public class ICATDataService {
 		}
 	}
 	
-	public ICATClient getClient(final ICATServer server) {
-		ICATClient client = clientMap.get(server);
+	public SimpleICATClient getClient(final ICATServer server) {
+		SimpleICATClient client = clientMap.get(server);
 		if(null == client) {
 			synchronized (this) {
 				client = clientMap.get(server);
@@ -77,14 +77,14 @@ public class ICATDataService {
 		return client;
 	}
 	
-	private ICATClient makeClient(final ICATServer server) {
-		ICATClient client = new ICATClientImpl();
+	private SimpleICATClient makeClient(final ICATServer server) {
+		SimpleICATClient client = new DynamicSimpleICATClient();
 		client.setIcatBaseUrl(server.getServerURL());
 		return client;
 	}
 
 	public int getEntityCount(final ICATEntity entity) {
-		ICATClient client = clientMap.get(entity.getServer());
+		SimpleICATClient client = clientMap.get(entity.getServer());
 		List<WrappedEntityBean> result;
 		try {
 			result = client.search("COUNT(" + entity.getEntityName() + ")");
@@ -103,7 +103,7 @@ public class ICATDataService {
 	}
 
 	public void stop() {
-		for(ICATClient client : clientMap.values()) {
+		for(SimpleICATClient client : clientMap.values()) {
 			client.stop();
 		}
 		clientMap.clear();
@@ -114,7 +114,7 @@ public class ICATDataService {
 		if(dlg.open() != Window.OK) {
 			return;
 		}
-		ICATClient client = getClient(server);
+		SimpleICATClient client = getClient(server);
 		client.setIcatAuthnPlugin(dlg.getAuthenticationMethod());
 		client.setIcatUsername(dlg.getUser());
 		client.setIcatPassword(dlg.getPassword());
