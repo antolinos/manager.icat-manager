@@ -46,7 +46,7 @@
 		 <executions>
 		  <execution>
 		   <id>copy-dependencies</id>
-		   <phase>process-resources</phase>
+		   <phase>process-sources</phase>
 		   <goals>
 		    <goal>copy-dependencies</goal>
 		   </goals>
@@ -54,6 +54,7 @@
 		    <excludeTransitive>false</excludeTransitive>
 		    <overWriteSnapshots>true</overWriteSnapshots>
 		    <outputDirectory>${basedir}/lib</outputDirectory>
+		 	<excludeScope>system</excludeScope>
 		   </configuration>
 		  </execution>
 		 </executions>
