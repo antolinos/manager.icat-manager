@@ -24,6 +24,11 @@
   		<artifactId>client-dynamic</artifactId>
   		<version>0.4-SNAPSHOT</version>
   	</dependency>
+	<dependency>
+	    <groupId>commons-validator</groupId>
+	    <artifactId>commons-validator</artifactId>
+	    <version>1.4.0</version>
+	</dependency>
   </dependencies>
 
   <build>

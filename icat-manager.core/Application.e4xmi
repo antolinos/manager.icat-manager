@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmi:id="_2FGD8AzxEeSdFquAzlE5Gg" elementId="icat-manager.product.application">
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_2FGD8AzxEeSdFquAzlE5Gg" elementId="icat-manager.product.application">
   <children xsi:type="basic:TrimmedWindow" xmi:id="_8V3zkAzzEeSdFquAzlE5Gg" elementId="icat-manager.core.window.main" label="ICAT Manager" x="0" y="0" width="800" height="640">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_jNaswBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.perspectivestack.default">
       <children xsi:type="advanced:Perspective" xmi:id="_m6sPwBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.perspective.default" selectedElement="_ujXRUBGmEeS4Ovmd0tDIfg" label="ICAT Management">
@@ -20,8 +20,18 @@
         </children>
       </children>
     </children>
-    <mainMenu xmi:id="_U5fkAA2cEeSdFquAzlE5Gg" elementId="icat-manager.core.menu.main"/>
+    <mainMenu xmi:id="_U5fkAA2cEeSdFquAzlE5Gg" elementId="org.eclipse.ui.main.menu">
+      <children xsi:type="menu:Menu" xmi:id="_xHGfUBvsEeS-S8zgM1nPnA" elementId="org.eclipse.ui.main.menu" label="File">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_0iircBvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handledmenuitem.newserver" label="New server" command="_osJhsBvrEeS-S8zgM1nPnA"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_WMfdkBvtEeS-S8zgM1nPnA" elementId="icat-manager.core.menuseparator.0"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_3k1-0BvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handledmenuitem.exit" label="Exit" command="_s__VcBvrEeS-S8zgM1nPnA"/>
+      </children>
+    </mainMenu>
   </children>
+  <handlers xmi:id="_hboE8BvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.exit" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ExitHandler" command="_s__VcBvrEeS-S8zgM1nPnA"/>
+  <handlers xmi:id="_m3KgkBvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.newserver" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.NewServerHandler" command="_osJhsBvrEeS-S8zgM1nPnA"/>
+  <commands xmi:id="_osJhsBvrEeS-S8zgM1nPnA" elementId="icat-manager.core.command.newserver" commandName="New server"/>
+  <commands xmi:id="_s__VcBvrEeS-S8zgM1nPnA" elementId="org.eclipse.ui.file.exit" commandName="Exit"/>
   <addons xmi:id="_2FGrAAzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_2FGrAQzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_2FGrAgzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
