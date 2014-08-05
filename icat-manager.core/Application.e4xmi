@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_2FGD8AzxEeSdFquAzlE5Gg" elementId="icat-manager.product.application">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_8V3zkAzzEeSdFquAzlE5Gg" elementId="icat-manager.core.window.main" label="ICAT Manager" x="0" y="0" width="800" height="640">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_8V3zkAzzEeSdFquAzlE5Gg" elementId="icat-manager.core.window.main" label="ICAT Manager" x="-1" y="-1" width="800" height="640">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_jNaswBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.perspectivestack.default">
       <children xsi:type="advanced:Perspective" xmi:id="_m6sPwBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.perspective.default" selectedElement="_ujXRUBGmEeS4Ovmd0tDIfg" label="ICAT Management">
         <children xsi:type="basic:PartSashContainer" xmi:id="_ujXRUBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.partsashcontainer.maindivide" selectedElement="_4DIsgBGoEeS4Ovmd0tDIfg" horizontal="true">
@@ -12,6 +12,7 @@
           <children xsi:type="basic:PartSashContainer" xmi:id="_6EkDoBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.partsashcontainer.datadivide" containerData="70" selectedElement="_Ghp2cBGnEeS4Ovmd0tDIfg">
             <children xsi:type="basic:PartStack" xmi:id="_Ghp2cBGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.mainstack" containerData="70">
               <tags>NoAutoCollapse</tags>
+              <children xsi:type="advanced:Placeholder" xmi:id="_lgWWAByZEeS-S8zgM1nPnA" elementId="icat-manager.core.part.dataplaceholder" toBeRendered="false" visible="false" ref="_tx7KoByZEeS-S8zgM1nPnA"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_AOhZkBGpEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.consolestack" containerData="30" selectedElement="_A-NcABGnEeS4Ovmd0tDIfg">
               <children xsi:type="basic:Part" xmi:id="_A-NcABGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.part.console" label="Console"/>
@@ -27,6 +28,7 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_3k1-0BvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handledmenuitem.exit" label="Exit" command="_s__VcBvrEeS-S8zgM1nPnA"/>
       </children>
     </mainMenu>
+    <sharedElements xsi:type="basic:Part" xmi:id="_tx7KoByZEeS-S8zgM1nPnA" elementId="icat-manager.core.part.data" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.DataPart" label="DataPart" closeable="true"/>
   </children>
   <handlers xmi:id="_hboE8BvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.exit" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ExitHandler" command="_s__VcBvrEeS-S8zgM1nPnA"/>
   <handlers xmi:id="_m3KgkBvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.newserver" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.NewServerHandler" command="_osJhsBvrEeS-S8zgM1nPnA"/>

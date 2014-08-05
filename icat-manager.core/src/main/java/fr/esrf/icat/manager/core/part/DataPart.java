@@ -20,6 +20,9 @@ import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 
 public class DataPart {
 
+	public static final String ICAT_MANAGER_MAINSTACK = "icat-manager.core.partstack.mainstack";
+	public static final String DATA_PART_ELEMENT_HEADER = "icat-manager.core.part.data";
+
 	private TableViewer viewer;
 	private EntityContentProvider provider;
 
