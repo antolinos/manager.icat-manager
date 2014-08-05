@@ -1,5 +1,7 @@
 package fr.esrf.icat.manager.core;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -21,10 +23,14 @@ import fr.esrf.icat.manager.core.icatserver.ICATServer;
 import fr.esrf.icat.manager.core.part.ConnectionDialog;
 
 public class ICATDataService {
+	
+	public final static String DATA_SERVICE_CONTENT = "fr.esrf.icat.manager.core.ICATDataService.CONTENT";
 
 	private final static Logger LOG = LoggerFactory.getLogger(ICATDataService.class);
 
 	private final static ICATDataService instance = new ICATDataService();
+	
+	private final PropertyChangeSupport propertyChangeSupport;
 	
 	private List<ICATServer> serverList;
 	
@@ -38,6 +44,7 @@ public class ICATDataService {
 		super();
 		serverList = new ArrayList<>();
 		clientMap = new HashMap<>();
+		propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
 	public List<ICATServer> getServerList() {
@@ -46,6 +53,7 @@ public class ICATDataService {
 	
 	public void addServer(final ICATServer server) {
 		serverList.add(server);
+		propertyChangeSupport.firePropertyChange(DATA_SERVICE_CONTENT, null, serverList);
 	}
 	
 	public List<ICATEntity> getEntityList(final ICATServer server) {
@@ -127,4 +135,14 @@ public class ICATDataService {
 			return;
 		}
 	}
+	
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+
+
 }

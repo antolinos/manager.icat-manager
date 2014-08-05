@@ -1,6 +1,9 @@
  
 package fr.esrf.icat.manager.core.part;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.inject.Inject;
 import javax.annotation.PostConstruct;
 
@@ -12,7 +15,6 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
 import javax.annotation.PreDestroy;
 
-import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
@@ -29,7 +31,7 @@ import fr.esrf.icat.manager.core.icatserver.ICATServer;
 import fr.esrf.icat.manager.core.icatserver.IcatServerContentProvider;
 import fr.esrf.icat.manager.core.icatserver.IcatServerLabelProvider;
 
-public class ServerPart {
+public class ServerPart implements PropertyChangeListener {
 	
 	private final static Logger LOG = LoggerFactory.getLogger(ServerPart.class);
 
@@ -53,7 +55,8 @@ public class ServerPart {
 	    icatContentProvider = new IcatServerContentProvider();
 		viewer.setContentProvider(icatContentProvider);
 	    viewer.setLabelProvider(new IcatServerLabelProvider());
-	    viewer.setInput(service.getServerList());
+	    viewer.setInput(service);
+	    service.addPropertyChangeListener(this);
 	    viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    	  @Override
 	    	  public void doubleClick(DoubleClickEvent event) {
@@ -98,10 +101,12 @@ public class ServerPart {
 	
 	@PreDestroy
 	public void preDestroy() {
+		service.removePropertyChangeListener(this);
 	}
 	
-	@Persist
-	public void save() {
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		viewer.refresh();
 	}
 	
 }

@@ -23,13 +23,12 @@ public class NewServerHandler {
 							return "Please provide an URL";
 						}
 						if(!validator.isValid(newText)) {
-							return "Invalid URL !";
+							return "Invalid URL";
 						}
 						return null;
 					}
 				});
-		  final int res = dlg.open();
-		  if(res == Window.OK) {
+		  if(dlg.open() == Window.OK) {
 			  ICATDataService.getInstance().addServer(new ICATServer(dlg.getValue()));
 		  }
 	  }

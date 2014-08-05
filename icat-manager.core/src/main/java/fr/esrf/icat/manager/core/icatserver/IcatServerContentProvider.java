@@ -27,6 +27,9 @@ public class IcatServerContentProvider implements ITreeContentProvider {
 	public Object[] getElements(Object inputElement) {
 		if (inputElement instanceof List) {
 			return ((List<?>) inputElement).toArray();
+		} 
+		if(inputElement instanceof ICATDataService) {
+			return ((ICATDataService)inputElement).getServerList().toArray();
 		}
 		return null;
 	}

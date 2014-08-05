@@ -19,13 +19,11 @@ public class ICATManagerActivator implements BundleActivator {
 	
 	private final static Logger LOG = LoggerFactory.getLogger(ICATManagerActivator.class);
 
-	private final static String SERVERS_LIST = ".icat_servers"; // TODO: find how to put file in product folder
+	private final File configfile = new File(System.getProperty("user.home"), ".icat_servers");
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		LOG.debug("ICAT Manager starting in context " + context.toString());
-		
-		final File configfile = new File(SERVERS_LIST);
 		
 		LOG.debug("Configuration file at: " + configfile.getAbsolutePath());
 		
@@ -40,18 +38,18 @@ public class ICATManagerActivator implements BundleActivator {
 				}
 				LOG.debug("Loaded " + service.getServerList().size() + " server URLs");
 			} catch (IOException e) {
-				LOG.error("Error reading server file " + SERVERS_LIST, e);
+				LOG.error("Error reading server file " + configfile.getAbsolutePath(), e);
 			} finally {
 				if(null != reader) {
 					try {
 						reader.close();
 					} catch (IOException e) {
-						LOG.warn("Error closing file " + SERVERS_LIST, e);
+						LOG.warn("Error closing file " + configfile.getAbsolutePath(), e);
 					}
 				}
 			}
 		} else {
-			LOG.debug(SERVERS_LIST + " file not found");
+			LOG.debug(configfile.getAbsolutePath() + " file not found");
 		}
 		
 	}
@@ -65,7 +63,6 @@ public class ICATManagerActivator implements BundleActivator {
 		if(servers.isEmpty()) {
 			LOG.debug("No server URLs to save");
 		} else {
-			final File configfile = new File(SERVERS_LIST);
 			BufferedWriter writer = null;
 			try {
 				writer = new BufferedWriter(new FileWriter(configfile));
@@ -75,13 +72,13 @@ public class ICATManagerActivator implements BundleActivator {
 				}
 				LOG.debug("Saved " + servers.size() + " server URLs");
 			} catch (IOException e) {
-				LOG.error("Error reading server file " + SERVERS_LIST, e);
+				LOG.error("Error reading server file " + configfile.getAbsolutePath(), e);
 			} finally {
 				if(null != writer) {
 					try {
 						writer.close();
 					} catch (IOException e) {
-						LOG.warn("Error closing file " + SERVERS_LIST, e);
+						LOG.warn("Error closing file " + configfile.getAbsolutePath(), e);
 					}
 				}
 			}
