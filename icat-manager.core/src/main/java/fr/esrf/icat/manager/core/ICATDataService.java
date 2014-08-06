@@ -91,13 +91,13 @@ public class ICATDataService {
 	
 	public void addServer(final ICATServer server) {
 		serverList.add(server);
-		propertyChangeSupport.firePropertyChange(DATA_SERVICE_CONTENT, null, serverList);
+		fireContentChanged();
 		modified = true;
 	}
 	
 	public void removeServer(final ICATServer server) {
 		if(serverList.remove(server)) {
-			propertyChangeSupport.firePropertyChange(DATA_SERVICE_CONTENT, null, serverList);
+			fireContentChanged();
 			modified = true;
 		}
 	}
@@ -199,11 +199,16 @@ public class ICATDataService {
 		try {
 			client.init();
 			server.setConnected(true);
+			fireContentChanged();
 		} catch (ICATClientException e) {
 			LOG.warn("Unable to connect user " + client.getIcatUsername(), e);
 			MessageDialog.openError(shell, "Connection error", "Error connecting to ICAT:\n" + e.getMessage());
 			return;
 		}
+	}
+
+	private void fireContentChanged() {
+		propertyChangeSupport.firePropertyChange(DATA_SERVICE_CONTENT, null, serverList);
 	}
 	
     public void addPropertyChangeListener(PropertyChangeListener listener) {

@@ -47,7 +47,7 @@ public class DataPart {
 		}
 		List<String> fields = new LinkedList<>();
 		fields.addAll(data.getMutableFields());
-		fields.addAll(data.getAssociationFields());
+//		fields.addAll(data.getAssociationFields());
 		fields.addAll(data.getImmutableFields());
 		
 		for(final String field : fields) {
