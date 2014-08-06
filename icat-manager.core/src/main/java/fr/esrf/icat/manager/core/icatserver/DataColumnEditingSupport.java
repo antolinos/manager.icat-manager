@@ -83,7 +83,7 @@ public class DataColumnEditingSupport extends EditingSupport {
 		final WrappedEntityBean w = (WrappedEntityBean)element;
 		try {
 			Object o = w.get(field);
-			if(null == o && w.getReturnType(field).equals(String.class)) {
+			if(null == o && editor instanceof TextCellEditor) {
 				return ICATEntity.EMPTY_STRING;
 			}
 			if(o instanceof Calendar) {

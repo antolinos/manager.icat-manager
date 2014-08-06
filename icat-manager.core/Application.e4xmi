@@ -9,14 +9,9 @@
               <toolbar xmi:id="_5X5VcBGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.toolbar.server"/>
             </children>
           </children>
-          <children xsi:type="basic:PartSashContainer" xmi:id="_6EkDoBGmEeS4Ovmd0tDIfg" elementId="icat-manager.core.partsashcontainer.datadivide" containerData="70" selectedElement="_Ghp2cBGnEeS4Ovmd0tDIfg">
-            <children xsi:type="basic:PartStack" xmi:id="_Ghp2cBGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.mainstack" containerData="70">
-              <tags>NoAutoCollapse</tags>
-              <children xsi:type="advanced:Placeholder" xmi:id="_lgWWAByZEeS-S8zgM1nPnA" elementId="icat-manager.core.part.dataplaceholder" toBeRendered="false" visible="false" ref="_tx7KoByZEeS-S8zgM1nPnA"/>
-            </children>
-            <children xsi:type="basic:PartStack" xmi:id="_AOhZkBGpEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.consolestack" containerData="30" selectedElement="_A-NcABGnEeS4Ovmd0tDIfg">
-              <children xsi:type="basic:Part" xmi:id="_A-NcABGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.part.console" label="Console"/>
-            </children>
+          <children xsi:type="basic:PartStack" xmi:id="_Ghp2cBGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.mainstack" containerData="70">
+            <tags>NoAutoCollapse</tags>
+            <children xsi:type="advanced:Placeholder" xmi:id="_lgWWAByZEeS-S8zgM1nPnA" elementId="icat-manager.core.part.dataplaceholder" toBeRendered="false" visible="false" ref="_tx7KoByZEeS-S8zgM1nPnA"/>
           </children>
         </children>
       </children>
@@ -24,6 +19,7 @@
     <mainMenu xmi:id="_U5fkAA2cEeSdFquAzlE5Gg" elementId="org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_xHGfUBvsEeS-S8zgM1nPnA" elementId="org.eclipse.ui.main.menu" label="File">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_0iircBvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handledmenuitem.newserver" label="New server" command="_osJhsBvrEeS-S8zgM1nPnA"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_UaEiwB1jEeS-S8zgM1nPnA" elementId="icat-manager.core.handledmenuitem.deleteserver" label="Delete server" command="_WhRxwB1hEeS-S8zgM1nPnA"/>
         <children xsi:type="menu:MenuSeparator" xmi:id="_WMfdkBvtEeS-S8zgM1nPnA" elementId="icat-manager.core.menuseparator.0"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_3k1-0BvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handledmenuitem.exit" label="Exit" command="_s__VcBvrEeS-S8zgM1nPnA"/>
       </children>
@@ -32,8 +28,10 @@
   </children>
   <handlers xmi:id="_hboE8BvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.exit" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ExitHandler" command="_s__VcBvrEeS-S8zgM1nPnA"/>
   <handlers xmi:id="_m3KgkBvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.newserver" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.NewServerHandler" command="_osJhsBvrEeS-S8zgM1nPnA"/>
+  <handlers xmi:id="_dE0-UB1hEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.deleteserver" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.DeleteServerHandler" command="_WhRxwB1hEeS-S8zgM1nPnA"/>
   <commands xmi:id="_osJhsBvrEeS-S8zgM1nPnA" elementId="icat-manager.core.command.newserver" commandName="New server"/>
   <commands xmi:id="_s__VcBvrEeS-S8zgM1nPnA" elementId="org.eclipse.ui.file.exit" commandName="Exit"/>
+  <commands xmi:id="_WhRxwB1hEeS-S8zgM1nPnA" elementId="icat-manager.core.command.deleteserver" commandName="Delete server"/>
   <addons xmi:id="_2FGrAAzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_2FGrAQzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_2FGrAgzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

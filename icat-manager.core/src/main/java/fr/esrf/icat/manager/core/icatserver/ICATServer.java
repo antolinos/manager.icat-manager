@@ -30,5 +30,5 @@ public class ICATServer {
 	public void setConnected(boolean connected) {
 		this.connected = connected;
 	}
-	
+
 }

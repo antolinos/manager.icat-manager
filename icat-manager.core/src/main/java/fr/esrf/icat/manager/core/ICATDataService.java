@@ -2,7 +2,14 @@ package fr.esrf.icat.manager.core;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +33,8 @@ public class ICATDataService {
 	
 	public final static String DATA_SERVICE_CONTENT = "fr.esrf.icat.manager.core.ICATDataService.CONTENT";
 
+	private final File configfile = new File(System.getProperty("user.home"), ".icat_servers");
+
 	private final static Logger LOG = LoggerFactory.getLogger(ICATDataService.class);
 
 	private final static ICATDataService instance = new ICATDataService();
@@ -35,6 +44,8 @@ public class ICATDataService {
 	private List<ICATServer> serverList;
 	
 	private Map<ICATServer, SimpleICATClient> clientMap;
+	
+	private boolean modified = false;
 	
 	public static ICATDataService getInstance() {
 		return instance;
@@ -46,14 +57,49 @@ public class ICATDataService {
 		clientMap = new HashMap<>();
 		propertyChangeSupport = new PropertyChangeSupport(this);
 	}
+	
+	public void init() {
+		LOG.debug("Configuration file at: " + configfile.getAbsolutePath());
+		if(configfile.exists()) {
+			BufferedReader reader = null;
+			try {
+				reader = new BufferedReader(new FileReader(configfile));
+				String line;
+				while((line = reader.readLine()) != null) {
+					serverList.add(new ICATServer(line.trim()));
+				}
+				LOG.debug("Loaded " + serverList.size() + " server URLs");
+			} catch (IOException e) {
+				LOG.error("Error reading server file " + configfile.getAbsolutePath(), e);
+			} finally {
+				if(null != reader) {
+					try {
+						reader.close();
+					} catch (IOException e) {
+						LOG.warn("Error closing file " + configfile.getAbsolutePath(), e);
+					}
+				}
+			}
+		} else {
+			LOG.debug(configfile.getAbsolutePath() + " file not found");
+		}
+	}
 
 	public List<ICATServer> getServerList() {
-		return serverList;
+		return Collections.unmodifiableList(serverList);
 	}
 	
 	public void addServer(final ICATServer server) {
 		serverList.add(server);
 		propertyChangeSupport.firePropertyChange(DATA_SERVICE_CONTENT, null, serverList);
+		modified = true;
+	}
+	
+	public void removeServer(final ICATServer server) {
+		if(serverList.remove(server)) {
+			propertyChangeSupport.firePropertyChange(DATA_SERVICE_CONTENT, null, serverList);
+			modified = true;
+		}
 	}
 	
 	public List<ICATEntity> getEntityList(final ICATServer server) {
@@ -111,10 +157,34 @@ public class ICATDataService {
 	}
 
 	public void stop() {
+		// stop clients
 		for(SimpleICATClient client : clientMap.values()) {
 			client.stop();
 		}
+		// clear client map
 		clientMap.clear();
+		// save server list
+		if(modified) {
+			BufferedWriter writer = null;
+			try {
+				writer = new BufferedWriter(new FileWriter(configfile));
+				for(ICATServer server : serverList) {
+					writer.write(server.getServerURL());
+					writer.newLine();
+				}
+				LOG.debug("Saved " + serverList.size() + " server URLs");
+			} catch (IOException e) {
+				LOG.error("Error reading server file " + configfile.getAbsolutePath(), e);
+			} finally {
+				if(null != writer) {
+					try {
+						writer.close();
+					} catch (IOException e) {
+						LOG.warn("Error closing file " + configfile.getAbsolutePath(), e);
+					}
+				}
+			}
+		}
 	}
 
 	public void connect(final ICATServer server, final Shell shell) {

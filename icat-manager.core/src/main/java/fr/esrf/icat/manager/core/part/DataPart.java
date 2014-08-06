@@ -29,7 +29,7 @@ public class DataPart {
 	@PostConstruct
 	public void postConstruct(final Composite parent, final MContribution contrib) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-		ICATEntity entity = (ICATEntity) contrib.getObject();
+		final ICATEntity entity = (ICATEntity) contrib.getObject();
 		provider = new EntityContentProvider(entity);
 		createColumns(parent, viewer, entity);
 		viewer.setContentProvider(provider);
@@ -62,6 +62,6 @@ public class DataPart {
 				column.setEditingSupport(new DataColumnEditingSupport(viewer, field, data.getReturnType(field), entity.getServer()));
 			}
 		}
-		
 	}
+	
 }

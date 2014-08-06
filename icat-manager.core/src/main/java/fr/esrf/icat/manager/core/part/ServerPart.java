@@ -11,6 +11,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.e4.ui.workbench.modeling.IWindowCloseHandler;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
@@ -21,7 +22,9 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +51,9 @@ public class ServerPart implements PropertyChangeListener {
 	private EModelService modelService;
 	
 	@Inject
+	private ESelectionService selectionService;
+
+	@Inject
 	private MWindow window;
 	
 	@PostConstruct
@@ -61,6 +67,13 @@ public class ServerPart implements PropertyChangeListener {
 	    viewer.setLabelProvider(new IcatServerLabelProvider());
 	    viewer.setInput(service);
 	    service.addPropertyChangeListener(this);
+	    viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+	    	  @Override
+	    	  public void selectionChanged(SelectionChangedEvent event) {
+	    	    IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+	    	    selectionService.setSelection(selection.getFirstElement());
+	    	  }
+	    	}); 
 	    viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    	  @Override
 	    	  public void doubleClick(DoubleClickEvent event) {
@@ -99,7 +112,7 @@ public class ServerPart implements PropertyChangeListener {
 	    	        LOG.warn("Selected element is neither an ICAT server nor an ICAT entity !");
 	    	    }
 	    	  }
-	    	});
+    	});
 	}
 	
 	@PreDestroy
