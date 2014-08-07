@@ -18,7 +18,7 @@ import fr.esrf.icat.manager.core.icatserver.ICATServer;
 public class DeleteServerHandler {
 	
 	@Execute
-	public void execute(Shell shell, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATServer server, final EPartService partService) {
+	public void execute(final Shell shell, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATServer server, final EPartService partService) {
 		// confirm
 		if(!MessageDialog.openConfirm(shell, "Really ?", "Delete selected ICAT server ?")) {
 			return;

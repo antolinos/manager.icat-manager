@@ -2,7 +2,6 @@ package fr.esrf.icat.manager.core.part;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -64,11 +63,6 @@ public class ConnectionDialog extends Dialog {
 	  protected void createButtonsForButtonBar(Composite parent) {
 	    createButton(parent, IDialogConstants.OK_ID, "Login", true);
 	    createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
-	  }
-
-	  @Override
-	  protected Point getInitialSize() {
-	    return new Point(450, 300);
 	  }
 
 	  @Override

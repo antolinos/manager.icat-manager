@@ -26,7 +26,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		loadContent();
 	}
 
-	private void loadContent() {
+	public void loadContent() {
 		try {
 			SimpleICATClient client = ICATDataService.getInstance().getClient(this.entity.getServer());
 			List<WrappedEntityBean> search = client.search(this.entity.getEntityName() + QUERY_SUFFIX);

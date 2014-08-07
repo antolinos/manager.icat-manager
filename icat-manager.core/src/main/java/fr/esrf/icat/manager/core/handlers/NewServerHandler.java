@@ -13,7 +13,7 @@ import fr.esrf.icat.manager.core.icatserver.ICATServer;
 public class NewServerHandler {
 
 	  @Execute
-	  public void execute(Shell shell) {
+	  public void execute(final Shell shell) {
 		  InputDialog dlg = new InputDialog(shell, "New ICAT server", "Enter the URL of the new ICAT server", "",
 				  new IInputValidator() {
 			  		private final UrlValidator validator = new UrlValidator(new String[]{"http","https"});

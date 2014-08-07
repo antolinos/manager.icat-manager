@@ -45,13 +45,11 @@ public class OpenEntityHandler {
 		    LOG.debug("Showing existing part: " + partID);
 		    return;
 		}
-		MPartStack partstack = (MPartStack) modelService.find(DataPart.ICAT_MANAGER_MAINSTACK, window);
-		mPart = modelService.createModelElement(MPart.class);
-		mPart.setCloseable(true);
+		mPart = partService.createPart(DataPart.DATA_PART_DESCRIPTOR);
 		mPart.setElementId(partID);
-		mPart.setContributionURI("bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.DataPart");
 		mPart.setLabel(entity.getEntityName() + " [" + entity.getServer().getServerURL() + "]");
 		mPart.setObject(entity);
+		MPartStack partstack = (MPartStack) modelService.find(DataPart.ICAT_MANAGER_MAINSTACK, window);
 		partstack.getChildren().add(mPart);
 		partService.showPart(mPart, PartState.ACTIVATE);
 		LOG.debug("Creating new part " + partID);

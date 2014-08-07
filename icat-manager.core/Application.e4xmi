@@ -24,7 +24,6 @@
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_Ghp2cBGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.partstack.mainstack" containerData="70">
             <tags>NoAutoCollapse</tags>
-            <children xsi:type="advanced:Placeholder" xmi:id="_lgWWAByZEeS-S8zgM1nPnA" elementId="icat-manager.core.part.dataplaceholder" toBeRendered="false" visible="false" ref="_tx7KoByZEeS-S8zgM1nPnA"/>
           </children>
         </children>
       </children>
@@ -38,18 +37,35 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_3k1-0BvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handledmenuitem.exit" label="Exit" command="_s__VcBvrEeS-S8zgM1nPnA"/>
       </children>
     </mainMenu>
-    <sharedElements xsi:type="basic:Part" xmi:id="_tx7KoByZEeS-S8zgM1nPnA" elementId="icat-manager.core.part.data" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.DataPart" label="DataPart" closeable="true"/>
   </children>
   <handlers xmi:id="_hboE8BvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.exit" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ExitHandler" command="_s__VcBvrEeS-S8zgM1nPnA"/>
   <handlers xmi:id="_m3KgkBvsEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.newserver" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.NewServerHandler" command="_osJhsBvrEeS-S8zgM1nPnA"/>
   <handlers xmi:id="_dE0-UB1hEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.deleteserver" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.DeleteServerHandler" command="_WhRxwB1hEeS-S8zgM1nPnA"/>
   <handlers xmi:id="_ySPrYB1uEeS-S8zgM1nPnA" elementId="icat-manager.core.handler.connect" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ConnectHandler" command="_vlX1cB1uEeS-S8zgM1nPnA"/>
   <handlers xmi:id="_C0Wx0B16EeSOsvlmsNpv_A" elementId="icat-manager.core.handler.openentity" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.OpenEntityHandler" command="_9oABsB15EeSOsvlmsNpv_A"/>
+  <handlers xmi:id="_f4MVMB4OEeSOsvlmsNpv_A" elementId="icat-manager.core.handler.newentity" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.NewEntityHandler" command="_YkAV4B4OEeSOsvlmsNpv_A"/>
+  <handlers xmi:id="_xTnf4B4yEeSOsvlmsNpv_A" elementId="icat-manager.core.handler.editentity" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.EditEntityHandler" command="_bwangB4OEeSOsvlmsNpv_A"/>
+  <handlers xmi:id="_IVHQIB40EeSOsvlmsNpv_A" elementId="icat-manager.core.handler.deleteentity" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.DeleteEntityHandler" command="_dpqoIB4OEeSOsvlmsNpv_A"/>
+  <descriptors xmi:id="_1IEIEB4VEeSOsvlmsNpv_A" elementId="icat-manager.core.partdescriptor.datapart" label="Data part" allowMultiple="true" closeable="true" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.DataPart">
+    <menus xsi:type="menu:PopupMenu" xmi:id="_Ln-yEB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.popupmenu.entity" label="Entity menu">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_OyUAEB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.newentity" label="New entity" iconURI="platform:/plugin/org.eclipse.ui/icons/full/obj16/add_obj.gif" command="_YkAV4B4OEeSOsvlmsNpv_A"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_8SXP8B4zEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.editentity" label="Edit entity" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.gif" command="_bwangB4OEeSOsvlmsNpv_A"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_E47dIB40EeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.deleteentity" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/delete_edit.gif" command="_dpqoIB4OEeSOsvlmsNpv_A"/>
+    </menus>
+    <toolbar xmi:id="_7FskIB4VEeSOsvlmsNpv_A" elementId="icat-manager.core.toolbar.datapart">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_9tZ4IB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.handledtoolitem.newentity" label="New entity" iconURI="platform:/plugin/org.eclipse.ui/icons/full/obj16/add_obj.gif" command="_YkAV4B4OEeSOsvlmsNpv_A"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_fzVqkB4zEeSOsvlmsNpv_A" elementId="icat-manager.core.handledtoolitem.editentity" label="Edit entity" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/editor_area.gif" command="_bwangB4OEeSOsvlmsNpv_A"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_BByzgB40EeSOsvlmsNpv_A" elementId="icat-manager.core.handledtoolitem.deleteentity" label="Delete entity" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/delete_edit.gif" command="_dpqoIB4OEeSOsvlmsNpv_A"/>
+    </toolbar>
+  </descriptors>
   <commands xmi:id="_osJhsBvrEeS-S8zgM1nPnA" elementId="icat-manager.core.command.newserver" commandName="New server"/>
   <commands xmi:id="_s__VcBvrEeS-S8zgM1nPnA" elementId="org.eclipse.ui.file.exit" commandName="Exit"/>
   <commands xmi:id="_WhRxwB1hEeS-S8zgM1nPnA" elementId="icat-manager.core.command.deleteserver" commandName="Delete server"/>
   <commands xmi:id="_vlX1cB1uEeS-S8zgM1nPnA" elementId="icat-manager.core.command.connectserver" commandName="Connect"/>
   <commands xmi:id="_9oABsB15EeSOsvlmsNpv_A" elementId="icat-manager.core.command.openentity" commandName="Open"/>
+  <commands xmi:id="_YkAV4B4OEeSOsvlmsNpv_A" elementId="icat-manager.core.command.newentity" commandName="New entity"/>
+  <commands xmi:id="_bwangB4OEeSOsvlmsNpv_A" elementId="icat-manager.core.command.editentity" commandName="Edit entity"/>
+  <commands xmi:id="_dpqoIB4OEeSOsvlmsNpv_A" elementId="icat-manager.core.command.deleteentity" commandName="Delete entity"/>
   <addons xmi:id="_2FGrAAzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_2FGrAQzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_2FGrAgzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
