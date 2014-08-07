@@ -30,7 +30,15 @@ Bundle-ClassPath: .,
  lib/xmlschema-core-2.1.0.jar,
  lib/stax2-api-3.1.4.jar,
  lib/woodstox-core-asl-4.4.0.jar,
- lib/commons-validator-1.4.0.jar
+ lib/commons-validator-1.4.0.jar,
+ lib/commons-beanutils-1.8.3.jar,
+ lib/commons-collections-3.2.1.jar,
+ lib/commons-digester-1.8.jar,
+ lib/commons-lang-2.4.jar,
+ lib/commons-logging-1.1.1.jar,
+ lib/cxf-tools-common-3.0.1.jar,
+ lib/jaxb-xjc-2.2.10-b140310.1920.jar,
+ lib/velocity-1.7.jar
 Bundle-Activator: fr.esrf.icat.manager.core.ICATManagerActivator
 Bundle-Vendor: ESRF
 Require-Bundle: org.eclipse.core.runtime,

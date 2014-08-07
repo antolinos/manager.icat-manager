@@ -8,6 +8,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
@@ -54,6 +55,12 @@ public class DataColumnEditingSupport extends EditingSupport {
 				combo.setLabelProvider(new EntityLabelProvider());
 				combo.setInput(entity);
 				this.editor = combo;
+			} else if(Enum.class.isAssignableFrom(clazz)){
+				final ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(viewer.getTable());
+				combo.setContentProvider(new ArrayContentProvider());
+				combo.setLabelProvider(new EntityLabelProvider());
+				combo.setInput(clazz.getEnumConstants());
+				this.editor = combo;				
 			} else if(clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
 				this.editor = new CheckboxCellEditor(viewer.getTable());
 			} else if(Calendar.class.isAssignableFrom(clazz)
