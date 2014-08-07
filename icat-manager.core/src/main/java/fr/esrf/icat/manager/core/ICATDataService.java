@@ -199,6 +199,7 @@ public class ICATDataService {
 		try {
 			client.init();
 			server.setConnected(true);
+			server.setVersion(client.getServerVersion());
 			fireContentChanged();
 		} catch (ICATClientException e) {
 			LOG.warn("Unable to connect user " + client.getIcatUsername(), e);
@@ -222,6 +223,7 @@ public class ICATDataService {
 	public void disconnect(final ICATServer server) {
 		getClient(server).stop();
 		server.setConnected(false);
+		server.setVersion(null);
 		fireContentChanged();
 	}
 

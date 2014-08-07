@@ -11,7 +11,7 @@ public class ICATServer {
 	public ICATServer(String serverURL) {
 		super();
 		this.serverURL = serverURL;
-		this.version = "4.3.1";
+		this.version = null;
 		this.connected = false; 
 	}
 		
@@ -23,6 +23,10 @@ public class ICATServer {
 		return version;
 	}
 	
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 	public boolean isConnected(){
 		return connected;
 	}
