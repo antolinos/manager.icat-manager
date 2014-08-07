@@ -219,5 +219,11 @@ public class ICATDataService {
         this.propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
+	public void disconnect(final ICATServer server) {
+		getClient(server).stop();
+		server.setConnected(false);
+		fireContentChanged();
+	}
+
 
 }

@@ -15,7 +15,7 @@ import fr.esrf.icat.manager.core.icatserver.ICATServer;
 public class ConnectHandler {
 	
 	@Execute
-	public void execute(Shell shell, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATServer server) {
+	public void execute(final Shell shell, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATServer server) {
 		ICATDataService.getInstance().connect(server, shell);
 	}
 	
