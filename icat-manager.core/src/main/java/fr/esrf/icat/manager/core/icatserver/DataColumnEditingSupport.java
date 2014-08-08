@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
 import fr.esrf.icat.manager.core.ICATDataService;
+import fr.esrf.icat.manager.core.part.DataPart;
 
 public class DataColumnEditingSupport extends EditingSupport {
 
@@ -76,7 +77,9 @@ public class DataColumnEditingSupport extends EditingSupport {
 
 	@Override
 	protected boolean canEdit(Object element) {
-		if(null == element || !(element instanceof WrappedEntityBean)) {
+		if(viewer.getData(DataPart.IN_PLACE_EDITING_PROPERTY_KEY).equals(Boolean.FALSE)
+				|| null == element
+				|| !(element instanceof WrappedEntityBean)) {
 			return false;
 		}
 		return ((WrappedEntityBean)element).isMutable(field);

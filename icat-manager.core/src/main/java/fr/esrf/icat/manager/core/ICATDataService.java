@@ -27,6 +27,7 @@ import fr.esrf.icat.client.dynamic.DynamicSimpleICATClient;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 import fr.esrf.icat.manager.core.icatserver.ICATServer;
+import fr.esrf.icat.manager.core.icatserver.ICATServer.Status;
 import fr.esrf.icat.manager.core.part.ConnectionDialog;
 
 public class ICATDataService {
@@ -199,10 +200,15 @@ public class ICATDataService {
 		try {
 			client.init();
 			server.setConnected(true);
+			server.setStatus(Status.CONNECTED);
 			server.setVersion(client.getServerVersion());
 			fireContentChanged();
 		} catch (ICATClientException e) {
 			LOG.warn("Unable to connect user " + client.getIcatUsername(), e);
+			server.setConnected(false);
+			server.setVersion(null);
+			server.setStatus(Status.FAILED);
+			fireContentChanged();
 			MessageDialog.openError(shell, "Connection error", "Error connecting to ICAT:\n" + e.getMessage());
 			return;
 		}
@@ -224,8 +230,7 @@ public class ICATDataService {
 		getClient(server).stop();
 		server.setConnected(false);
 		server.setVersion(null);
+		server.setStatus(Status.UNKNOWN);
 		fireContentChanged();
 	}
-
-
 }

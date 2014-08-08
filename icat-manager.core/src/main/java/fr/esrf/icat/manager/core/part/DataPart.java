@@ -29,6 +29,7 @@ public class DataPart {
 	public static final String ICAT_MANAGER_MAINSTACK = "icat-manager.core.partstack.mainstack";
 	public static final String DATA_PART_ELEMENT_HEADER = "icat-manager.core.part.data";
 	public static final String DATA_PART_DESCRIPTOR = "icat-manager.core.partdescriptor.datapart";
+	public static final String IN_PLACE_EDITING_PROPERTY_KEY = "inPlaceEditing";
 
 	private TableViewer viewer;
 	private EntityContentProvider provider;
@@ -38,6 +39,7 @@ public class DataPart {
 	public void postConstruct(final Composite parent, final EMenuService menuService, 
 			final MContribution contrib, final ESelectionService selectionService) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+		viewer.setData(IN_PLACE_EDITING_PROPERTY_KEY, Boolean.FALSE);
 		entity = (ICATEntity) contrib.getObject();
 		provider = new EntityContentProvider(entity);
 		createColumns(parent, viewer, entity);
@@ -90,6 +92,15 @@ public class DataPart {
 	public void refresh() {
 		provider.loadContent();
 		viewer.refresh();
+	}
+	
+	public void toggleInPLaceEditing() {
+		final Object value = viewer.getData(IN_PLACE_EDITING_PROPERTY_KEY);
+		if(Boolean.FALSE.equals(value)) {
+			viewer.setData(IN_PLACE_EDITING_PROPERTY_KEY, Boolean.TRUE);
+		} else {
+			viewer.setData(IN_PLACE_EDITING_PROPERTY_KEY, Boolean.FALSE);
+		}
 	}
 	
 }
