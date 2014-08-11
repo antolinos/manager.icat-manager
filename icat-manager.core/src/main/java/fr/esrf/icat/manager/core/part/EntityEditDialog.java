@@ -67,7 +67,7 @@ public class EntityEditDialog extends Dialog {
 		    try {
 				initialValue = entity.get(field);
 			} catch (Exception e) {
-				LOG.error("Error getting initial value for " + field);
+				LOG.error("Error getting initial value for " + field, e);
 			}
 
 			if(entity.isEntity(field)) {
@@ -76,7 +76,7 @@ public class EntityEditDialog extends Dialog {
 				final WrappedEntityBean[] beans;
 				Object initialEntityID = null;
 				try {
-					beans = client.search(StringUtils.capitalize(field)).toArray(new WrappedEntityBean[0]);
+					beans = client.search(entity.getReturnType(field).getSimpleName() + " INCLUDE 1").toArray(new WrappedEntityBean[0]);
 				} catch (ICATClientException e) {
 					throw new IllegalStateException("Error creating dialog", e);
 				}
@@ -113,7 +113,7 @@ public class EntityEditDialog extends Dialog {
 						try {
 							entity.set(field, value);
 						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value);
+							LOG.error("Error setting " + field + " to " + value, e1);
 						}
 					}
 				});
@@ -140,7 +140,7 @@ public class EntityEditDialog extends Dialog {
 						try {
 							entity.set(field, value);
 						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value);
+							LOG.error("Error setting " + field + " to " + value, e1);
 						}
 					}
 				});
@@ -164,7 +164,7 @@ public class EntityEditDialog extends Dialog {
 						try {
 							entity.set(field, value);
 						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value);
+							LOG.error("Error setting " + field + " to " + value, e1);
 						}
 					}
 				});
@@ -208,11 +208,37 @@ public class EntityEditDialog extends Dialog {
 						try {
 							entity.set(field, o);
 						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + o);
+							LOG.error("Error setting " + field + " to " + o, e1);
 						}
 					}
 				});
-			} else {
+			} else if(Number.class.isAssignableFrom(clazz)){
+				final Text text = new Text(container, SWT.BORDER);
+				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+				if(null == initialValue) {
+					try {
+						entity.set(field, clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, ICATEntity.EMPTY_STRING));
+					} catch (Exception e) {
+						LOG.error("Error setting numeric " + field + " to valueOf(EMPTY_STRING)", e);
+					}
+				} else {
+					text.setText(initialValue.toString());
+				}
+				text.addModifyListener(new ModifyListener(){
+					@Override
+					public void modifyText(ModifyEvent e) {
+						String value = text.getText();
+						if(null == value) {
+							value = ICATEntity.EMPTY_STRING;
+						}
+						try {
+							entity.set(field, clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value));
+						} catch (Exception e1) {
+							LOG.error("Error setting " + field + " to " + value, e1);
+						}
+					}
+				});
+			} else { // Assumes String
 				final Text text = new Text(container, SWT.BORDER);
 				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				if(null == initialValue) {
@@ -222,19 +248,19 @@ public class EntityEditDialog extends Dialog {
 						LOG.error("Error setting " + field + " to EMPTY_STRING");
 					}
 				} else {
-					text.setText((String) initialValue);
+					text.setText(initialValue.toString());
 				}
 				text.addModifyListener(new ModifyListener(){
 					@Override
 					public void modifyText(ModifyEvent e) {
 						String value = text.getText();
 						if(null == value) {
-							value =  ICATEntity.EMPTY_STRING;
+							value = ICATEntity.EMPTY_STRING;
 						}
 						try {
 							entity.set(field, value);
 						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value);
+							LOG.error("Error setting " + field + " to " + value, e1);
 						}
 					}
 				});
