@@ -13,10 +13,19 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.nebula.jface.cdatetime.CDateTimeCellEditor;
 import org.eclipse.nebula.widgets.cdatetime.CDT;
+import org.eclipse.nebula.widgets.cdatetime.CDateTime;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,9 +76,45 @@ public class DataColumnEditingSupport extends EditingSupport {
 			} else if(Calendar.class.isAssignableFrom(clazz)
 					|| Date.class.isAssignableFrom(clazz) ||
 					XMLGregorianCalendar.class.isAssignableFrom(clazz)) {
-				this.editor = new CDateTimeCellEditor(viewer.getTable(), CDT.SPINNER | CDT.TAB_FIELDS | CDT.DATE_MEDIUM | CDT.TIME_MEDIUM);
+				// workaround for focus lost from https://www.eclipse.org/forums/index.php/m/1403724/?srch=CDateTimeCellEditor#msg_1403724
+				// note that using CDT.SIMPLE leads to a StackOverflowException
+				this.editor = new CDateTimeCellEditor(viewer.getTable(),CDT.SPINNER | CDT.TAB_FIELDS | CDT.DATE_MEDIUM | CDT.TIME_MEDIUM) {
+					@Override
+					protected boolean dependsOnExternalFocusListener() {
+						return false;
+					}
+					@Override
+					protected Control createControl(Composite parent) {
+						final CDateTime cdt = (CDateTime) super.createControl(parent);
+						cdt.addFocusListener(new FocusAdapter() {
+						public void focusLost(FocusEvent e) {
+						if (!cdt.isOpen()) {
+							fireApplyEditorValue();
+							deactivate();
+						}
+					}
+					});
+					return cdt;
+					}
+				};
 			} else {
 				this.editor = new TextCellEditor(viewer.getTable());
+				if(Number.class.isAssignableFrom(clazz)) {
+					final Color original = this.editor.getControl().getForeground();
+					this.editor.setValidator(new ICellEditorValidator() {
+						@Override
+						public String isValid(Object value) {
+							try {
+								clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value);
+								editor.getControl().setForeground(original);
+								return null;
+							} catch (Exception e) {
+								editor.getControl().setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+								return "Please enter a number";
+							}
+						}
+					});
+				}
 			}
 		}
 		return editor;
@@ -93,8 +138,11 @@ public class DataColumnEditingSupport extends EditingSupport {
 		final WrappedEntityBean w = (WrappedEntityBean)element;
 		try {
 			Object o = w.get(field);
-			if(null == o && editor instanceof TextCellEditor) {
-				return ICATEntity.EMPTY_STRING;
+			if(editor instanceof TextCellEditor) {
+				if(null == o) {
+					return ICATEntity.EMPTY_STRING;
+				}
+				return o.toString();
 			}
 			if(o instanceof Calendar) {
 				return ((Calendar)o).getTime();
@@ -131,6 +179,13 @@ public class DataColumnEditingSupport extends EditingSupport {
 					LOG.error("Unable to create XMLGregorianCalendar", e);
 					return;
 				}
+			}
+		} else if(Number.class.isAssignableFrom(clazz)) {
+			try {
+				o = clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value);
+			} catch (Exception e) {
+				LOG.error("Error setting " + field + " to " + value, e);
+				o = null;
 			}
 		}
 		try {
