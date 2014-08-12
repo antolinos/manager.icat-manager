@@ -14,7 +14,13 @@ public class RefreshHandler {
 
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_PART) MPart activePart) {
-		((DataPart) activePart.getObject()).refresh();
+		DataPart part;
+		if(activePart instanceof DataPart) {
+			part = (DataPart) activePart;
+		} else {
+			part = (DataPart) activePart.getObject();
+		}
+		part.refresh();
 	}
 	
 	@CanExecute

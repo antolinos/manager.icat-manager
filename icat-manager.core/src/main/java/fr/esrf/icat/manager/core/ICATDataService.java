@@ -214,7 +214,7 @@ public class ICATDataService {
 		}
 	}
 
-	private void fireContentChanged() {
+	public void fireContentChanged() {
 		propertyChangeSupport.firePropertyChange(DATA_SERVICE_CONTENT, null, serverList);
 	}
 	

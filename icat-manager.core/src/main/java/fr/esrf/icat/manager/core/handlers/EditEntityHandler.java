@@ -28,7 +28,12 @@ public class EditEntityHandler {
 	@Execute
 	public void execute(final Shell shell, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional WrappedEntityBean bean,
 			@Named(IServiceConstants.ACTIVE_PART) MPart activePart) throws ICATClientException {
-		final DataPart part = (DataPart) activePart.getObject();
+		DataPart part;
+		if(activePart instanceof DataPart) {
+			part = (DataPart) activePart;
+		} else {
+			part = (DataPart) activePart.getObject();
+		}
 		final ICATEntity entity = part.getEntity();
 		final SimpleICATClient client = ICATDataService.getInstance().getClient(entity.getServer());
 		try {

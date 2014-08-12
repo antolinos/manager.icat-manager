@@ -26,7 +26,12 @@ public class NewEntityHandler {
 	
 	@Execute
 	public void execute(final Shell shell, @Named(IServiceConstants.ACTIVE_PART) MPart activePart) throws ICATClientException {
-		final DataPart part = (DataPart) activePart.getObject();
+		DataPart part;
+		if(activePart instanceof DataPart) {
+			part = (DataPart) activePart;
+		} else {
+			part = (DataPart) activePart.getObject();
+		}
 		final ICATEntity entity = part.getEntity();
 		final SimpleICATClient client = ICATDataService.getInstance().getClient(entity.getServer());
 		try {
@@ -35,6 +40,7 @@ public class NewEntityHandler {
 			if(dlg.open() == Window.OK) {
 				client.create(newEntity);
 				part.refresh();
+				ICATDataService.getInstance().fireContentChanged();
 			}
 		} catch (ICATClientException e) {
 			LOG.error("Error creating new entity", e);

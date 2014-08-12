@@ -217,13 +217,7 @@ public class EntityEditDialog extends Dialog {
 			} else if(Number.class.isAssignableFrom(clazz)){
 				final Text text = new Text(container, SWT.BORDER);
 				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-				if(null == initialValue) {
-					try {
-						entity.set(field, clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, ICATEntity.EMPTY_STRING));
-					} catch (Exception e) {
-						LOG.error("Error setting numeric " + field + " to valueOf(EMPTY_STRING)", e);
-					}
-				} else {
+				if(null != initialValue) {
 					text.setText(initialValue.toString());
 				}
 				final Color original = text.getForeground();

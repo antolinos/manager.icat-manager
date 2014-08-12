@@ -16,7 +16,12 @@ public class ToggleInPlaceEditingHandler {
 	
 	@Execute
 	public void execute(final Shell shell, @Named(IServiceConstants.ACTIVE_PART) MPart activePart, MHandledItem handledItem) {
-		final DataPart part = (DataPart) activePart.getObject();
+		DataPart part;
+		if(activePart instanceof DataPart) {
+			part = (DataPart) activePart;
+		} else {
+			part = (DataPart) activePart.getObject();
+		}
 		if(handledItem.isSelected()) {
 			if(MessageDialog.openConfirm(shell, "Really ?", "Do you really want to enable in place editing ?")) {
 				part.toggleInPLaceEditing();

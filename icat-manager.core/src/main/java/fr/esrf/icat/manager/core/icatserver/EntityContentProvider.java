@@ -37,7 +37,15 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	}
 	
 	public WrappedEntityBean getExampleData() {
-		return (WrappedEntityBean) ((content != null && content.length > 0) ? content[0] : null);
+		if(content != null && content.length > 0) {
+			return (WrappedEntityBean) content[0];
+		}
+		try {
+			return ICATDataService.getInstance().getClient(entity.getServer()).create(entity.getEntityName());
+		} catch (ICATClientException e) {
+			LOG.error("Error creating " + entity.getEntityName(), e);
+			return null;
+		}
 	}
 
 	@Override

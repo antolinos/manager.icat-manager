@@ -31,12 +31,18 @@ public class DeleteEntityHandler {
 		if(!MessageDialog.openConfirm(shell, "Really ?", "Delete selected entity ?")) {
 			return;
 		}
-		final DataPart part = (DataPart) activePart.getObject();
+		DataPart part;
+		if(activePart instanceof DataPart) {
+			part = (DataPart) activePart;
+		} else {
+			part = (DataPart) activePart.getObject();
+		}
 		final ICATEntity entity = part.getEntity();
 		final SimpleICATClient client = ICATDataService.getInstance().getClient(entity.getServer());
 		try {
 			client.delete(bean);
 			part.refresh();
+			ICATDataService.getInstance().fireContentChanged();
 		} catch (ICATClientException e) {
 			LOG.error("Error updating entity", e);
 			throw e;
