@@ -1,0 +1,1 @@
+The Icat manager is an eclipse RCP that 
