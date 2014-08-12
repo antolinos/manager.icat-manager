@@ -17,12 +17,14 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -224,9 +226,11 @@ public class EntityEditDialog extends Dialog {
 				} else {
 					text.setText(initialValue.toString());
 				}
+				final Color original = text.getForeground();
 				text.addModifyListener(new ModifyListener(){
 					@Override
 					public void modifyText(ModifyEvent e) {
+						text.setForeground(original);
 						String value = text.getText();
 						if(null == value) {
 							value = ICATEntity.EMPTY_STRING;
@@ -235,6 +239,7 @@ public class EntityEditDialog extends Dialog {
 							entity.set(field, clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value));
 						} catch (Exception e1) {
 							LOG.error("Error setting " + field + " to " + value, e1);
+							text.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 						}
 					}
 				});
