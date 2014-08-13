@@ -12,11 +12,11 @@ import org.eclipse.swt.graphics.Image;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
-import fr.esrf.icat.manager.core.ICATDataService;
+//import fr.esrf.icat.manager.core.ICATDataService;
 
 public class IcatServerLabelProvider extends StyledCellLabelProvider {
 
-	private ICATDataService service = ICATDataService.getInstance();
+//	private ICATDataService service = ICATDataService.getInstance();
 	private Image unknown_server_image;
 	private Image connected_server_image;
 	private Image failed_server_image;	
@@ -52,7 +52,7 @@ public class IcatServerLabelProvider extends StyledCellLabelProvider {
 	      } else if(element instanceof ICATEntity){
 	    	  ICATEntity entity = (ICATEntity)element;
 	    	  text.append(entity.getEntityName());
-		      text.append(" (" + service.getEntityCount(entity) + ") ", StyledString.COUNTER_STYLER);
+//		      text.append(" (" + service.getEntityCount(entity) + ") ", StyledString.COUNTER_STYLER);
 	      } else {
 	    	  text.append(element.toString());
 	      }

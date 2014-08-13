@@ -29,6 +29,11 @@
 	    <artifactId>commons-validator</artifactId>
 	    <version>1.4.0</version>
 	</dependency>
+	<dependency>
+	    <groupId>net.sf.swtaddons</groupId>
+	    <artifactId>swtaddons</artifactId>
+	    <version>0.1.1</version>
+	</dependency>
   </dependencies>
 
   <build>

@@ -3,12 +3,19 @@ package fr.esrf.icat.manager.core.part;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import net.sf.swtaddons.autocomplete.combo.AutocompleteComboSelector;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.nebula.widgets.cdatetime.CDT;
 import org.eclipse.nebula.widgets.cdatetime.CDateTime;
@@ -42,6 +49,7 @@ public class EntityEditDialog extends Dialog {
 	private final static Logger LOG = LoggerFactory.getLogger(EntityEditDialog.class);
 	private WrappedEntityBean entity;
 	private SimpleICATClient client;
+	private Map<String, Pair<Object[], Combo>> comboMapping;
 	
 	public EntityEditDialog(final Shell parentShell, final WrappedEntityBean entity, final SimpleICATClient client) {
 		super(parentShell);
@@ -60,6 +68,7 @@ public class EntityEditDialog extends Dialog {
 	    layout.marginRight = 5;
 	    layout.marginLeft = 10;
 	    container.setLayout(layout);
+	    comboMapping = new HashMap<>();
 	    
 	    for(final String field : entity.getMutableFields()) {
 		    Label lblAuthn = new Label(container, SWT.NONE);
@@ -104,25 +113,27 @@ public class EntityEditDialog extends Dialog {
 						selected = i;
 					}
 				}
+				new AutocompleteComboSelector(combo);
 				combo.setItems(values);
 				if(selected >= 0) {
 					combo.select(selected);
 				}
-				combo.addSelectionListener(new SelectionAdapter(){
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						Object value = beans[combo.getSelectionIndex()];
-						try {
-							entity.set(field, value);
-						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value, e1);
-						}
-					}
-				});
+				comboMapping.put(field, new ImmutablePair<Object[], Combo>(beans, combo));
+//				combo.addSelectionListener(new SelectionAdapter(){
+//					@Override
+//					public void widgetSelected(SelectionEvent e) {
+//						Object value = beans[combo.getSelectionIndex()];
+//						try {
+//							entity.set(field, value);
+//						} catch (Exception e1) {
+//							LOG.error("Error setting " + field + " to " + value, e1);
+//						}
+//					}
+//				});
 			} else if(Enum.class.isAssignableFrom(clazz)){
 				final Combo combo = new Combo(container, SWT.DROP_DOWN | SWT.BORDER);
 				final Object[] c = clazz.getEnumConstants();
-				String[] s = new String[c.length];
+				final String[] s = new String[c.length];
 				int selected = -1;
 				for(int i = 0; i < c.length; i++) {
 					s[i] = c[i].toString();
@@ -130,22 +141,24 @@ public class EntityEditDialog extends Dialog {
 						selected = i;
 					}
 				}
+				new AutocompleteComboSelector(combo);
 				combo.setItems(s);
 				if(selected >= 0) {
 					combo.select(selected);
 				}
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-				combo.addSelectionListener(new SelectionAdapter(){
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						Object value = c[combo.getSelectionIndex()];
-						try {
-							entity.set(field, value);
-						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value, e1);
-						}
-					}
-				});
+				comboMapping.put(field, new ImmutablePair<Object[], Combo>(c, combo));
+//				combo.addSelectionListener(new SelectionAdapter(){
+//					@Override
+//					public void widgetSelected(SelectionEvent e) {
+//						Object value = c[combo.getSelectionIndex()];
+//						try {
+//							entity.set(field, value);
+//						} catch (Exception e1) {
+//							LOG.error("Error setting " + field + " to " + value, e1);
+//						}
+//					}
+//				});
 				
 			} else if(clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
 				final Button btn = new  Button(container, SWT.CHECK);
@@ -267,6 +280,29 @@ public class EntityEditDialog extends Dialog {
 		    
 	    }
 		return container;
+	}
+
+	@Override
+	protected void cancelPressed() {
+		comboMapping = null;
+		super.cancelPressed();
+	}
+
+	@Override
+	protected void okPressed() {
+		for(Entry<String, Pair<Object[], Combo>> entry : comboMapping.entrySet()) {
+			final String field = entry.getKey();
+			final Pair<Object[], Combo> pair = entry.getValue();
+			final Combo combo = pair.getRight();
+			final Object value = pair.getLeft()[combo.indexOf(combo.getText())];
+			try {
+				entity.set(field, value);
+			} catch (Exception e) {
+				LOG.error("Error setting " + field + " to " + value, e);
+			}
+		}
+		comboMapping = null;
+		super.okPressed();
 	}
 
 }

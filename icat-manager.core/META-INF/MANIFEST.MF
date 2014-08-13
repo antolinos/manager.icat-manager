@@ -38,7 +38,8 @@ Bundle-ClassPath: .,
  lib/commons-logging-1.1.1.jar,
  lib/cxf-tools-common-3.0.1.jar,
  lib/jaxb-xjc-2.2.10-b140310.1920.jar,
- lib/velocity-1.7.jar
+ lib/velocity-1.7.jar,
+ lib/swtaddons-0.1.1.jar
 Bundle-Activator: fr.esrf.icat.manager.core.ICATManagerActivator
 Bundle-Vendor: ESRF
 Require-Bundle: org.eclipse.core.runtime,

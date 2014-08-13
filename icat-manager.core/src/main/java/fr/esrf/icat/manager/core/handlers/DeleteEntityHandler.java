@@ -44,7 +44,7 @@ public class DeleteEntityHandler {
 			part.refresh();
 			ICATDataService.getInstance().fireContentChanged();
 		} catch (ICATClientException e) {
-			LOG.error("Error updating entity", e);
+			LOG.error("Error deleting entity", e);
 			throw e;
 		}
 	}
