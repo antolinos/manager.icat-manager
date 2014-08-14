@@ -3,7 +3,6 @@ package fr.esrf.icat.manager.core.part;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -20,11 +19,14 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -54,6 +56,8 @@ public class DataPart {
 
 	private final static Image IMAGE_UP;
 	private final static Image IMAGE_DOWN;
+	private final static Image IMAGE_NEXT;
+	private final static Image IMAGE_PREVIOUS;
 	
 	static {
 	    Bundle bundle = FrameworkUtil.getBundle(DataPart.class);
@@ -61,6 +65,10 @@ public class DataPart {
 	    IMAGE_UP = ImageDescriptor.createFromURL(url).createImage();
 	    url = FileLocator.find(bundle, new Path("icons/down.gif"), null);
 	    IMAGE_DOWN = ImageDescriptor.createFromURL(url).createImage();
+	    url = FileLocator.find(bundle, new Path("icons/next.gif"), null);
+	    IMAGE_NEXT = ImageDescriptor.createFromURL(url).createImage();
+	    url = FileLocator.find(bundle, new Path("icons/prev.gif"), null);
+	    IMAGE_PREVIOUS = ImageDescriptor.createFromURL(url).createImage();
 	}
 	
 	private TableViewer viewer;
@@ -92,15 +100,40 @@ public class DataPart {
 
 		previousBtn = new Button(top, SWT.PUSH);
 		previousBtn.setText("Previous");
+		previousBtn.setImage(IMAGE_PREVIOUS);
 		
 		nextBtn = new Button(top, SWT.PUSH);
 		nextBtn.setText("Next");
+		nextBtn.setImage(IMAGE_NEXT);
+		
+		new Label(top, SWT.NONE).setText("Page size:");
+		final Combo pageSizeCombo = new Combo(top, SWT.DROP_DOWN);
+		pageSizeCombo.setItems(new String[]{"50", "100", "150", "200"});
+		pageSizeCombo.select(0);
+		pageSizeCombo.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				e.doit = e.character == SWT.BS || e.character == SWT.DEL || e.text.matches("\\d+");
+			}
+		});
 		
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		contentProvider = new EntityContentProvider();
 		viewer.setContentProvider(contentProvider);
 		entity = (ICATEntity) contrib.getObject();
 
+		pageSizeCombo.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				contentProvider.setPageSize(new Integer(pageSizeCombo.getText()));
+				refresh();
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				contentProvider.setPageSize(new Integer(pageSizeCombo.getText()));
+				refresh();
+			}
+		});
 		previousBtn.addSelectionListener(new SelectionListener(){
 			@Override
 			public void widgetSelected(SelectionEvent e) {

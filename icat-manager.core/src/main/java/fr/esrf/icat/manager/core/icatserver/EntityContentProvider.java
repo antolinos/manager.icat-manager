@@ -150,7 +150,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		sb.append(" from ");
 		sb.append(offset);
 		sb.append(" to ");
-		sb.append(offset + currentPageSize);
+		sb.append(offset + currentPageSize - 1);
 		return sb.toString();
 	}
 
