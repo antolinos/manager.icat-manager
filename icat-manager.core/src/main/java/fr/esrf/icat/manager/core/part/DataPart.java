@@ -123,7 +123,7 @@ public class DataPart {
 					final TableColumn col = (TableColumn) e.getSource();
 					final String sortingField = col.getText();
 					DataPart.LOG.debug("Selected column " + sortingField);
-					entityContentProvider.toggleSortingColumn(field);
+					entityContentProvider.toggleSortingField(field);
 					for(TableColumn column : viewer.getTable().getColumns()) {
 						if(column.getText().equals(sortingField)) {
 							switch(entityContentProvider.getSortingOrder()) {

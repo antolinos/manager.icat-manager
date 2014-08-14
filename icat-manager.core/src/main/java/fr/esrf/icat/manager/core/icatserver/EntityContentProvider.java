@@ -20,14 +20,21 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	private static final String ORDER_CLAUSE = "ORDER BY";
 	private static final String ORDER_UP = "ASC";
 	private static final String ORDER_DOWN = "DESC";
-
+	private static final int DEFAULT_PAGE_SIZE = 50;
+	
 	private String sortingField;
 	private int sortingOrder;
+	private int offset;
+	private int pageSize;
+	private int currentPageSize;
 	
 	public EntityContentProvider() {
 		super();
-		this.sortingField = null;
+		this.sortingField = ICATEntity.ID_FIELD;
 		this.sortingOrder = SWT.DOWN;
+		this.offset = 0;
+		this.pageSize = DEFAULT_PAGE_SIZE;
+		this.currentPageSize = 0;
 	}
 
 	@Override
@@ -43,13 +50,16 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		if(null == inputElement || !(inputElement instanceof ICATEntity)) {
 			return null;
 		}
-		ICATEntity entity = (ICATEntity) inputElement;
+		final ICATEntity entity = (ICATEntity) inputElement;
+		final String searchString = makeSearchString(entity);
 		if(LOG.isDebugEnabled()) {
 			LOG.debug("Getting content of " + entity.getEntityName() + " from " + entity.getServer().getServerURL());
+			LOG.debug(searchString);
 		}
 		try {
 			SimpleICATClient client = ICATDataService.getInstance().getClient(entity.getServer());
-			List<WrappedEntityBean> search = client.search(makeSearchString(entity));
+			List<WrappedEntityBean> search = client.search(searchString);
+			currentPageSize = null == search ? 0 : search.size();
 			return null == search ? null : search.toArray();
 		} catch (ICATClientException e) {
 			LOG.error("Unable to load entity content for entity " + entity.getEntityName(), e);
@@ -59,6 +69,10 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 
 	private String makeSearchString(final ICATEntity entity) {
 		StringBuilder sb = new StringBuilder();
+		sb.append(offset);
+		sb.append(',');
+		sb.append(pageSize);
+		sb.append(' ');
 		sb.append(entity.getEntityName());
 		sb.append(' ');
 		sb.append(DEFAULT_INCLUDE);
@@ -77,7 +91,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		return sb.toString();
 	}
 
-	public void toggleSortingColumn(final String field) {
+	public void toggleSortingField(final String field) {
 		if(field.equals(sortingField)) {
 			if(sortingOrder == SWT.UP) {
 				sortingOrder = SWT.DOWN;
@@ -88,6 +102,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 			sortingField = field;
 			sortingOrder = SWT.DOWN;
 		}
+		offset = 0;
 	}
 
 	public String getSortingField() {
@@ -97,7 +112,27 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	public int getSortingOrder() {
 		return sortingOrder;
 	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public int getOffset() {
+		return offset;
+	}
 	
+	public void nextPage() {
+		if(currentPageSize == pageSize) {
+			offset += pageSize;
+		}
+	}
 	
+	public void previousPage() {
+		offset = Math.max(0, offset - pageSize);
+	}
 
 }
