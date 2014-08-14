@@ -21,7 +21,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.osgi.framework.Bundle;
@@ -60,19 +65,73 @@ public class DataPart {
 	
 	private TableViewer viewer;
 	private ICATEntity entity;
+	private Label paginationLabel;
+	private EntityContentProvider contentProvider;
+	private Button previousBtn;
+	private Button nextBtn;
 
 	@PostConstruct
 	public void postConstruct(final Composite parent, final EMenuService menuService, 
 			final MContribution contrib, final ESelectionService selectionService) {
+		
+		final GridLayout pageLayout = new GridLayout();
+		pageLayout.marginWidth = 0;
+		pageLayout.marginHeight = 0;
+		pageLayout.verticalSpacing = 0;
+		parent.setLayout(pageLayout);
+		
+		Composite top = new Composite(parent, SWT.NONE);
+		top.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, true, false));
+		final RowLayout barLayout = new RowLayout();
+		barLayout.center = true;
+		barLayout.pack = true;
+		barLayout.spacing = 10;
+		top.setLayout(barLayout);
+		
+		paginationLabel = new Label(top, SWT.NONE);
+
+		previousBtn = new Button(top, SWT.PUSH);
+		previousBtn.setText("Previous");
+		
+		nextBtn = new Button(top, SWT.PUSH);
+		nextBtn.setText("Next");
+		
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-		viewer.setData(IN_PLACE_EDITING_PROPERTY_KEY, Boolean.FALSE);
+		contentProvider = new EntityContentProvider();
+		viewer.setContentProvider(contentProvider);
 		entity = (ICATEntity) contrib.getObject();
-		viewer.setContentProvider(new EntityContentProvider());
+
+		previousBtn.addSelectionListener(new SelectionListener(){
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				contentProvider.previousPage();
+				refresh();
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		nextBtn.addSelectionListener(new SelectionListener(){
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				contentProvider.nextPage();
+				refresh();
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		
+		viewer.setData(IN_PLACE_EDITING_PROPERTY_KEY, Boolean.FALSE);
 		createColumns(parent);
 		final Table table = viewer.getTable();
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true); 
 		viewer.setInput(entity);
+		paginationLabel.setText(contentProvider.getPaginationLabelText());
+		nextBtn.setEnabled(!contentProvider.isLastPage());
+		previousBtn.setEnabled(!contentProvider.isFirstPage());
 	    // make selection available
 	    viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 	    	  @Override
@@ -99,7 +158,6 @@ public class DataPart {
 //		fields.addAll(data.getAssociationFields());
 		fields.addAll(data.getImmutableFields());
 		
-		final EntityContentProvider entityContentProvider = (EntityContentProvider)viewer.getContentProvider();
 		for(final String field : fields) {
 			TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
 			final TableColumn currentColumn = column.getColumn();
@@ -107,8 +165,8 @@ public class DataPart {
 			currentColumn.setWidth(100);
 			currentColumn.setResizable(true);
 			currentColumn.setMoveable(true);
-			if(field.equals(entityContentProvider.getSortingField())) {
-				switch(entityContentProvider.getSortingOrder()) {
+			if(field.equals(contentProvider.getSortingField())) {
+				switch(contentProvider.getSortingOrder()) {
 					case SWT.UP:   currentColumn.setImage(IMAGE_UP); break;
 					case SWT.DOWN: currentColumn.setImage(IMAGE_DOWN); break;
 					default: currentColumn.setImage(null); break;
@@ -123,10 +181,10 @@ public class DataPart {
 					final TableColumn col = (TableColumn) e.getSource();
 					final String sortingField = col.getText();
 					DataPart.LOG.debug("Selected column " + sortingField);
-					entityContentProvider.toggleSortingField(field);
+					contentProvider.toggleSortingField(field);
 					for(TableColumn column : viewer.getTable().getColumns()) {
 						if(column.getText().equals(sortingField)) {
-							switch(entityContentProvider.getSortingOrder()) {
+							switch(contentProvider.getSortingOrder()) {
 								case SWT.UP:   column.setImage(IMAGE_UP); break;
 								case SWT.DOWN: column.setImage(IMAGE_DOWN); break;
 								default: column.setImage(null); break;
@@ -135,7 +193,7 @@ public class DataPart {
 							column.setImage(null);
 						}
 					}
-					viewer.refresh();
+					refresh();
 				}
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
@@ -156,6 +214,11 @@ public class DataPart {
 
 	public void refresh() {
 		viewer.refresh();
+		paginationLabel.setText(contentProvider.getPaginationLabelText());
+		previousBtn.setEnabled(!contentProvider.isFirstPage());
+		nextBtn.setEnabled(!contentProvider.isLastPage());
+		// this has to be called to avoid the label not resizing properly
+		paginationLabel.getParent().getParent().layout();
 	}
 	
 	public void toggleInPLaceEditing() {

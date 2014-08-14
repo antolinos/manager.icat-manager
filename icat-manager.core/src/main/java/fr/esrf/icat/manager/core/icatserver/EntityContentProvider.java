@@ -27,6 +27,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	private int offset;
 	private int pageSize;
 	private int currentPageSize;
+	private ICATEntity entity;
 	
 	public EntityContentProvider() {
 		super();
@@ -50,7 +51,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		if(null == inputElement || !(inputElement instanceof ICATEntity)) {
 			return null;
 		}
-		final ICATEntity entity = (ICATEntity) inputElement;
+		entity = (ICATEntity) inputElement;
 		final String searchString = makeSearchString(entity);
 		if(LOG.isDebugEnabled()) {
 			LOG.debug("Getting content of " + entity.getEntityName() + " from " + entity.getServer().getServerURL());
@@ -133,6 +134,24 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	
 	public void previousPage() {
 		offset = Math.max(0, offset - pageSize);
+	}
+
+	public boolean isFirstPage() {
+		return offset == 0;
+	}
+	
+	public boolean isLastPage() {
+		return currentPageSize < pageSize;
+	}
+	
+	public String getPaginationLabelText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(entity.getEntityName());
+		sb.append(" from ");
+		sb.append(offset);
+		sb.append(" to ");
+		sb.append(offset + currentPageSize);
+		return sb.toString();
 	}
 
 }
