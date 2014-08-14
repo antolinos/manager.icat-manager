@@ -87,7 +87,7 @@ public class EntityEditDialog extends Dialog {
 				final WrappedEntityBean[] beans;
 				Object initialEntityID = null;
 				try {
-					beans = client.search(entity.getReturnType(field).getSimpleName() + " INCLUDE 1").toArray(new WrappedEntityBean[0]);
+					beans = client.search(entity.getReturnType(field).getSimpleName()).toArray(new WrappedEntityBean[0]);
 				} catch (ICATClientException e) {
 					throw new IllegalStateException("Error creating dialog", e);
 				}
@@ -119,17 +119,7 @@ public class EntityEditDialog extends Dialog {
 					combo.select(selected);
 				}
 				comboMapping.put(field, new ImmutablePair<Object[], Combo>(beans, combo));
-//				combo.addSelectionListener(new SelectionAdapter(){
-//					@Override
-//					public void widgetSelected(SelectionEvent e) {
-//						Object value = beans[combo.getSelectionIndex()];
-//						try {
-//							entity.set(field, value);
-//						} catch (Exception e1) {
-//							LOG.error("Error setting " + field + " to " + value, e1);
-//						}
-//					}
-//				});
+				
 			} else if(Enum.class.isAssignableFrom(clazz)){
 				final Combo combo = new Combo(container, SWT.DROP_DOWN | SWT.BORDER);
 				final Object[] c = clazz.getEnumConstants();
@@ -148,17 +138,6 @@ public class EntityEditDialog extends Dialog {
 				}
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				comboMapping.put(field, new ImmutablePair<Object[], Combo>(c, combo));
-//				combo.addSelectionListener(new SelectionAdapter(){
-//					@Override
-//					public void widgetSelected(SelectionEvent e) {
-//						Object value = c[combo.getSelectionIndex()];
-//						try {
-//							entity.set(field, value);
-//						} catch (Exception e1) {
-//							LOG.error("Error setting " + field + " to " + value, e1);
-//						}
-//					}
-//				});
 				
 			} else if(clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
 				final Button btn = new  Button(container, SWT.CHECK);
@@ -183,6 +162,7 @@ public class EntityEditDialog extends Dialog {
 						}
 					}
 				});
+				
 			} else if(Calendar.class.isAssignableFrom(clazz)
 					|| Date.class.isAssignableFrom(clazz) ||
 					XMLGregorianCalendar.class.isAssignableFrom(clazz)) {
@@ -227,6 +207,7 @@ public class EntityEditDialog extends Dialog {
 						}
 					}
 				});
+				
 			} else if(Number.class.isAssignableFrom(clazz)){
 				final Text text = new Text(container, SWT.BORDER);
 				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -250,6 +231,7 @@ public class EntityEditDialog extends Dialog {
 						}
 					}
 				});
+				
 			} else { // Assumes String
 				final Text text = new Text(container, SWT.BORDER);
 				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
