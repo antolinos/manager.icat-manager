@@ -3,6 +3,7 @@ package fr.esrf.icat.manager.core.part;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -130,7 +131,12 @@ public class DataPart {
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				contentProvider.setPageSize(new Integer(pageSizeCombo.getText()));
+				String text = pageSizeCombo.getText();
+				if(null == text || text.isEmpty()) {
+					pageSizeCombo.select(0);
+					text = pageSizeCombo.getText();
+				}
+				contentProvider.setPageSize(new Integer(text));
 				refresh();
 			}
 		});
