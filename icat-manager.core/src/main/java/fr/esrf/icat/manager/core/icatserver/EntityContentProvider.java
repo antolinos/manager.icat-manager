@@ -1,7 +1,6 @@
 package fr.esrf.icat.manager.core.icatserver;
 
 import java.util.List;
-
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.slf4j.Logger;
@@ -20,47 +19,40 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	private ICATEntity entity;
 	private Object[] content;
 	
-	public EntityContentProvider(ICATEntity entity) {
+	public EntityContentProvider() {
 		super();
-		this.entity = entity;
-		loadContent();
-	}
-
-	public void loadContent() {
-		try {
-			SimpleICATClient client = ICATDataService.getInstance().getClient(this.entity.getServer());
-			List<WrappedEntityBean> search = client.search(this.entity.getEntityName() + QUERY_SUFFIX);
-			content = null == search ? null : search.toArray();
-		} catch (ICATClientException e) {
-			LOG.error("Unable to load entity content for entity " + entity.getEntityName(), e);
-		}
-	}
-	
-	public WrappedEntityBean getExampleData() {
-		if(content != null && content.length > 0) {
-			return (WrappedEntityBean) content[0];
-		}
-		try {
-			return ICATDataService.getInstance().getClient(entity.getServer()).create(entity.getEntityName());
-		} catch (ICATClientException e) {
-			LOG.error("Error creating " + entity.getEntityName(), e);
-			return null;
-		}
+		this.entity = null;
+		this.content = null;
 	}
 
 	@Override
 	public void dispose() {
-		content = null;
+		this.entity = null;
+		this.content = null;
 	}
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		// do nothing
 	}
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		return content;
+		if(null == inputElement || !(inputElement instanceof ICATEntity)) {
+			return null;
+		}
+		this.entity = (ICATEntity) inputElement;
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("Getting content of " + entity.getEntityName() + " from " + entity.getServer().getServerURL());
+		}
+		try {
+			SimpleICATClient client = ICATDataService.getInstance().getClient(this.entity.getServer());
+			List<WrappedEntityBean> search = client.search(this.entity.getEntityName() + QUERY_SUFFIX);
+			content = null == search ? null : search.toArray();
+			return content;
+		} catch (ICATClientException e) {
+			LOG.error("Unable to load entity content for entity " + entity.getEntityName(), e);
+			return null;
+		}
 	}
 
 }

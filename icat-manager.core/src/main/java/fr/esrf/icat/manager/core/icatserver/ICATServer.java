@@ -52,4 +52,21 @@ public class ICATServer {
 		this.status = status;
 	}
 
+	@Override
+	public int hashCode() {
+		return serverURL.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (!(obj instanceof ICATServer)) return false;
+		ICATServer other = (ICATServer) obj;
+		if (serverURL == null) {
+			return other.serverURL == null;
+		}
+		return serverURL.equals(other.serverURL);
+	}
+
 }

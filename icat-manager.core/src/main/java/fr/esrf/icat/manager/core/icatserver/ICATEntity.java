@@ -24,4 +24,33 @@ public class ICATEntity {
 		return entityName;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((entityName == null) ? 0 : entityName.hashCode());
+		result = prime * result + ((server == null) ? 0 : server.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (!(obj instanceof ICATEntity)) return false;
+		ICATEntity other = (ICATEntity) obj;
+		if (entityName == null) {
+			if (other.entityName != null)
+				return false;
+		} else if (!entityName.equals(other.entityName))
+			return false;
+		if (server == null) {
+			if (other.server != null)
+				return false;
+		} else if (!server.equals(other.server))
+			return false;
+		return true;
+	}
+
 }

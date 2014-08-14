@@ -43,12 +43,15 @@ public class DataColumnEditingSupport extends EditingSupport {
 	private CellEditor editor;
 	private ICATServer server;
 
+	private EntityLabelProvider labelProvider;
+
 	public DataColumnEditingSupport(TableViewer viewer, String field, Class<?> clazz, ICATServer icatServer) {
 		super(viewer);
 		this.viewer = viewer;
 		this.field = field;
 		this.clazz = clazz;
 		this.server = icatServer;
+		this.labelProvider = new EntityLabelProvider();
 	}
 
 	@Override
@@ -59,16 +62,17 @@ public class DataColumnEditingSupport extends EditingSupport {
 		if(null == editor) {
 			WrappedEntityBean w = (WrappedEntityBean)element;
 			if(w.isEntity(field)) {
-				final ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(viewer.getTable());
+				final ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(viewer.getTable(), SWT.READ_ONLY);
 				final ICATEntity entity = new ICATEntity(server, w.getReturnType(field).getSimpleName());
-				combo.setContentProvider(new EntityContentProvider(entity));
-				combo.setLabelProvider(new EntityLabelProvider());
+				final EntityContentProvider contentProvider = new EntityContentProvider();
+				combo.setContentProvider(contentProvider);
+				combo.setLabelProvider(labelProvider);
 				combo.setInput(entity);
 				this.editor = combo;
 			} else if(Enum.class.isAssignableFrom(clazz)){
 				final ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(viewer.getTable());
-				combo.setContentProvider(new ArrayContentProvider());
-				combo.setLabelProvider(new EntityLabelProvider());
+				combo.setContentProvider(ArrayContentProvider.getInstance());
+				combo.setLabelProvider(labelProvider);
 				combo.setInput(clazz.getEnumConstants());
 				this.editor = combo;				
 			} else if(clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
@@ -193,7 +197,9 @@ public class DataColumnEditingSupport extends EditingSupport {
 			ICATDataService.getInstance().getClient(server).update(w);
 			viewer.update(element, null);
 		} catch (Exception e) {
-			LOG.error("Error setting " + field + " at " + o + " for " + element, e);
+			final String msg = "Error setting " + field + " at " + o + " for " + element;
+			LOG.error(msg, e);
+			throw new IllegalStateException(msg, e);
 		}
 	}
 

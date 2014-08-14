@@ -16,8 +16,12 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import fr.esrf.icat.client.ICATClientException;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
+import fr.esrf.icat.manager.core.ICATDataService;
 import fr.esrf.icat.manager.core.icatserver.DataColumnEditingSupport;
 import fr.esrf.icat.manager.core.icatserver.DataColumnLabelProvider;
 import fr.esrf.icat.manager.core.icatserver.EntityContentProvider;
@@ -30,9 +34,10 @@ public class DataPart {
 	public static final String DATA_PART_ELEMENT_HEADER = "icat-manager.core.part.data";
 	public static final String DATA_PART_DESCRIPTOR = "icat-manager.core.partdescriptor.datapart";
 	public static final String IN_PLACE_EDITING_PROPERTY_KEY = "inPlaceEditing";
+	
+	private final static Logger LOG = LoggerFactory.getLogger(DataPart.class);
 
 	private TableViewer viewer;
-	private EntityContentProvider provider;
 	private ICATEntity entity;
 
 	@PostConstruct
@@ -41,9 +46,8 @@ public class DataPart {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		viewer.setData(IN_PLACE_EDITING_PROPERTY_KEY, Boolean.FALSE);
 		entity = (ICATEntity) contrib.getObject();
-		provider = new EntityContentProvider(entity);
 		createColumns(parent, viewer, entity);
-		viewer.setContentProvider(provider);
+		viewer.setContentProvider(new EntityContentProvider());
 		final Table table = viewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true); 
@@ -62,8 +66,11 @@ public class DataPart {
 	}
 
 	private void createColumns(Composite parent, TableViewer tViewer, ICATEntity entity) {
-		final WrappedEntityBean data = provider.getExampleData();
-		if(null == data) {
+		WrappedEntityBean data = null;
+		try {
+			data = ICATDataService.getInstance().getClient(entity.getServer()).create(entity.getEntityName());
+		} catch (ICATClientException e) {
+			LOG.error("Error creating " + entity.getEntityName(), e);
 			return;
 		}
 		List<String> fields = new LinkedList<>();
@@ -90,7 +97,6 @@ public class DataPart {
 	}
 
 	public void refresh() {
-		provider.loadContent();
 		viewer.refresh();
 	}
 	
