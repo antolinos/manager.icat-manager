@@ -17,19 +17,22 @@ import org.osgi.framework.FrameworkUtil;
 public class IcatServerLabelProvider extends StyledCellLabelProvider {
 
 //	private ICATDataService service = ICATDataService.getInstance();
-	private Image unknown_server_image;
-	private Image connected_server_image;
-	private Image failed_server_image;	
+	private final static Image unknown_server_image;
+	private final static Image connected_server_image;
+	private final static Image failed_server_image;	
+	
+	static {
+	    Bundle bundle = FrameworkUtil.getBundle(IcatServerLabelProvider.class);
+	    URL url = FileLocator.find(bundle, new Path("icons/server_unknown.gif"), null);
+	    unknown_server_image = ImageDescriptor.createFromURL(url).createImage();
+	    url = FileLocator.find(bundle, new Path("icons/passed.png"), null);
+	    connected_server_image = ImageDescriptor.createFromURL(url).createImage();
+	    url = FileLocator.find(bundle, new Path("icons/fail.gif"), null);
+	    failed_server_image = ImageDescriptor.createFromURL(url).createImage();
+	}
 	
 	public IcatServerLabelProvider() {
 		super();
-	    Bundle bundle = FrameworkUtil.getBundle(IcatServerLabelProvider.class);
-	    URL url = FileLocator.find(bundle, new Path("icons/server_unknown.gif"), null);
-	    this.unknown_server_image = ImageDescriptor.createFromURL(url).createImage();
-	    url = FileLocator.find(bundle, new Path("icons/passed.png"), null);
-	    this.connected_server_image = ImageDescriptor.createFromURL(url).createImage();
-	    url = FileLocator.find(bundle, new Path("icons/fail.gif"), null);
-	    this.failed_server_image = ImageDescriptor.createFromURL(url).createImage();
 	}
 
 	@Override
