@@ -1,21 +1,31 @@
 package fr.esrf.icat.manager.core.part;
 
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.e4.ui.model.application.MContribution;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +47,17 @@ public class DataPart {
 	
 	private final static Logger LOG = LoggerFactory.getLogger(DataPart.class);
 
+	private final static Image IMAGE_UP;
+	private final static Image IMAGE_DOWN;
+	
+	static {
+	    Bundle bundle = FrameworkUtil.getBundle(DataPart.class);
+	    URL url = FileLocator.find(bundle, new Path("icons/up.gif"), null);
+	    IMAGE_UP = ImageDescriptor.createFromURL(url).createImage();
+	    url = FileLocator.find(bundle, new Path("icons/down.gif"), null);
+	    IMAGE_DOWN = ImageDescriptor.createFromURL(url).createImage();
+	}
+	
 	private TableViewer viewer;
 	private ICATEntity entity;
 
@@ -46,8 +67,8 @@ public class DataPart {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		viewer.setData(IN_PLACE_EDITING_PROPERTY_KEY, Boolean.FALSE);
 		entity = (ICATEntity) contrib.getObject();
-		createColumns(parent, viewer, entity);
 		viewer.setContentProvider(new EntityContentProvider());
+		createColumns(parent);
 		final Table table = viewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true); 
@@ -65,7 +86,7 @@ public class DataPart {
 		table.pack();
 	}
 
-	private void createColumns(Composite parent, TableViewer tViewer, ICATEntity entity) {
+	private void createColumns(final Composite parent) {
 		WrappedEntityBean data = null;
 		try {
 			data = ICATDataService.getInstance().getClient(entity.getServer()).create(entity.getEntityName());
@@ -78,12 +99,49 @@ public class DataPart {
 //		fields.addAll(data.getAssociationFields());
 		fields.addAll(data.getImmutableFields());
 		
+		final EntityContentProvider entityContentProvider = (EntityContentProvider)viewer.getContentProvider();
 		for(final String field : fields) {
 			TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
-			column.getColumn().setText(field);
-			column.getColumn().setWidth(100);
-		    column.getColumn().setResizable(true);
-		    column.getColumn().setMoveable(true);
+			final TableColumn currentColumn = column.getColumn();
+			currentColumn.setText(field);
+			currentColumn.setWidth(100);
+			currentColumn.setResizable(true);
+			currentColumn.setMoveable(true);
+			if(field.equals(entityContentProvider.getSortingField())) {
+				switch(entityContentProvider.getSortingOrder()) {
+					case SWT.UP:   currentColumn.setImage(IMAGE_UP); break;
+					case SWT.DOWN: currentColumn.setImage(IMAGE_DOWN); break;
+					default: currentColumn.setImage(null); break;
+				}
+			} else {
+				currentColumn.setImage(null); 
+			}
+		    
+		    column.getColumn().addSelectionListener(new SelectionListener(){
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					final TableColumn col = (TableColumn) e.getSource();
+					final String sortingField = col.getText();
+					DataPart.LOG.debug("Selected column " + sortingField);
+					entityContentProvider.toggleSortingColumn(field);
+					for(TableColumn column : viewer.getTable().getColumns()) {
+						if(column.getText().equals(sortingField)) {
+							switch(entityContentProvider.getSortingOrder()) {
+								case SWT.UP:   column.setImage(IMAGE_UP); break;
+								case SWT.DOWN: column.setImage(IMAGE_DOWN); break;
+								default: column.setImage(null); break;
+							}
+						} else {
+							column.setImage(null);
+						}
+					}
+					viewer.refresh();
+				}
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+		    	
+		    });
 
 			column.setLabelProvider(new DataColumnLabelProvider(field));
 			if(data.isMutable(field)) {
