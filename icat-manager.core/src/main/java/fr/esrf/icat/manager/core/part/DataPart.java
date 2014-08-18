@@ -61,6 +61,7 @@ public class DataPart {
 	private final static Image IMAGE_DOWN;
 	private final static Image IMAGE_NEXT;
 	private final static Image IMAGE_PREVIOUS;
+	private final static Image IMAGE_FIRST;
 	
 	static {
 	    Bundle bundle = FrameworkUtil.getBundle(DataPart.class);
@@ -72,6 +73,8 @@ public class DataPart {
 	    IMAGE_NEXT = ImageDescriptor.createFromURL(url).createImage();
 	    url = FileLocator.find(bundle, new Path("icons/prev.gif"), null);
 	    IMAGE_PREVIOUS = ImageDescriptor.createFromURL(url).createImage();
+	    url = FileLocator.find(bundle, new Path("icons/first.png"), null);
+	    IMAGE_FIRST = ImageDescriptor.createFromURL(url).createImage();
 	}
 	
 	private TableViewer viewer;
@@ -80,6 +83,7 @@ public class DataPart {
 	private EntityContentProvider contentProvider;
 	private Button previousBtn;
 	private Button nextBtn;
+	private Button firstBtn;
 
 	@PostConstruct
 	public void postConstruct(final Composite parent, final EMenuService menuService, 
@@ -101,6 +105,10 @@ public class DataPart {
 		
 		paginationLabel = new Label(top, SWT.NONE);
 
+		firstBtn = new Button(top, SWT.PUSH);
+		firstBtn.setText("First");
+		firstBtn.setImage(IMAGE_FIRST);
+		
 		previousBtn = new Button(top, SWT.PUSH);
 		previousBtn.setText("Previous");
 		previousBtn.setImage(IMAGE_PREVIOUS);
@@ -140,6 +148,16 @@ public class DataPart {
 				}
 				contentProvider.setPageSize(new Integer(text));
 				refresh();
+			}
+		});
+		firstBtn.addSelectionListener(new SelectionListener(){
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				contentProvider.gotToFirst();
+				refresh();
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 		previousBtn.addSelectionListener(new SelectionListener(){
@@ -264,6 +282,7 @@ public class DataPart {
 					public void run() {
 						viewer.refresh();
 						paginationLabel.setText(contentProvider.getPaginationLabelText());
+						firstBtn.setEnabled(!contentProvider.isFirstPage());
 						previousBtn.setEnabled(!contentProvider.isFirstPage());
 						nextBtn.setEnabled(!contentProvider.isLastPage());
 						// this has to be called to avoid the label not resizing properly

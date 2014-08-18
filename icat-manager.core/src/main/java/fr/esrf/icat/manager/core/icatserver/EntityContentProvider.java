@@ -124,6 +124,10 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	public void previousPage() {
 		offset = Math.max(0, offset - pageSize);
 	}
+	
+	public void gotToFirst() {
+		offset = 0;
+	}
 
 	public boolean isFirstPage() {
 		return offset == 0;
@@ -135,11 +139,17 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	
 	public String getPaginationLabelText() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(entity.getEntityName());
-		sb.append(" from ");
-		sb.append(offset);
-		sb.append(" to ");
-		sb.append(offset + currentPageSize - 1);
+		if(currentPageSize == 0 && offset > 0) {
+			sb.append("No more ");
+			sb.append(entity.getEntityName());
+			sb.append(" to display !");
+		} else {
+			sb.append(entity.getEntityName());
+			sb.append(" from ");
+			sb.append(offset);
+			sb.append(" to ");
+			sb.append(offset + currentPageSize - 1);
+		}
 		return sb.toString();
 	}
 
