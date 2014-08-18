@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.esrf.icat.manager.core.ICATDataService;
+import fr.esrf.icat.manager.core.handlers.ConnectHandler;
 import fr.esrf.icat.manager.core.handlers.ExitHandler;
 import fr.esrf.icat.manager.core.handlers.OpenEntityHandler;
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
@@ -75,15 +76,21 @@ public class ServerPart implements PropertyChangeListener {
 	    viewer.addDoubleClickListener(new IDoubleClickListener() {
 	    	  @Override
 	    	  public void doubleClick(DoubleClickEvent event) {
-	    	    TreeViewer viewer = (TreeViewer) event.getViewer();
+	    	    final TreeViewer viewer = (TreeViewer) event.getViewer();
 	    	    IStructuredSelection thisSelection = (IStructuredSelection) event.getSelection(); 
-	    	    Object selectedNode = thisSelection.getFirstElement(); 
+	    	    final Object selectedNode = thisSelection.getFirstElement(); 
 	    	    if(selectedNode instanceof ICATServer) {
-	    	    	ICATServer server = (ICATServer)selectedNode;
+	    	    	final ICATServer server = (ICATServer)selectedNode;
 	    	    	if(!server.isConnected()) {
-	    	    		service.connect(server, parent.getShell());
-	    	    	}
-	    	    	if(server.isConnected()) {
+	    	    		ConnectHandler.connectServer(server, parent.getShell(), new Runnable(){
+							@Override
+							public void run() {
+				    	    	if(server.isConnected()) {
+					    	    	viewer.setExpandedState(selectedNode, true);
+				    	    	}
+							}
+	    	    		});
+	    	    	} else if(server.isConnected()) {
 		    	    	viewer.setExpandedState(selectedNode, !viewer.getExpandedState(selectedNode));
 	    	    	}
 	    	    } else if (selectedNode instanceof ICATEntity){

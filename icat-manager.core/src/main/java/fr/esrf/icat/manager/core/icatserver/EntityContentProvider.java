@@ -28,9 +28,11 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	private int pageSize;
 	private int currentPageSize;
 	private ICATEntity entity;
+	private Object[] elements;
 	
 	public EntityContentProvider() {
 		super();
+		this.elements = null; 
 		this.sortingField = ICATEntity.ID_FIELD;
 		this.sortingOrder = SWT.DOWN;
 		this.offset = 0;
@@ -51,21 +53,8 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		if(null == inputElement || !(inputElement instanceof ICATEntity)) {
 			return null;
 		}
-		entity = (ICATEntity) inputElement;
-		final String searchString = makeSearchString(entity);
-		if(LOG.isDebugEnabled()) {
-			LOG.debug("Getting content of " + entity.getEntityName() + " from " + entity.getServer().getServerURL());
-			LOG.debug(searchString);
-		}
-		try {
-			SimpleICATClient client = ICATDataService.getInstance().getClient(entity.getServer());
-			List<WrappedEntityBean> search = client.search(searchString);
-			currentPageSize = null == search ? 0 : search.size();
-			return null == search ? null : search.toArray();
-		} catch (ICATClientException e) {
-			LOG.error("Unable to load entity content for entity " + entity.getEntityName(), e);
-			return null;
-		}
+		this.entity = (ICATEntity) inputElement;
+		return null == elements ? new Object[0] : elements;
 	}
 
 	private String makeSearchString(final ICATEntity entity) {
@@ -152,6 +141,25 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		sb.append(" to ");
 		sb.append(offset + currentPageSize - 1);
 		return sb.toString();
+	}
+
+	public void fetch(ICATEntity toFetch) {
+		this.entity = toFetch;
+		final String searchString = makeSearchString(entity);
+		if(LOG.isDebugEnabled()) {
+			LOG.debug("Getting content of " + entity.getEntityName() + " from " + entity.getServer().getServerURL());
+			LOG.debug(searchString);
+		}
+		try {
+			SimpleICATClient client = ICATDataService.getInstance().getClient(entity.getServer());
+			List<WrappedEntityBean> search = client.search(searchString);
+			currentPageSize = null == search ? 0 : search.size();
+			elements = null == search ? null : search.toArray();
+		} catch (ICATClientException e) {
+			LOG.error("Unable to load entity content for entity " + entity.getEntityName(), e);
+			elements = null;
+			currentPageSize = 0;
+		}
 	}
 
 }

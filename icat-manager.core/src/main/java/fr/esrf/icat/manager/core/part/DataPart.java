@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
@@ -29,6 +30,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -182,6 +184,7 @@ public class DataPart {
 	    // context menu
 	    menuService.registerContextMenu(viewer.getControl(), "icat-manager.core.popupmenu.entity");
 		table.pack();
+		refresh();
 	}
 
 	private void createColumns(final Composite parent) {
@@ -252,12 +255,23 @@ public class DataPart {
 	}
 
 	public void refresh() {
-		viewer.refresh();
-		paginationLabel.setText(contentProvider.getPaginationLabelText());
-		previousBtn.setEnabled(!contentProvider.isFirstPage());
-		nextBtn.setEnabled(!contentProvider.isLastPage());
-		// this has to be called to avoid the label not resizing properly
-		paginationLabel.getParent().getParent().layout();
+		BusyIndicator.showWhile(null, new Runnable(){
+			@Override
+			public void run() {
+				contentProvider.fetch(entity);
+				Display.getDefault().asyncExec(new Runnable(){
+					@Override
+					public void run() {
+						viewer.refresh();
+						paginationLabel.setText(contentProvider.getPaginationLabelText());
+						previousBtn.setEnabled(!contentProvider.isFirstPage());
+						nextBtn.setEnabled(!contentProvider.isLastPage());
+						// this has to be called to avoid the label not resizing properly
+						paginationLabel.getParent().getParent().layout();
+					}
+				});
+			}
+		});
 	}
 	
 	public void toggleInPLaceEditing() {

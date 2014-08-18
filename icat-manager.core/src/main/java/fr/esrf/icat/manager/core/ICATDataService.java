@@ -15,9 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window;
-import org.eclipse.swt.widgets.Shell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +25,6 @@ import fr.esrf.icat.client.wrapper.WrappedEntityBean;
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 import fr.esrf.icat.manager.core.icatserver.ICATServer;
 import fr.esrf.icat.manager.core.icatserver.ICATServer.Status;
-import fr.esrf.icat.manager.core.part.ConnectionDialog;
 
 public class ICATDataService {
 	
@@ -188,15 +184,8 @@ public class ICATDataService {
 		}
 	}
 
-	public void connect(final ICATServer server, final Shell shell) {
-		ConnectionDialog dlg = new ConnectionDialog(shell);
-		if(dlg.open() != Window.OK) {
-			return;
-		}
+	public void connect(final ICATServer server) throws ICATClientException {
 		SimpleICATClient client = getClient(server);
-		client.setIcatAuthnPlugin(dlg.getAuthenticationMethod());
-		client.setIcatUsername(dlg.getUser());
-		client.setIcatPassword(dlg.getPassword());
 		try {
 			client.init();
 			server.setConnected(true);
@@ -209,8 +198,7 @@ public class ICATDataService {
 			server.setVersion(null);
 			server.setStatus(Status.FAILED);
 			fireContentChanged();
-			MessageDialog.openError(shell, "Connection error", "Error connecting to ICAT:\n" + e.getMessage());
-			return;
+			throw e;
 		}
 	}
 
