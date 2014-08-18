@@ -69,9 +69,9 @@ public class DataPart {
 	
 	static {
 	    Bundle bundle = FrameworkUtil.getBundle(DataPart.class);
-	    URL url = FileLocator.find(bundle, new Path("icons/up.gif"), null);
+	    URL url = FileLocator.find(bundle, new Path("icons/arrow_up.png"), null);
 	    IMAGE_UP = ImageDescriptor.createFromURL(url).createImage();
-	    url = FileLocator.find(bundle, new Path("icons/down.gif"), null);
+	    url = FileLocator.find(bundle, new Path("icons/arrow_down.png"), null);
 	    IMAGE_DOWN = ImageDescriptor.createFromURL(url).createImage();
 	    url = FileLocator.find(bundle, new Path("icons/next.gif"), null);
 	    IMAGE_NEXT = ImageDescriptor.createFromURL(url).createImage();
