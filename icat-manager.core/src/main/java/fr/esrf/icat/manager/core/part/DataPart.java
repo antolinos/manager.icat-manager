@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.e4.ui.model.application.MContribution;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -26,6 +27,7 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -34,6 +36,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
@@ -62,6 +65,7 @@ public class DataPart {
 	private final static Image IMAGE_NEXT;
 	private final static Image IMAGE_PREVIOUS;
 	private final static Image IMAGE_FIRST;
+	private final static Image IMAGE_CLEAR;
 	
 	static {
 	    Bundle bundle = FrameworkUtil.getBundle(DataPart.class);
@@ -75,6 +79,8 @@ public class DataPart {
 	    IMAGE_PREVIOUS = ImageDescriptor.createFromURL(url).createImage();
 	    url = FileLocator.find(bundle, new Path("icons/first.png"), null);
 	    IMAGE_FIRST = ImageDescriptor.createFromURL(url).createImage();
+	    url = FileLocator.find(bundle, new Path("icons/clear_co.gif"), null);
+	    IMAGE_CLEAR = ImageDescriptor.createFromURL(url).createImage();
 	}
 	
 	private TableViewer viewer;
@@ -84,6 +90,8 @@ public class DataPart {
 	private Button previousBtn;
 	private Button nextBtn;
 	private Button firstBtn;
+	private Text filterText;
+	private Button clearFilter;
 
 	@PostConstruct
 	public void postConstruct(final Composite parent, final EMenuService menuService, 
@@ -100,7 +108,7 @@ public class DataPart {
 		final RowLayout barLayout = new RowLayout();
 		barLayout.center = true;
 		barLayout.pack = true;
-		barLayout.spacing = 10;
+		barLayout.spacing = 5;
 		top.setLayout(barLayout);
 		
 		paginationLabel = new Label(top, SWT.NONE);
@@ -119,12 +127,42 @@ public class DataPart {
 		
 		new Label(top, SWT.NONE).setText("Page size:");
 		final Combo pageSizeCombo = new Combo(top, SWT.DROP_DOWN);
+		pageSizeCombo.setLayoutData(new RowData(25, SWT.DEFAULT));
 		pageSizeCombo.setItems(new String[]{"50", "100", "150", "200"});
 		pageSizeCombo.select(0);
 		pageSizeCombo.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {
 				e.doit = e.character == SWT.BS || e.character == SWT.DEL || e.text.matches("\\d+");
+			}
+		});
+		
+		new Label(top, SWT.NONE).setText("Filter:");
+		filterText = new Text(top, SWT.BORDER);
+		filterText.setLayoutData(new RowData(400, SWT.DEFAULT));
+		filterText.addSelectionListener(new SelectionListener(){
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				contentProvider.setFilterString(filterText.getText());
+				refresh();
+			}
+			
+		});
+		
+		clearFilter = new Button(top, SWT.PUSH);
+		clearFilter.setImage(IMAGE_CLEAR);
+		clearFilter.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				filterText.setText("");
+				contentProvider.setFilterString(null);
+				refresh();
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 		
@@ -276,7 +314,11 @@ public class DataPart {
 		BusyIndicator.showWhile(null, new Runnable(){
 			@Override
 			public void run() {
-				contentProvider.fetch(entity);
+				try {
+					contentProvider.fetch(entity);
+				} catch (ICATClientException e) {
+					MessageDialog.openError(null, "Error", "Error feetching data:\n" + e.getMessage());
+				}
 				Display.getDefault().asyncExec(new Runnable(){
 					@Override
 					public void run() {
@@ -285,6 +327,7 @@ public class DataPart {
 						firstBtn.setEnabled(!contentProvider.isFirstPage());
 						previousBtn.setEnabled(!contentProvider.isFirstPage());
 						nextBtn.setEnabled(!contentProvider.isLastPage());
+						clearFilter.setEnabled(!filterText.getText().isEmpty());
 						// this has to be called to avoid the label not resizing properly
 						paginationLabel.getParent().getParent().layout();
 					}

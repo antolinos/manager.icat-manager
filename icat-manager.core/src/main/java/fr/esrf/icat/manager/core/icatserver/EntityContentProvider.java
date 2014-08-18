@@ -29,6 +29,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	private int currentPageSize;
 	private ICATEntity entity;
 	private Object[] elements;
+	private String filterText;
 	
 	public EntityContentProvider() {
 		super();
@@ -38,6 +39,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		this.offset = 0;
 		this.pageSize = DEFAULT_PAGE_SIZE;
 		this.currentPageSize = 0;
+		this.filterText = null;
 	}
 
 	@Override
@@ -78,6 +80,11 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 				sb.append(ORDER_DOWN);
 			}
 		}
+		if(null != filterText && !filterText.isEmpty()) {
+			sb.append(" [");
+			sb.append(filterText);
+			sb.append("]");
+		}
 		return sb.toString();
 	}
 
@@ -93,6 +100,11 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 			sortingOrder = SWT.DOWN;
 		}
 		offset = 0;
+	}
+
+	public void setFilterString(String text) {
+		this.filterText = text;
+		this.offset = 0;
 	}
 
 	public String getSortingField() {
@@ -139,21 +151,31 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	
 	public String getPaginationLabelText() {
 		StringBuilder sb = new StringBuilder();
-		if(currentPageSize == 0 && offset > 0) {
-			sb.append("No more ");
+		if(currentPageSize == 0) {
+			if( offset == 0) {
+				sb.append("No ");
+			} else {
+				sb.append("No more ");
+			}
+			if(null != filterText && !filterText.isEmpty()) {
+				sb.append("filtered ");
+			}
 			sb.append(entity.getEntityName());
-			sb.append(" to display !");
+			sb.append(" to display");
 		} else {
+			if(null != filterText && !filterText.isEmpty()) {
+				sb.append("Filtered ");
+			}
 			sb.append(entity.getEntityName());
 			sb.append(" from ");
-			sb.append(offset);
+			sb.append(offset + 1);
 			sb.append(" to ");
-			sb.append(offset + currentPageSize - 1);
+			sb.append(offset + currentPageSize);
 		}
 		return sb.toString();
 	}
 
-	public void fetch(ICATEntity toFetch) {
+	public void fetch(ICATEntity toFetch) throws ICATClientException {
 		this.entity = toFetch;
 		final String searchString = makeSearchString(entity);
 		if(LOG.isDebugEnabled()) {
@@ -169,6 +191,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 			LOG.error("Unable to load entity content for entity " + entity.getEntityName(), e);
 			elements = null;
 			currentPageSize = 0;
+			throw e;
 		}
 	}
 
