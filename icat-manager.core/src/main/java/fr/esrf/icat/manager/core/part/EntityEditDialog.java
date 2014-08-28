@@ -1,5 +1,6 @@
 package fr.esrf.icat.manager.core.part;
 
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -16,11 +17,14 @@ import net.sf.swtaddons.autocomplete.combo.AutocompleteComboSelector;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposalListener2;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.nebula.widgets.cdatetime.CDT;
 import org.eclipse.nebula.widgets.cdatetime.CDateTime;
 import org.eclipse.swt.SWT;
@@ -29,6 +33,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -39,6 +44,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +60,13 @@ public class EntityEditDialog extends Dialog {
 	
 	private final static char[] DEFAULT_ACTIVATION_CHARS = ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_12345679890" + SWT.BS + SWT.DEL).toCharArray();
 	private final static KeyStroke DEFAULT_KEYSTROKE = KeyStroke.getInstance(SWT.CTRL, ' ');
+	private final static Image WARNING_IMAGE;
+
+	static {
+	    Bundle bundle = FrameworkUtil.getBundle(EntityEditDialog.class);
+	    URL url = FileLocator.find(bundle, new Path("icons/warning.gif"), null);
+	    WARNING_IMAGE = ImageDescriptor.createFromURL(url).createImage();
+	}
 	
 	private WrappedEntityBean entity;
 	private SimpleICATClient client;
@@ -90,9 +104,11 @@ public class EntityEditDialog extends Dialog {
 		    final boolean hasInitialValue = initialValue != null;
 			if(entity.isEntity(field)) {
 				final Combo combo = new Combo(container, SWT.DROP_DOWN | SWT.BORDER);
-				new Label(container, SWT.NONE);
-				final Label warningLabel = new Label(container, SWT.NONE);
-				warningLabel.setLayoutData(new GridData(SWT.END, SWT.CENTER, true, false));
+				final Label label = new Label(container, SWT.RIGHT);
+				label.setLayoutData(new GridData(SWT.END, SWT.CENTER, true, false));
+				label.setImage(WARNING_IMAGE);
+				final Label warningLabel = new Label(container, SWT.LEFT);
+				warningLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, false));
 				warningLabel.setText("(max 50)");
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				final EntityListProposalContentProvider proposalProvider = new EntityListProposalContentProvider(
