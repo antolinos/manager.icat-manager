@@ -16,7 +16,11 @@ import net.sf.swtaddons.autocomplete.combo.AutocompleteComboSelector;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.fieldassist.ComboContentAdapter;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.IContentProposalListener2;
 import org.eclipse.nebula.widgets.cdatetime.CDT;
 import org.eclipse.nebula.widgets.cdatetime.CDateTime;
 import org.eclipse.swt.SWT;
@@ -38,15 +42,18 @@ import org.eclipse.swt.widgets.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.esrf.icat.client.ICATClientException;
 import fr.esrf.icat.client.SimpleICATClient;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
-import fr.esrf.icat.manager.core.icatserver.EntityLabelProvider;
+import fr.esrf.icat.manager.core.icatserver.EntityListProposalContentProvider;
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 
 public class EntityEditDialog extends Dialog {
 
 	private final static Logger LOG = LoggerFactory.getLogger(EntityEditDialog.class);
+	
+	private final static char[] DEFAULT_ACTIVATION_CHARS = ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_12345679890" + SWT.BS + SWT.DEL).toCharArray();
+	private final static KeyStroke DEFAULT_KEYSTROKE = KeyStroke.getInstance(SWT.CTRL, ' ');
+	
 	private WrappedEntityBean entity;
 	private SimpleICATClient client;
 	private Map<String, Pair<Object[], Combo>> comboMapping;
@@ -80,45 +87,46 @@ public class EntityEditDialog extends Dialog {
 			} catch (Exception e) {
 				LOG.error("Error getting initial value for " + field, e);
 			}
-
+		    final boolean hasInitialValue = initialValue != null;
 			if(entity.isEntity(field)) {
 				final Combo combo = new Combo(container, SWT.DROP_DOWN | SWT.BORDER);
+				new Label(container, SWT.NONE);
+				final Label warningLabel = new Label(container, SWT.NONE);
+				warningLabel.setLayoutData(new GridData(SWT.END, SWT.CENTER, true, false));
+				warningLabel.setText("(max 50)");
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-				final WrappedEntityBean[] beans;
-				Object initialEntityID = null;
-				try {
-					beans = client.search(entity.getReturnType(field).getSimpleName()).toArray(new WrappedEntityBean[0]);
-				} catch (ICATClientException e) {
-					throw new IllegalStateException("Error creating dialog", e);
-				}
-				try {
-					if(initialValue != null) {
-						initialEntityID = ((WrappedEntityBean)initialValue).get(ICATEntity.ID_FIELD);
+				final EntityListProposalContentProvider proposalProvider = new EntityListProposalContentProvider(
+						client, entity.getReturnType(field).getSimpleName(), (WrappedEntityBean) initialValue);
+				final ContentProposalAdapter contentProposalAdapter = new ContentProposalAdapter(
+						combo, new ComboContentAdapter(), proposalProvider, DEFAULT_KEYSTROKE, DEFAULT_ACTIVATION_CHARS);
+				contentProposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+				contentProposalAdapter.setPropagateKeys(true);
+				contentProposalAdapter.setAutoActivationDelay(500);
+				contentProposalAdapter.addContentProposalListener(new IContentProposalListener2() {
+					@Override
+					public void proposalPopupOpened(ContentProposalAdapter adapter) {
 					}
-				} catch(Exception e){
-					LOG.error("Error getting " + ICATEntity.ID_FIELD, e);
-				}
-				String[] values = new String[beans.length];
-				EntityLabelProvider lblprovider = new EntityLabelProvider();
-				int selected = -1;
-				for(int i = 0; i < beans.length; i++) {
-					values[i] = lblprovider.getText(beans[i]);
-					Object id = null;
-					try {
-						id = beans[i].get(ICATEntity.ID_FIELD);
-					} catch (Exception e) {
-						LOG.error("Error getting " + ICATEntity.ID_FIELD, e);
+					@Override
+					public void proposalPopupClosed(ContentProposalAdapter adapter) {
+						// when the proposal popup closes we update the helper label
+						warningLabel.setText("like '" + combo.getText() + "' (max 50)");
+						// when the proposal popup closes we set the content of the combo to the proposals
+						combo.setItems(proposalProvider.getCurrentItems());
+						// and select the proper item
+						if(hasInitialValue) {
+							combo.select(0);
+						} else {
+							combo.deselectAll();
+						}
+						// needed for proper label display
+						container.layout();
 					}
-					if(initialEntityID != null && id != null && id.equals(initialEntityID)) {
-						selected = i;
-					}
+				});
+				combo.setItems(proposalProvider.getInitialItems());
+				if(null != initialValue) {
+					combo.select(0);
 				}
-				new AutocompleteComboSelector(combo);
-				combo.setItems(values);
-				if(selected >= 0) {
-					combo.select(selected);
-				}
-				comboMapping.put(field, new ImmutablePair<Object[], Combo>(beans, combo));
+				comboMapping.put(field, new ImmutablePair<Object[], Combo>(new Object[]{proposalProvider}, combo));
 				
 			} else if(Enum.class.isAssignableFrom(clazz)){
 				final Combo combo = new Combo(container, SWT.DROP_DOWN | SWT.BORDER);
@@ -276,7 +284,10 @@ public class EntityEditDialog extends Dialog {
 			final String field = entry.getKey();
 			final Pair<Object[], Combo> pair = entry.getValue();
 			final Combo combo = pair.getRight();
-			final Object value = pair.getLeft()[combo.indexOf(combo.getText())];
+			final Object[] left = pair.getLeft();
+			final Object[] objects = left[0] instanceof EntityListProposalContentProvider ?
+					((EntityListProposalContentProvider)left[0]).getCurrentObjects(): left;
+			final Object value = objects[combo.indexOf(combo.getText())];
 			try {
 				entity.set(field, value);
 			} catch (Exception e) {
