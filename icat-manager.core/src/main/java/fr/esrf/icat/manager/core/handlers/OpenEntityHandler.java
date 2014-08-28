@@ -40,7 +40,6 @@ public class OpenEntityHandler {
 		String partID = DataPart.DATA_PART_ELEMENT_HEADER + ":" + entity.getServer().getServerURL() + ":" + entity.getEntityName();
 		MPart mPart = (MPart) modelService.find(partID, window);
 		if(null != mPart) {
-		    mPart.setObject(entity);
 		    partService.showPart(mPart, PartState.ACTIVATE);
 		    LOG.debug("Showing existing part: " + partID);
 		    return;
