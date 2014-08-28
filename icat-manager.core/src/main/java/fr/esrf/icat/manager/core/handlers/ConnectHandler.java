@@ -32,13 +32,17 @@ public class ConnectHandler {
 	}
 	
 	public static void connectServer(final ICATServer server, final Shell shell, final Runnable endAction) {
-		ConnectionDialog dlg = new ConnectionDialog(shell);
+		ConnectionDialog dlg = new ConnectionDialog(shell, server.getLastAuthnMethod(), server.getLastUserName());
 		if(dlg.open() != Window.OK) {
 			return;
 		}
 		SimpleICATClient client = ICATDataService.getInstance().getClient(server);
-		client.setIcatAuthnPlugin(dlg.getAuthenticationMethod());
-		client.setIcatUsername(dlg.getUser());
+		final String authenticationMethod = dlg.getAuthenticationMethod();
+		client.setIcatAuthnPlugin(authenticationMethod);
+		server.setLastAuthnMethod(authenticationMethod);
+		final String user = dlg.getUser();
+		client.setIcatUsername(user);
+		server.setLastUserName(user);
 		client.setIcatPassword(dlg.getPassword());
 		BusyIndicator.showWhile(null, new Runnable(){
 			@Override

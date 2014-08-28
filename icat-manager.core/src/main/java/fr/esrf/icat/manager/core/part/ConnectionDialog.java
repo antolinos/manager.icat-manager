@@ -20,8 +20,10 @@ public class ConnectionDialog extends Dialog {
 	private String user = "";
 	private String password = "";
 
-	public ConnectionDialog(Shell parentShell) {
+	public ConnectionDialog(Shell parentShell, String authn, String user) {
 		super(parentShell);
+		this.authn = authn;
+		this.user = user;
 	}
 
 	  @Override
@@ -55,6 +57,12 @@ public class ConnectionDialog extends Dialog {
 	    txtPassword = new Text(container, SWT.BORDER);
 	    txtPassword.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 	    txtPassword.setEchoChar('*');
+	    
+	    if(null == authn || authn.isEmpty()) {
+	    	txtAuthn.setFocus();
+	    } else {
+	    	txtPassword.setFocus();
+	    }
 	    return container;
 	  }
 

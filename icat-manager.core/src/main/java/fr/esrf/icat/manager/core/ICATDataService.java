@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +41,7 @@ public class ICATDataService {
 	
 	private Map<ICATServer, SimpleICATClient> clientMap;
 	
-	private boolean modified = false;
+	private boolean modified = true;
 	
 	public static ICATDataService getInstance() {
 		return instance;
@@ -63,7 +62,7 @@ public class ICATDataService {
 				reader = new BufferedReader(new FileReader(configfile));
 				String line;
 				while((line = reader.readLine()) != null) {
-					serverList.add(new ICATServer(line.trim()));
+					serverList.add(makeServer(line));
 				}
 				LOG.debug("Loaded " + serverList.size() + " server URLs");
 			} catch (IOException e) {
@@ -89,13 +88,13 @@ public class ICATDataService {
 	public void addServer(final ICATServer server) {
 		serverList.add(server);
 		fireContentChanged();
-		modified = true;
+//		modified = true;
 	}
 	
 	public void removeServer(final ICATServer server) {
 		if(serverList.remove(server)) {
 			fireContentChanged();
-			modified = true;
+//			modified = true;
 		}
 	}
 	
@@ -154,6 +153,7 @@ public class ICATDataService {
 	}
 
 	public void stop() {
+		
 		// stop clients
 		for(SimpleICATClient client : clientMap.values()) {
 			client.stop();
@@ -166,7 +166,7 @@ public class ICATDataService {
 			try {
 				writer = new BufferedWriter(new FileWriter(configfile));
 				for(ICATServer server : serverList) {
-					writer.write(server.getServerURL());
+					writer.write(makeLine(server));
 					writer.newLine();
 				}
 				LOG.debug("Saved " + serverList.size() + " server URLs");
@@ -221,4 +221,22 @@ public class ICATDataService {
 		server.setStatus(Status.UNKNOWN);
 		fireContentChanged();
 	}
+	
+	private ICATServer makeServer(final String line) {
+		final int auth_sep = line.indexOf('@');
+		if(auth_sep < 0) {
+			return new ICATServer(line.trim());
+		}
+		String auth_str = line.substring(0, auth_sep);
+		ICATServer server = new ICATServer(line.substring(auth_sep + 1));
+		final int user_sep = auth_str.indexOf(':');
+		server.setLastAuthnMethod(auth_str.substring(0, user_sep));
+		server.setLastUserName(auth_str.substring(user_sep + 1));
+		return server;
+	}
+
+	private String makeLine(final ICATServer server) {
+		return server.getLastAuthnMethod() + ":" + server.getLastUserName() + "@" + server.getServerURL();
+	}
+
 }

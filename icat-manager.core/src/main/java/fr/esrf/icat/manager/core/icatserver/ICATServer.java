@@ -8,6 +8,10 @@ public class ICATServer {
 	
 	private boolean connected;
 	
+	private String lastAuthnMethod;
+	
+	private String lastUserName; 
+	
 	private ICATServer.Status status;
 	
 	public static enum Status {
@@ -22,6 +26,8 @@ public class ICATServer {
 		this.version = null;
 		this.connected = false; 
 		this.status = Status.UNKNOWN;
+		this.lastAuthnMethod = "";
+		this.lastUserName = "";
 	}
 		
 	public String getServerURL() {
@@ -67,6 +73,22 @@ public class ICATServer {
 			return other.serverURL == null;
 		}
 		return serverURL.equals(other.serverURL);
+	}
+
+	public String getLastAuthnMethod() {
+		return lastAuthnMethod;
+	}
+
+	public void setLastAuthnMethod(String lastAuthnMethod) {
+		this.lastAuthnMethod = lastAuthnMethod;
+	}
+
+	public String getLastUserName() {
+		return lastUserName;
+	}
+
+	public void setLastUserName(String lastUserName) {
+		this.lastUserName = lastUserName;
 	}
 
 }
