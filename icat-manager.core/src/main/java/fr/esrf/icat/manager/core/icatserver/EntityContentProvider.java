@@ -175,7 +175,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		return sb.toString();
 	}
 
-	public void fetch(ICATEntity toFetch) throws ICATClientException {
+	public void fetch(final ICATEntity toFetch) throws ICATClientException {
 		this.entity = toFetch;
 		final String searchString = makeSearchString(entity);
 		if(LOG.isDebugEnabled()) {

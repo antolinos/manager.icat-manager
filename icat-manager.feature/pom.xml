@@ -4,7 +4,7 @@
   <parent>
     <artifactId>icat-manager</artifactId>
     <groupId>fr.esrf.icat</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
   <artifactId>icat-manager.feature</artifactId>
   <packaging>eclipse-feature</packaging>
