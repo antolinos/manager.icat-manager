@@ -109,7 +109,7 @@ public class EntityEditDialog extends Dialog {
 				label.setImage(WARNING_IMAGE);
 				final Label warningLabel = new Label(container, SWT.LEFT);
 				warningLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, false));
-				warningLabel.setText("(max 50)");
+				warningLabel.setText(EntityListProposalContentProvider.INITIAL_FILTER);
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				final EntityListProposalContentProvider proposalProvider = new EntityListProposalContentProvider(
 						client, entity.getReturnType(field).getSimpleName(), (WrappedEntityBean) initialValue);
@@ -117,7 +117,7 @@ public class EntityEditDialog extends Dialog {
 						combo, new ComboContentAdapter(), proposalProvider, DEFAULT_KEYSTROKE, DEFAULT_ACTIVATION_CHARS);
 				contentProposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
 				contentProposalAdapter.setPropagateKeys(true);
-				contentProposalAdapter.setAutoActivationDelay(500);
+				contentProposalAdapter.setAutoActivationDelay(800);
 				contentProposalAdapter.addContentProposalListener(new IContentProposalListener2() {
 					@Override
 					public void proposalPopupOpened(ContentProposalAdapter adapter) {
@@ -125,7 +125,7 @@ public class EntityEditDialog extends Dialog {
 					@Override
 					public void proposalPopupClosed(ContentProposalAdapter adapter) {
 						// when the proposal popup closes we update the helper label
-						warningLabel.setText("like '" + combo.getText() + "' (max 50)");
+						warningLabel.setText(proposalProvider.getCurrentFilter());
 						// when the proposal popup closes we set the content of the combo to the proposals
 						combo.setItems(proposalProvider.getCurrentItems());
 						// and select the proper item
@@ -139,7 +139,7 @@ public class EntityEditDialog extends Dialog {
 					}
 				});
 				combo.setItems(proposalProvider.getInitialItems());
-				if(null != initialValue) {
+				if(hasInitialValue) {
 					combo.select(0);
 				}
 				comboMapping.put(field, new ImmutablePair<Object[], Combo>(new Object[]{proposalProvider}, combo));

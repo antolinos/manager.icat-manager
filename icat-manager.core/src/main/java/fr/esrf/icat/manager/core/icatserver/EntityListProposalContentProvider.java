@@ -17,11 +17,16 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 
 	private final static Logger LOG = LoggerFactory.getLogger(EntityListProposalContentProvider.class);
 
+	public final static String INITIAL_FILTER = "(max 50)";
+	
 	private SimpleICATClient client;
 	private String entityName;
 	private WrappedEntityBean initialBean;
 	private EntityLabelProvider lblprovider;
 	private List<WrappedEntityBean> currentItems;
+	private boolean hasName = false;
+	private boolean nameChecked = false;
+	private String currentText;
 	
 	public EntityListProposalContentProvider(SimpleICATClient client, String simpleName, WrappedEntityBean initialValue) {
 		super();
@@ -30,6 +35,11 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 		this.initialBean = initialValue;
 		this.lblprovider = new EntityLabelProvider();
 		this.currentItems = new LinkedList<>();
+		if(null != this.initialBean) {
+			this.hasName = this.initialBean.exists(ICATEntity.NAME_FIELD);
+			this.nameChecked = true;
+		}
+		
 	}
 
 	@Override
@@ -38,6 +48,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 		if(null != initialBean) {
 			currentItems.add(initialBean);
 		}
+		currentText = contents;
 		try {
 			currentItems.addAll(client.search(makeSearchString(contents)));
 		} catch (ICATClientException e) {
@@ -65,6 +76,10 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 		} catch (ICATClientException e) {
 			LOG.error("Unable to load entity content for entity " + entityName, e);
 		}
+		if(!nameChecked && currentItems.size() > 0) {
+			hasName = currentItems.get(0).exists(ICATEntity.NAME_FIELD);
+			nameChecked = true;
+		}
 		return getCurrentItems();
 	}
 	
@@ -74,9 +89,20 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 		query.append(entityName);
 		query.append(" ORDER BY id DESC");
 		if(null != contents && !contents.isEmpty()) {
-			query.append(" [name LIKE '%");
-			query.append(contents);
-			query.append("%']");
+			if(hasName) {
+				query.append(" [name LIKE '%");
+				query.append(contents);
+				query.append("%']");
+			} else {
+				try {
+					Integer.parseInt(contents);
+					query.append(" [id = ");
+					query.append(contents);
+					query.append("]");
+				} catch (NumberFormatException e) {
+					//pass
+				}
+			}
 		}
 		LOG.debug(query.toString());
 		return query.toString();
@@ -93,6 +119,23 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 	
 	public Object[] getCurrentObjects() {
 		return currentItems.toArray();
+	}
+
+	public String getCurrentFilter() {
+		StringBuilder sb = new StringBuilder();
+		if(null != currentText && !currentText.isEmpty()) {
+			if(hasName) {
+				sb.append("like '");
+				sb.append(currentText);
+				sb.append("' ");
+			} else {
+				sb.append("id:");
+				sb.append(currentText);
+				sb.append(" ");
+			}
+		}
+		sb.append(INITIAL_FILTER);
+		return sb.toString();
 	}
 
 }
