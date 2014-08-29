@@ -37,7 +37,7 @@ public class ExitHandler implements IWindowCloseHandler {
 	private void manageExit(final EPartService partService) {
 		for(MPart part : partService.getParts()) {
 			if(part.getElementId().startsWith(DataPart.DATA_PART_ELEMENT_HEADER)) {
-				partService.hidePart(part);
+				partService.hidePart(part, true);
 			}
 		}
 	}
