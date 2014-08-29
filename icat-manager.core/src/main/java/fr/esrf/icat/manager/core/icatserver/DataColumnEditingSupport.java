@@ -57,18 +57,13 @@ public class DataColumnEditingSupport extends EditingSupport {
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		if(null == element || !(element instanceof WrappedEntityBean)) {
+			// TODO: find a solution for entities
 			return null;
 		}
 		if(null == editor) {
 			WrappedEntityBean w = (WrappedEntityBean)element;
 			if(w.isEntity(field)) {
-				final ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(viewer.getTable(), SWT.READ_ONLY);
-				final ICATEntity entity = new ICATEntity(server, w.getReturnType(field).getSimpleName());
-				final EntityContentProvider contentProvider = new EntityContentProvider();
-				combo.setContentProvider(contentProvider);
-				combo.setLabelProvider(labelProvider);
-				combo.setInput(entity);
-				this.editor = combo;
+				this.editor = null;
 			} else if(Enum.class.isAssignableFrom(clazz)){
 				final ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(viewer.getTable());
 				combo.setContentProvider(ArrayContentProvider.getInstance());
@@ -131,7 +126,10 @@ public class DataColumnEditingSupport extends EditingSupport {
 				|| !(element instanceof WrappedEntityBean)) {
 			return false;
 		}
-		return ((WrappedEntityBean)element).isMutable(field);
+		final WrappedEntityBean bean = (WrappedEntityBean)element;
+		// TODO: revert when solution for entities is found
+//		return bean.isMutable(field);
+		return bean.isMutable(field) && !bean.isEntity(field);
 	}
 
 	@Override
@@ -192,6 +190,12 @@ public class DataColumnEditingSupport extends EditingSupport {
 				o = null;
 			}
 		}
+		Object originalValue = null;
+		try {
+			originalValue = w.get(field);
+		} catch (Exception e) {
+			LOG.error("Error getting " + field + " at " + o + " for " + element, e);
+		}
 		try {
 			w.set(field, o);
 			ICATDataService.getInstance().getClient(server).update(w);
@@ -199,7 +203,12 @@ public class DataColumnEditingSupport extends EditingSupport {
 		} catch (Exception e) {
 			final String msg = "Error setting " + field + " at " + o + " for " + element;
 			LOG.error(msg, e);
-			throw new IllegalStateException(msg, e);
+			try {
+				w.set(field, originalValue);
+			} catch (Exception e1) {
+				LOG.error("Error setting " + field + " back to original value " + originalValue + " for " + element, e1);
+			}
+//			throw new IllegalStateException(msg, e);
 		}
 	}
 
