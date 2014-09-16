@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
@@ -16,7 +17,9 @@ import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
 
 import javax.annotation.PreDestroy;
 
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -26,6 +29,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.esrf.icat.client.dynamic.ModifiedDynamicClientFactory;
 import fr.esrf.icat.manager.core.ICATDataService;
 import fr.esrf.icat.manager.core.handlers.ConnectHandler;
 import fr.esrf.icat.manager.core.handlers.ExitHandler;
@@ -43,6 +47,7 @@ public class ServerPart implements PropertyChangeListener {
 	private TreeViewer viewer;
 	private IcatServerContentProvider icatContentProvider;
 	private ICATDataService service;
+	private boolean displayWarning = true;
 	
 	@PostConstruct
 	public void postConstruct(final Composite parent, final EMenuService menuService,
@@ -103,6 +108,7 @@ public class ServerPart implements PropertyChangeListener {
 	    
 	    // context menu
 	    menuService.registerContextMenu(viewer.getControl(), "icat-manager.core.popupmenu.server");
+	    
 	}
 	
 	@PreDestroy
@@ -113,6 +119,14 @@ public class ServerPart implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		viewer.refresh();
+	}
+
+	@Focus
+	public void checkCompiler(final Shell shell) throws Exception {
+		if (displayWarning && !ModifiedDynamicClientFactory.isCompilerAvailable()) {
+			MessageDialog.openError(shell, "IcatManager needs a JDK", "This program needs a JDK to run !\nPlease see the README.txt file for how to configure it properly.");
+		}
+		displayWarning = false;
 	}
 	
 }

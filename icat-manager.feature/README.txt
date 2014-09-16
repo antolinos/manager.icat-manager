@@ -1,10 +1,10 @@
-ICAT Manager is an standalone Eclipse Rich Client for visualizing and managing ICAT web services. It works for any version of ICAT starting from version 4.2.0
+ICAT Manager is a standalone Eclipse Rich Client for visualizing and managing ICAT web services. It works for any version of ICAT starting from version 4.2.0
 
 Installation:
 Unzip/untar in a newly created folder. On macos and linux, you might need to set the executable bit manually on the launcher ('chmod u+x IcatManager' on linux).
 
 Launching:
-ICAT Manager needs a JDK to run (as it generates the client classes on-the-fly), in order to do so you need:
+ICAT Manager needs a JDK to run (as it generates the client classes on-the-fly), in order to do so you need to:
 * On linux: set the JAVA_HOME environment variable to point to a JDK
 * On Windows: execute IcatManager.exe -vm "Path_to_jdk\bin\javaw.exe"
 

@@ -17,12 +17,12 @@
   	<dependency>
   		<groupId>fr.esrf.icat</groupId>
   		<artifactId>icat-client-api</artifactId>
-  		<version>1.0</version>
+  		<version>1.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>fr.esrf.icat</groupId>
   		<artifactId>client-dynamic</artifactId>
-  		<version>1.0</version>
+  		<version>1.1-SNAPSHOT</version>
   	</dependency>
 	<dependency>
 	    <groupId>commons-validator</groupId>
