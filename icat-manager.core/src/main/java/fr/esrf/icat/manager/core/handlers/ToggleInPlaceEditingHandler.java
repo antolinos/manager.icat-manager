@@ -23,7 +23,9 @@ public class ToggleInPlaceEditingHandler {
 			part = (DataPart) activePart.getObject();
 		}
 		if(handledItem.isSelected()) {
-			if(MessageDialog.openConfirm(shell, "Really ?", "Do you really want to enable in place editing ?")) {
+			if(MessageDialog.openConfirm(shell, "Really ?",
+				"Do you really want to enable in place editing ?"+
+				"\nNote that you cannot edit associated entities directly in the table.")) {
 				part.toggleInPLaceEditing();
 			} else {
 				handledItem.setSelected(false);
