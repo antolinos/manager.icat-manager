@@ -41,13 +41,14 @@ public class OpenEntityHandler {
 		MPart mPart = (MPart) modelService.find(partID, window);
 		if(null != mPart) {
 		    partService.showPart(mPart, PartState.ACTIVATE);
+			mPart.getContext().set(ICATEntity.ENTITY_CONTEXT_KEY, entity);
 		    LOG.debug("Showing existing part: " + partID);
 		    return;
 		}
 		mPart = partService.createPart(DataPart.DATA_PART_DESCRIPTOR);
 		mPart.setElementId(partID);
 		mPart.setLabel(entity.getEntityName() + " [" + entity.getServer().getServerURL() + "]");
-		mPart.setObject(entity);
+		mPart.getTransientData().put(ICATEntity.ENTITY_CONTEXT_KEY, entity);
 		MPartStack partstack = (MPartStack) modelService.find(DataPart.ICAT_MANAGER_MAINSTACK, window);
 		partstack.getChildren().add(mPart);
 		partService.showPart(mPart, PartState.ACTIVATE);

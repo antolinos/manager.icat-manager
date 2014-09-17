@@ -29,7 +29,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.esrf.icat.client.dynamic.ModifiedDynamicClientFactory;
 import fr.esrf.icat.manager.core.ICATDataService;
 import fr.esrf.icat.manager.core.handlers.ConnectHandler;
 import fr.esrf.icat.manager.core.handlers.ExitHandler;
@@ -122,8 +121,8 @@ public class ServerPart implements PropertyChangeListener {
 	}
 
 	@Focus
-	public void checkCompiler(final Shell shell) throws Exception {
-		if (displayWarning && !ModifiedDynamicClientFactory.isCompilerAvailable()) {
+	public void checkDataService(final Shell shell) throws Exception {
+		if (displayWarning && !ICATDataService.isDataServiceOperational()) {
 			MessageDialog.openError(shell, "IcatManager needs a JDK", "This program needs a JDK to run !\nPlease see the README.txt file for how to configure it properly.");
 		}
 		displayWarning = false;

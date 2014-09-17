@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import fr.esrf.icat.client.SimpleICATClient;
 import fr.esrf.icat.client.ICATClientException;
 import fr.esrf.icat.client.dynamic.DynamicSimpleICATClient;
+import fr.esrf.icat.client.dynamic.ModifiedDynamicClientFactory;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 import fr.esrf.icat.manager.core.icatserver.ICATServer;
@@ -238,6 +239,10 @@ public class ICATDataService {
 
 	private String makeLine(final ICATServer server) {
 		return server.getLastAuthnMethod() + ":" + server.getLastUserName() + "@" + server.getServerURL();
+	}
+	
+	public static boolean isDataServiceOperational() {
+		return ModifiedDynamicClientFactory.isCompilerAvailable();
 	}
 
 }

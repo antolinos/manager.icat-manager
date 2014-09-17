@@ -3,12 +3,11 @@ package fr.esrf.icat.manager.core.part;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.e4.ui.model.application.MContribution;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -59,7 +58,7 @@ public class DataPart {
 	public static final String IN_PLACE_EDITING_PROPERTY_KEY = "inPlaceEditing";
 	
 	private final static Logger LOG = LoggerFactory.getLogger(DataPart.class);
-
+	
 	private final static Image IMAGE_UP;
 	private final static Image IMAGE_DOWN;
 	private final static Image IMAGE_NEXT;
@@ -95,7 +94,7 @@ public class DataPart {
 
 	@PostConstruct
 	public void postConstruct(final Composite parent, final EMenuService menuService, 
-			final MContribution contrib, final ESelectionService selectionService) {
+			final MPart part, final ESelectionService selectionService) {
 		
 		final GridLayout pageLayout = new GridLayout();
 		pageLayout.marginWidth = 0;
@@ -169,7 +168,7 @@ public class DataPart {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		contentProvider = new EntityContentProvider();
 		viewer.setContentProvider(contentProvider);
-		entity = (ICATEntity) contrib.getObject();
+		entity =(ICATEntity) part.getTransientData().get(ICATEntity.ENTITY_CONTEXT_KEY);
 
 		pageSizeCombo.addSelectionListener(new SelectionListener() {
 			@Override
