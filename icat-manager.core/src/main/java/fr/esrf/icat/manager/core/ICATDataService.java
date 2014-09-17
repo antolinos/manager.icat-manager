@@ -209,11 +209,11 @@ public class ICATDataService {
 		propertyChangeSupport.firePropertyChange(DATA_SERVICE_CONTENT, null, serverList);
 	}
 	
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    public void addPropertyChangeListener(final PropertyChangeListener listener) {
         this.propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+    public void removePropertyChangeListener(final PropertyChangeListener listener) {
         this.propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
@@ -242,15 +242,13 @@ public class ICATDataService {
 		return server.getLastAuthnMethod() + ":" + server.getLastUserName() + "@" + server.getServerURL();
 	}
 	
-	public boolean canSortByName(ICATEntity entity, String field) {
-		if(null == entity || null == field) return false;
+	public boolean canSortByName(final ICATEntity entity, final String field) {
+		if(null == entity || null == field || field.isEmpty()) return false;
 		final SimpleICATClient client = getClient(entity.getServer());
 		try {
-			WrappedEntityBean w = client.create(entity.getEntityName());
-			Class<?> clazz = w.getReturnType(field);
+			final Class<?> clazz = client.create(entity.getEntityName()).getReturnType(field);
 			if(BeanFieldMapping.isEntityBean(clazz)) {
-				WrappedEntityBean f = client.create(clazz.getSimpleName());
-				return f.exists(ICATEntity.NAME_FIELD);
+				return client.create(clazz.getSimpleName()).exists(ICATEntity.NAME_FIELD);
 			}
 		} catch (ICATClientException e) {
 			LOG.error("Error creating entity bean " + entity.getEntityName(), e);

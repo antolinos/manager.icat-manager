@@ -1,4 +1,5 @@
-ICAT Manager is a standalone Eclipse Rich Client for visualizing and managing ICAT web services. It works for any version of ICAT starting from version 4.2.0
+ICAT Manager is a standalone client for visualizing and managing ICAT web services. It is based on Eclipse RCP but does not require eclipse to run.
+It works for any version of ICAT starting from version 4.2.0 thanks to a JAXWS dynamic client.
 
 Installation:
 Unzip/untar in a newly created folder. On macos and linux, you might need to set the executable bit manually on the launcher ('chmod u+x IcatManager' on linux).
@@ -22,6 +23,7 @@ Features:
 * Configurable pagination. Sorting and filtering entities on any field.
 
 Release notes:
+* The 'Filter' text field accepts any query in the concise syntax form (the part between [ ])  
 * By default, sorting entities by an association field uses the associated entity id. To sort by entity name, use the toggle button 'Sort by Name'.
 * For the moment it is not possible to edit association fields directly in the table, you have to use the 'Edit entity' command.
 * In the 'Edit entity' dialog, association fields are displayed using special drop down lists:
