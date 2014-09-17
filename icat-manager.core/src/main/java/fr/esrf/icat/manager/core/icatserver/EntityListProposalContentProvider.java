@@ -25,6 +25,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 	private EntityLabelProvider lblprovider;
 	private List<WrappedEntityBean> currentItems;
 	private boolean hasName = false;
+	private boolean hasFullName = false;
 	private boolean nameChecked = false;
 	private String currentText;
 	
@@ -37,6 +38,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 		this.currentItems = new LinkedList<>();
 		if(null != this.initialBean) {
 			this.hasName = this.initialBean.exists(ICATEntity.NAME_FIELD);
+			this.hasFullName = this.initialBean.exists(ICATEntity.FULLNAME_FIELD);
 			this.nameChecked = true;
 		}
 		
@@ -77,7 +79,9 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 			LOG.error("Unable to load entity content for entity " + entityName, e);
 		}
 		if(!nameChecked && currentItems.size() > 0) {
-			hasName = currentItems.get(0).exists(ICATEntity.NAME_FIELD);
+			final WrappedEntityBean w = currentItems.get(0);
+			hasName = w.exists(ICATEntity.NAME_FIELD);
+			hasFullName = w.exists(ICATEntity.FULLNAME_FIELD);
 			nameChecked = true;
 		}
 		return getCurrentItems();
@@ -91,6 +95,16 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 		if(null != contents && !contents.isEmpty()) {
 			if(hasName) {
 				query.append(" [name LIKE '%");
+				query.append(contents);
+				query.append("%'");
+				if(hasFullName) {
+					query.append(" OR fullName LIKE '%");
+					query.append(contents);
+					query.append("%'");
+				}
+				query.append("]");
+			} else if(hasFullName) {
+				query.append(" [fullName LIKE '%");
 				query.append(contents);
 				query.append("%']");
 			} else {

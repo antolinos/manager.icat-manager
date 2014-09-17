@@ -13,10 +13,27 @@ public class EntityLabelProvider extends LabelProvider {
 		}
 		final WrappedEntityBean w = (WrappedEntityBean) element;
 		final StringBuilder builder = new StringBuilder();
+		boolean hasFullName = false;
+		boolean hasName = false;
+		if(w.exists(ICATEntity.FULLNAME_FIELD)) {
+			try {
+				final Object name = w.get(ICATEntity.FULLNAME_FIELD);
+				builder.append(name.toString());
+				hasFullName = true;
+			} catch (Exception e) {
+			}
+		}
 		if(w.exists(ICATEntity.NAME_FIELD)) {
 			try {
 				final Object name = w.get(ICATEntity.NAME_FIELD);
+				if(hasFullName) {
+					builder.append(" (");
+				}
 				builder.append(name.toString());
+				if(hasFullName) {
+					builder.append(')');
+				}
+				hasName = true;
 			} catch (Exception e) {
 			}
 		}
