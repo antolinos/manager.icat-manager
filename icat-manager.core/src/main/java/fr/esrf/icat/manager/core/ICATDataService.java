@@ -22,6 +22,7 @@ import fr.esrf.icat.client.SimpleICATClient;
 import fr.esrf.icat.client.ICATClientException;
 import fr.esrf.icat.client.dynamic.DynamicSimpleICATClient;
 import fr.esrf.icat.client.dynamic.ModifiedDynamicClientFactory;
+import fr.esrf.icat.client.wrapper.BeanFieldMapping;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 import fr.esrf.icat.manager.core.icatserver.ICATServer;
@@ -239,6 +240,23 @@ public class ICATDataService {
 
 	private String makeLine(final ICATServer server) {
 		return server.getLastAuthnMethod() + ":" + server.getLastUserName() + "@" + server.getServerURL();
+	}
+	
+	public boolean canSortByName(ICATEntity entity, String field) {
+		if(null == entity || null == field) return false;
+		final SimpleICATClient client = getClient(entity.getServer());
+		try {
+			WrappedEntityBean w = client.create(entity.getEntityName());
+			Class<?> clazz = w.getReturnType(field);
+			if(BeanFieldMapping.isEntityBean(clazz)) {
+				WrappedEntityBean f = client.create(clazz.getSimpleName());
+				return f.exists(ICATEntity.NAME_FIELD);
+			}
+		} catch (ICATClientException e) {
+			LOG.error("Error creating entity bean " + entity.getEntityName(), e);
+		}
+		return false;
+		
 	}
 	
 	public static boolean isDataServiceOperational() {

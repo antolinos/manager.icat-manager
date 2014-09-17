@@ -60,6 +60,7 @@
   <handlers xmi:id="_z-SqgB4_EeSOsvlmsNpv_A" elementId="icat-manager.core.handler.refresh" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.RefreshHandler" command="_h8FpUB4_EeSOsvlmsNpv_A"/>
   <handlers xmi:id="_uooigB5BEeSOsvlmsNpv_A" elementId="icat-manager.core.handler.closeserver" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.CloseConnectionHandler" command="_GY6WQB5BEeSOsvlmsNpv_A"/>
   <handlers xmi:id="_V3f9MB7bEeSOsvlmsNpv_A" elementId="icat-manager.core.handler.inplaceediting" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ToggleInPlaceEditingHandler" command="_4A7WEB7aEeSOsvlmsNpv_A"/>
+  <handlers xmi:id="_CP5HQD5SEeSMeLGgCHjsew" elementId="icat-manager.core.handler.namesort" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ToggleNameSortingHandler" command="_3XmvED5REeSMeLGgCHjsew"/>
   <descriptors xmi:id="_1IEIEB4VEeSOsvlmsNpv_A" elementId="icat-manager.core.partdescriptor.datapart" label="Data part" allowMultiple="true" closeable="true" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.DataPart">
     <menus xsi:type="menu:PopupMenu" xmi:id="_Ln-yEB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.popupmenu.entity" label="Entity menu">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_OyUAEB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.newentity" label="New entity" iconURI="platform:/plugin/icat-manager.core/icons/add_obj.gif" command="_YkAV4B4OEeSOsvlmsNpv_A"/>
@@ -70,6 +71,7 @@
     </menus>
     <toolbar xmi:id="_7FskIB4VEeSOsvlmsNpv_A" elementId="icat-manager.core.toolbar.datapart">
       <children xsi:type="menu:HandledToolItem" xmi:id="_mLm9wB4_EeSOsvlmsNpv_A" elementId="icat-manager.core.handledtoolitem.refresh" label="Refresh" iconURI="platform:/plugin/icat-manager.core/icons/refresh_nav.gif" command="_h8FpUB4_EeSOsvlmsNpv_A"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_dLktwD5WEeSMeLGgCHjsew" elementId="icat-manager.core.handledtoolitem.sortbyname" label="Sort by Name" iconURI="platform:/plugin/icat-manager.core/icons/name_sort.png" type="Check" command="_3XmvED5REeSMeLGgCHjsew"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_OzE4MB7bEeSOsvlmsNpv_A" elementId="icat-manager.core.handledtoolitem.inplaceediting" label="In-place editing" iconURI="platform:/plugin/icat-manager.core/icons/editor_area.gif" type="Check" command="_4A7WEB7aEeSOsvlmsNpv_A"/>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_p991EB4_EeSOsvlmsNpv_A" elementId="icat-manager.core.toolbarseparator.1"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_9tZ4IB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.handledtoolitem.newentity" label="New entity" iconURI="platform:/plugin/icat-manager.core/icons/add_obj.gif" command="_YkAV4B4OEeSOsvlmsNpv_A"/>
@@ -88,6 +90,7 @@
   <commands xmi:id="_h8FpUB4_EeSOsvlmsNpv_A" elementId="icat-manager.core.command.refreshentity" commandName="Refresh"/>
   <commands xmi:id="_GY6WQB5BEeSOsvlmsNpv_A" elementId="icat-manager.core.command.closeserver" commandName="Close connection"/>
   <commands xmi:id="_4A7WEB7aEeSOsvlmsNpv_A" elementId="icat-manager.core.command.toggleediting" commandName="In-place editing"/>
+  <commands xmi:id="_3XmvED5REeSMeLGgCHjsew" elementId="icat-manager.core.command.toggleNameSort" commandName="Sort by name"/>
   <addons xmi:id="_2FGrAAzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_2FGrAQzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_2FGrAgzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

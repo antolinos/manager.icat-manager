@@ -30,6 +30,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	private ICATEntity entity;
 	private Object[] elements;
 	private String filterText;
+	private boolean sortByName;
 	
 	public EntityContentProvider() {
 		super();
@@ -40,6 +41,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		this.pageSize = DEFAULT_PAGE_SIZE;
 		this.currentPageSize = 0;
 		this.filterText = null;
+		this.sortByName = false;
 	}
 
 	@Override
@@ -73,6 +75,10 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 			sb.append(ORDER_CLAUSE);
 			sb.append(' ');
 			sb.append(sortingField);
+			if(sortByName && ICATDataService.getInstance().canSortByName(entity, sortingField)) {
+				sb.append('.');
+				sb.append(ICATEntity.NAME_FIELD);
+			}
 			sb.append(' ');
 			if(sortingOrder == SWT.UP) {
 				sb.append(ORDER_UP);
@@ -193,6 +199,10 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 			currentPageSize = 0;
 			throw e;
 		}
+	}
+
+	public void toggleNameSorting() {
+		sortByName = !sortByName;
 	}
 
 }

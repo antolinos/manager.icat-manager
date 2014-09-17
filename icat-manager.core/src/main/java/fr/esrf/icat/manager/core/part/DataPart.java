@@ -3,6 +3,7 @@ package fr.esrf.icat.manager.core.part;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -342,6 +343,11 @@ public class DataPart {
 		} else {
 			viewer.setData(IN_PLACE_EDITING_PROPERTY_KEY, Boolean.FALSE);
 		}
+	}
+
+	public void toggleNameSorting() {
+		contentProvider.toggleNameSorting();
+		refresh();
 	}
 	
 }
