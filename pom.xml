@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>icat-manager</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>icat-manager :: parent</name>
   <description>icat-manager parent</description>
@@ -131,7 +131,7 @@
 	    <plugin>  
 			<groupId>org.eclipse.tycho</groupId>  
 			<artifactId>tycho-versions-plugin</artifactId>  
-			<version>${tycho-version}</version>  
+			<version>${tycho.version}</version>  
 		</plugin>
 		<plugin>
 			<groupId>org.eclipse.tycho</groupId>
