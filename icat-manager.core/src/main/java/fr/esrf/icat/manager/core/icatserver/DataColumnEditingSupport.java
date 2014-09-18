@@ -57,12 +57,12 @@ public class DataColumnEditingSupport extends EditingSupport {
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		if(null == element || !(element instanceof WrappedEntityBean)) {
-			// TODO: find a solution for entities
 			return null;
 		}
 		if(null == editor) {
 			WrappedEntityBean w = (WrappedEntityBean)element;
 			if(w.isEntity(field)) {
+				// TODO: find a solution for entities
 				this.editor = null;
 			} else if(Enum.class.isAssignableFrom(clazz)){
 				final ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(viewer.getTable());
