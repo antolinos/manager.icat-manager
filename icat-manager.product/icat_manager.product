@@ -91,10 +91,11 @@
    </plugins>
 
    <features>
-      <feature id="icat-manager.feature" version="1.1.0.qualifier"/>
+      <feature id="icat-manager.feature"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
+      <feature id="org.eclipse.equinox.p2.core.feature"/>
    </features>
 
    <configurations>

@@ -46,6 +46,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.e4.ui.di,
  org.eclipse.jface,
  org.eclipse.e4.ui.workbench,
+ org.eclipse.e4.ui.workbench.swt,
+ org.eclipse.e4.ui.workbench.renderers.swt,
  org.eclipse.e4.ui.model.workbench,
  org.eclipse.nebula.jface.cdatetime,
  org.eclipse.nebula.widgets.cdatetime,
@@ -53,6 +55,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.e4.core.contexts,
  javax.inject,
  org.eclipse.e4.ui.services,
- org.eclipse.e4.ui.workbench.swt
+ org.eclipse.equinox.p2.core,
+ org.eclipse.equinox.p2.engine,
+ org.eclipse.equinox.p2.metadata.repository,
+ org.eclipse.equinox.p2.operations
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
