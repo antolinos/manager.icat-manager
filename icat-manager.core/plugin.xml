@@ -17,6 +17,10 @@
                name="applicationXMI"
                value="icat-manager.core/Application.e4xmi">
          </property>
+         <property
+               name="lifeCycleURI"
+               value="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.ICATManagerActivator">
+         </property>
       </product>
    </extension>
 

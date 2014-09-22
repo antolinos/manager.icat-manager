@@ -14,7 +14,6 @@ public class EntityLabelProvider extends LabelProvider {
 		final WrappedEntityBean w = (WrappedEntityBean) element;
 		final StringBuilder builder = new StringBuilder();
 		boolean hasFullName = false;
-		boolean hasName = false;
 		if(w.exists(ICATEntity.FULLNAME_FIELD)) {
 			try {
 				final Object name = w.get(ICATEntity.FULLNAME_FIELD);
@@ -33,7 +32,6 @@ public class EntityLabelProvider extends LabelProvider {
 				if(hasFullName) {
 					builder.append(')');
 				}
-				hasName = true;
 			} catch (Exception e) {
 			}
 		}

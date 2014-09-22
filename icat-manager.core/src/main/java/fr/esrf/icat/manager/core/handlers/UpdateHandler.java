@@ -1,11 +1,15 @@
  
 package fr.esrf.icat.manager.core.handlers;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
@@ -21,14 +25,14 @@ import org.eclipse.equinox.p2.operations.UpdateOperation;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
+import fr.esrf.icat.manager.core.ICATManagerActivator;
+
 /**
  * Taken from http://www.vogella.com/tutorials/EclipseP2Update/article.html
  * 
  * Note that the persisted state of the application is not cleared automatically after updates.
  * (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=430090)
  * 
- * TODO: find a way to make sure the persisted state is cleared after update. Deleting the workbench.xmi file after update could work. 
- *
  */
 public class UpdateHandler {
 
@@ -116,6 +120,11 @@ public class UpdateHandler {
 	                @Override
 	                public void done(IJobChangeEvent event) {
 	                  if (event.getResult().isOK()) {
+	                	  try {
+							new File(new URL(Platform.getInstanceLocation().getURL(), ICATManagerActivator.UPDATE_FLAG_FILENAME).toURI()).createNewFile();
+						} catch (IOException | URISyntaxException e) {
+//							LOG.error("Unable to create file", e);
+						}
 	                    sync.syncExec(new Runnable() {
 	                      @Override
 	                      public void run() {
