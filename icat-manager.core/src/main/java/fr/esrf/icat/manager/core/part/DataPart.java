@@ -234,7 +234,7 @@ public class DataPart {
 	    	  @Override
 	    	  public void selectionChanged(SelectionChangedEvent event) {
 	    	    IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
-	    	    selectionService.setSelection(selection.getFirstElement());
+	    	    selectionService.setSelection(selection.size() > 1 ? selection.toList() : selection.getFirstElement());
 	    	  }
     	}); 
 	    // context menu

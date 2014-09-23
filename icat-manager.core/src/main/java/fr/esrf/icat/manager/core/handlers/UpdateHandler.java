@@ -37,9 +37,7 @@ import fr.esrf.icat.manager.core.ICATManagerActivator;
 public class UpdateHandler {
 
 	  // repository location needs to be adjusted for your location
-	  // TODO: update to actual update site when in place
-	  private static final String REPOSITORY_LOC =  System.getProperty("UpdateHandler.Repo",
-			  "file:///C:/Users/cleva/workspace/icat-manager/icat-manager.product/target/repository");
+	  private static final String REPOSITORY_LOC =  System.getProperty("update.repository", "http://ftp.esrf.fr/pub/bliss/icatmanager-update/");
 
 	  @Execute
 	  public void execute(final IProvisioningAgent agent, final Shell parent, final UISynchronize sync, final IWorkbench workbench) {
