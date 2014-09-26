@@ -93,12 +93,13 @@ public class UpdateHandler {
 	          sync.syncExec(new Runnable() {
 	            @Override
 	            public void run() {
-	              String updates = "";
+	              StringBuffer updates = new StringBuffer();
 	              Update[] possibleUpdates = operation.getPossibleUpdates();
 	              for (Update update : possibleUpdates) {
-	                updates += update + "\n";
+	            	  updates.append(update);
+	            	  updates.append('\n');
 	              }
-	              doInstall = MessageDialog.openQuestion(parent, "Really install updates?", updates);
+	              doInstall = MessageDialog.openQuestion(parent, "Really install updates?", updates.toString());
 	            }
 	          });
 	        }

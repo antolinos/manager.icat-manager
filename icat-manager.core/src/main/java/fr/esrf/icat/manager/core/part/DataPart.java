@@ -174,7 +174,7 @@ public class DataPart {
 		pageSizeCombo.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				contentProvider.setPageSize(new Integer(pageSizeCombo.getText()));
+				contentProvider.setPageSize(Integer.parseInt(pageSizeCombo.getText()));
 				refresh();
 			}
 			@Override
@@ -184,7 +184,7 @@ public class DataPart {
 					pageSizeCombo.select(0);
 					text = pageSizeCombo.getText();
 				}
-				contentProvider.setPageSize(new Integer(text));
+				contentProvider.setPageSize(Integer.parseInt(text));
 				refresh();
 			}
 		});
