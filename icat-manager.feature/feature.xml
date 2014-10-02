@@ -4,21 +4,12 @@
       label="icat-manager Feature"
       version="1.1.0.qualifier">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
-   </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="">
+      
    </license>
 
    <url>
-      <update label="icat-manager Update Site" url="http://www.example.com/update"/>
-      <discovery label="icat-manager Discovery Site" url="http://www.example.com/update"/>
+      <discovery label="icat-manager Discovery Site"/>
    </url>
 
    <plugin
