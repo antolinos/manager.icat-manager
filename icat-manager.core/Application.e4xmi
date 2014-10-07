@@ -48,6 +48,8 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_81jJoB5AEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.deleteentity" label="Delete entity" iconURI="platform:/plugin/icat-manager.core/icons/delete.gif" command="_dpqoIB4OEeSOsvlmsNpv_A"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_EAh9gEAKEeSf8ufRL14heA" elementId="org.eclipse.ui.help.menu" label="Help">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_5lBXQE4HEeSYiLlUVYqdMQ" elementId="icat-manager.core.handledmenuitem.help" label="Help" command="_Ucv5kE4GEeSYiLlUVYqdMQ"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_41uBQE4HEeSYiLlUVYqdMQ" elementId="icat-manager.core.menuseparator.4"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_UwR4UEAKEeSf8ufRL14heA" elementId="icat-manager.core.handledmenuitem.update" label="Check for updates ..." command="_DDUj0EAJEeSf8ufRL14heA"/>
       </children>
     </mainMenu>
@@ -65,6 +67,7 @@
   <handlers xmi:id="_V3f9MB7bEeSOsvlmsNpv_A" elementId="icat-manager.core.handler.inplaceediting" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ToggleInPlaceEditingHandler" command="_4A7WEB7aEeSOsvlmsNpv_A"/>
   <handlers xmi:id="_CP5HQD5SEeSMeLGgCHjsew" elementId="icat-manager.core.handler.namesort" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ToggleNameSortingHandler" command="_3XmvED5REeSMeLGgCHjsew"/>
   <handlers xmi:id="_FSSVwEAJEeSf8ufRL14heA" elementId="icat-manager.core.handler.update" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.UpdateHandler" command="_DDUj0EAJEeSf8ufRL14heA"/>
+  <handlers xmi:id="_WkpaME4GEeSYiLlUVYqdMQ" elementId="icat-manager.core.handler.helphandler" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.HelpHandler" command="_Ucv5kE4GEeSYiLlUVYqdMQ"/>
   <descriptors xmi:id="_1IEIEB4VEeSOsvlmsNpv_A" elementId="icat-manager.core.partdescriptor.datapart" label="Data part" allowMultiple="true" closeable="true" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.DataPart">
     <menus xsi:type="menu:PopupMenu" xmi:id="_Ln-yEB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.popupmenu.entity" label="Entity menu">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_OyUAEB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.newentity" label="New entity" iconURI="platform:/plugin/icat-manager.core/icons/add_obj.gif" command="_YkAV4B4OEeSOsvlmsNpv_A"/>
@@ -83,6 +86,7 @@
       <children xsi:type="menu:HandledToolItem" xmi:id="_BByzgB40EeSOsvlmsNpv_A" elementId="icat-manager.core.handledtoolitem.deleteentity" label="Delete entity" iconURI="platform:/plugin/icat-manager.core/icons/delete.gif" command="_dpqoIB4OEeSOsvlmsNpv_A"/>
     </toolbar>
   </descriptors>
+  <descriptors xmi:id="_XiG9cE4FEeSYiLlUVYqdMQ" elementId="icat-manager.core.partdescriptor.browserhelp" label="ICAT Manager Help" closeable="true" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.BrowserHelp"/>
   <commands xmi:id="_osJhsBvrEeS-S8zgM1nPnA" elementId="icat-manager.core.command.newserver" commandName="New server"/>
   <commands xmi:id="_s__VcBvrEeS-S8zgM1nPnA" elementId="org.eclipse.ui.file.exit" commandName="Exit"/>
   <commands xmi:id="_WhRxwB1hEeS-S8zgM1nPnA" elementId="icat-manager.core.command.deleteserver" commandName="Delete server"/>
@@ -96,6 +100,7 @@
   <commands xmi:id="_4A7WEB7aEeSOsvlmsNpv_A" elementId="icat-manager.core.command.toggleediting" commandName="In-place editing"/>
   <commands xmi:id="_3XmvED5REeSMeLGgCHjsew" elementId="icat-manager.core.command.toggleNameSort" commandName="Sort by name"/>
   <commands xmi:id="_DDUj0EAJEeSf8ufRL14heA" elementId="icat-manager.core.command.update" commandName="Update"/>
+  <commands xmi:id="_Ucv5kE4GEeSYiLlUVYqdMQ" elementId="icat-manager.core.command.help" commandName="Help"/>
   <addons xmi:id="_2FGrAAzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_2FGrAQzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_2FGrAgzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
