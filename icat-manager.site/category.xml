@@ -6,11 +6,4 @@
    <feature url="features/icat-manager.feature.source_0.0.0.jar" id="icat-manager.feature.source" version="0.0.0">
       <category name="icat-manager Developer Resources"/>
    </feature>
-   <feature url="features/icat-manager.feature_1.1.0.qualifier.jar" id="icat-manager.feature" version="1.1.0.qualifier">
-      <category name="ICAT"/>
-   </feature>
-   <bundle id="icat-manager.core" version="1.1.0.qualifier">
-      <category name="ICAT"/>
-   </bundle>
-   <category-def name="ICAT" label="ICAT"/>
 </site>

@@ -2,7 +2,7 @@
 <feature
       id="icat-manager.feature"
       label="icat-manager Feature"
-      version="1.1.0.qualifier">
+      version="1.2.0.qualifier">
 
    <license url="">
       
@@ -16,7 +16,7 @@
          id="icat-manager.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.0.qualifier"
          unpack="false"/>
 
 </feature>
