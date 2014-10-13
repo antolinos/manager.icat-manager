@@ -21,6 +21,12 @@
 						<linux>tar.gz</linux>
 						<macosx>tar.gz</macosx>
 					</formats>
+					<products>
+				      <product>
+				        <id>icat_manager.product</id>
+				        <rootFolder>icatmanager</rootFolder>
+				      </product>
+			       </products>
 				</configuration>
 				<executions>
 					<execution>
