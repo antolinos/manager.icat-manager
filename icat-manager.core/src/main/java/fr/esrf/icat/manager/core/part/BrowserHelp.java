@@ -15,16 +15,14 @@ import org.osgi.framework.FrameworkUtil;
 
 public class BrowserHelp {
 
-	public static final String HELP_URL = "https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference";
+	public static final String HELP_URL = "html/ICATManagerHelp.html";
 	
 	@PostConstruct
 	public void postConstruct(final Composite parent) throws IOException {
 		Browser browser = new Browser(parent, SWT.NONE);
-		
 	    Bundle bundle = FrameworkUtil.getBundle(BrowserHelp.class);
-	    URL url = FileLocator.find(bundle, new Path("html/icatmanagerhelp.html"), null);
+	    URL url = FileLocator.find(bundle, new Path(HELP_URL), null);
 		browser.setUrl(FileLocator.toFileURL(url).toString());
-
 	}
 	
 }
