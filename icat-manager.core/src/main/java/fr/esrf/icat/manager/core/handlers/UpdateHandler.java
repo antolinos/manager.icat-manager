@@ -119,7 +119,7 @@ public class UpdateHandler {
 	                @Override
 	                public void done(IJobChangeEvent event) {
 	                  if (event.getResult().isOK()) {
-	                	  try {
+                	    try {
 							new File(new URL(Platform.getInstanceLocation().getURL(), ICATManagerActivator.UPDATE_FLAG_FILENAME).toURI()).createNewFile();
 						} catch (IOException | URISyntaxException e) {
 //							LOG.error("Unable to create file", e);
