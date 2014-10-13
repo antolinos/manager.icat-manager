@@ -17,6 +17,14 @@
     <icat.client.version>1.2-SNAPSHOT</icat.client.version>
   </properties>
 
+	<licenses>
+	  <license>
+	    <name>The Apache Software License, Version 2.0</name>
+	    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	    <distribution>repo</distribution>
+	  </license>
+	</licenses>
+
   <dependencies>
   	<dependency>
   		<groupId>fr.esrf.icat</groupId>
@@ -73,6 +81,39 @@
 		  </execution>
 		 </executions>
 		</plugin>
+	      <plugin>
+	        <groupId>org.codehaus.mojo</groupId>
+	        <artifactId>license-maven-plugin</artifactId>
+	        <configuration>
+	          <licenseName>apache_v2</licenseName>
+	        </configuration>
+	        <executions>
+	          <execution>
+	            <id>license</id>
+		        <configuration>
+					<generateBundle>true</generateBundle>
+		        </configuration>
+	            <goals>
+	              <goal>update-project-license</goal>
+	            </goals>
+	            <phase>generate-resources</phase>
+	          </execution>
+	          <execution>
+	            <id>headers</id>
+		        <configuration>
+		          <verbose>false</verbose>
+		          <addSvnKeyWords>false</addSvnKeyWords>
+					<extraExtensions>
+						<xsd>xml</xsd>
+					</extraExtensions>
+		        </configuration>
+	            <goals>
+	              <goal>update-file-header</goal>
+	            </goals>
+	            <phase>process-sources</phase>
+	          </execution>
+	        </executions>
+	      </plugin>   	  
 	</plugins>
   </build>
 
