@@ -2,10 +2,7 @@
 <HTML>
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
-	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice 4.0.1  (Win32)">
-	<META NAME="CREATED" CONTENT="20141007;10024650">
-	<META NAME="CHANGED" CONTENT="20141013;15453447">
+	<TITLE>ICAT Manager Help</TITLE>
 	<STYLE TYPE="text/css">
 	<!--
 		@page { margin: 2cm }
@@ -22,11 +19,15 @@
 	</STYLE>
 </HEAD>
 <BODY LANG="en-GB" BGCOLOR="#fcfff3" DIR="LTR">
-<H1 CLASS="western" ALIGN=CENTER STYLE="background: #6699cc">
-<FONT SIZE=5>ICAT Manager Help</FONT></H1>
+<DIV  STYLE="background: #4e5c99; line-height: 70px">
+<img alt="ESRF logo" src="../icons/ESRF-Logo-WHITE_64.png" STYLE="float: right; margin-top: 3px">
+<img alt="ICAT manager logo" src="../icons/icatmanager_logo_64.png" STYLE="float: left; margin-top: 3px">
+<H1 CLASS="western" ALIGN=CENTER>
+<FONT SIZE=5 COLOR="#ffffff">ICAT Manager Help</FONT></H1>
+</DIV>
 <P STYLE="font-style: normal">ICAT Manager is a standalone Java
 client for visualizing and managing ICAT instances.</P>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__415_909453735"></A><A NAME="__RefHeading__497_224920304"></A>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__415_909453735"></A>
 Features</H2>
 <UL>
 	<LI><P STYLE="font-style: normal">Works for any version of ICAT
@@ -48,8 +49,8 @@ Features</H2>
 <DIV ID="Table of Contents1" DIR="LTR">
 	<DIV ID="Table of Contents1_Head" DIR="LTR">
 		<P STYLE="margin-top: 0.42cm; margin-bottom: 0.5cm; page-break-after: avoid">
-		<FONT FACE="Arial, sans-serif"><FONT SIZE=4 STYLE="font-size: 16pt"><B>Document
-		organisation</B></FONT></FONT></P>
+		<FONT FACE="Arial, sans-serif" SIZE=4 STYLE="font-size: 16pt"><B>Document
+		organisation</B></FONT></P>
 	</DIV>
 	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__415_909453735">Features</A></P>
 	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__417_909453735">Prerequisites</A></P>
@@ -79,12 +80,12 @@ Features</H2>
 	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__443_909453735">Known
 	issues</A></P>
 </DIV>
-<H2 CLASS="western"><A NAME="__RefHeading__417_909453735"></A><A NAME="__RefHeading__501_224920304"></A>
+<H2 CLASS="western"><A NAME="__RefHeading__417_909453735"></A>
 Prerequisites</H2>
 <P>For running this program you need a JDK 7 installed (tested only
 with Oracle JDK 1.7, which you can download here
 <A HREF="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html"><SPAN STYLE="font-weight: normal">http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html</SPAN></A>).</P>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__419_909453735"></A><A NAME="__RefHeading__503_224920304"></A>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__419_909453735"></A>
 Installation and launch</H2>
 <P STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">Download
 the archive for your platform at
@@ -92,67 +93,68 @@ the archive for your platform at
 <P STYLE="margin-bottom: 0cm">Unzip / untar the archive. It will
 create a folder named 'icatmanager' that contains the complete
 software. On MacOS and linux, you might need to set the executable
-bit manually on the launcher (do<FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">
-chmod u+x IcatManager</FONT></FONT> on linux).</P>
+bit manually on the launcher (do<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">
+chmod u+x IcatManager</FONT> on linux).</P>
 <P STYLE="margin-bottom: 0cm">ICAT Manager needs a JDK to run (as it
 generates the client classes on-the-fly), in order to do so you need
 to:</P>
 <UL>
 	<LI><P STYLE="margin-bottom: 0cm">On linux: set the JAVA_HOME
 	environment variable to point to a JDK, execute 
-	<FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">IcatManager
-	(./IcatManager)</FONT></FONT></P>
+	<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">IcatManager
+	(./IcatManager)</FONT></P>
 </UL>
 <UL>
 	<LI><P STYLE="margin-bottom: 0cm">On Windows: execute
-	<FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">
-	IcatManager.exe -vm &quot;Path_to_jdk\bin\javaw.exe&quot;</FONT></FONT> (with the
+	<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">
+	IcatManager.exe -vm &quot;Path_to_jdk\bin\javaw.exe&quot;</FONT> (with the
 	quotes, you can create a shortcut that includes the option)</P>
 </UL>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__421_909453735"></A><A NAME="__RefHeading__505_224920304"></A>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__421_909453735"></A>
 Proxy configuration</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">If you are behind a
 proxy, add the following lines at the end of the IcatManager.ini file
 (replace the example values with the correct settings for your
 location):</P>
-<P STYLE="margin-bottom: 0cm; font-style: normal"><FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">-Dhttp.proxyHost=proxy.url<BR>-Dhttp.proxyPort=1234<BR>-Dhttps.proxyHost=proxy.url<BR>-Dhttps.proxyPort=1234<BR>-Dhttp.nonProxyHosts=localhost|*.local</FONT></FONT></P>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__423_909453735"></A><A NAME="__RefHeading__507_224920304"></A>
+<P STYLE="margin-bottom: 0cm; font-style: normal"><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">-Dhttp.proxyHost=proxy.url<BR>
+-Dhttp.proxyPort=1234<BR>-Dhttps.proxyHost=proxy.url<BR>-Dhttps.proxyPort=1234<BR>-Dhttp.nonProxyHosts=localhost|*.local</FONT></P>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__423_909453735"></A>
 Defining a new ICAT server</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Add an ICAT server
-by using the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
-&rarr; New server</SPAN></FONT></FONT> menu or the New server button
-<FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/add_obj.gif" NAME="graphics1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
+by using the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
+&rarr; New server</SPAN></FONT> menu or the New server button
+<FONT COLOR="#000000"><IMG SRC="../icons/add_obj.gif" NAME="graphics1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
 on the left panel, you will then be prompted for the server URL. The
 URL to use is the root URL of the ICAT server (the part before
 ICATService). For example:</P>
-<P STYLE="margin-bottom: 0cm"><FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">https://wwws.esrf.fr/icat/</SPAN></FONT></FONT>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">
+https://wwws.esrf.fr/icat/</SPAN></FONT>
 <SPAN STYLE="font-style: normal">for ESRF ICAT</SPAN></P>
-<P STYLE="margin-bottom: 0cm"><FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">https://icatisis.esc.rl.ac.uk</SPAN></FONT></FONT>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">
+https://icatisis.esc.rl.ac.uk</SPAN></FONT>
 <SPAN STYLE="font-style: normal">for ISIS ICAT</SPAN></P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">You can define as
 many ICAT servers as you want.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">The status of each
-server defined in the list is shown with an icon: <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/server_unknown.gif" NAME="graphics15" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
-means there is no active connection to this server, <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/passed.png" NAME="graphics16" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
-means the software is connected to this ICAT server, and <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/fail.gif" NAME="graphics17" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
+server defined in the list is shown with an icon: 
+<FONT COLOR="#000000"><IMG SRC="../icons/server_unknown.gif" NAME="graphics15" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
+means there is no active connection to this server, 
+<FONT COLOR="#000000"><IMG SRC="../icons/passed.png" NAME="graphics16" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
+means the software is connected to this ICAT server, and 
+<FONT COLOR="#000000"><IMG SRC="../icons/fail.gif" NAME="graphics17" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
 means the software attempted to connect but failed.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">To delete an ICAT
-server from the list of servers, use the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
-&rarr; Delete server</SPAN></FONT></FONT> menu or the Delete button
-<FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/delete.gif" NAME="graphics14" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>.</P>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__425_909453735"></A><A NAME="__RefHeading__509_224920304"></A>
+server from the list of servers, use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
+&rarr; Delete server</SPAN></FONT> menu or the Delete button
+<FONT COLOR="#000000"><IMG SRC="../icons/delete.gif" NAME="graphics14" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.</P>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__425_909453735"></A>
 Connecting to an ICAT instance</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">To connect to the
 ICAT server you defined, double-click on it in the list of servers,
-or select it and use the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
-&rarr; Connect server</SPAN></FONT></FONT> menu or the Connect server
-button <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/launch_run.gif" NAME="graphics2" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>.
+or select it and use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
+&rarr; Connect server</SPAN></FONT> menu or the Connect server
+button 
+<FONT COLOR="#000000"><IMG SRC="../icons/launch_run.gif" NAME="graphics2" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.
 You will be prompted for an authentication method, a user name and a
 password.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">The authentication
@@ -168,20 +170,20 @@ the credentials you use.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Once connected the
 version of the ICAT server is shown to the right of its URL.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">To disconnect from
-an ICAT server, use the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
-&rarr; Close connection</SPAN></FONT></FONT> menu or the Disconnect
-button <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/progress_stop.gif" NAME="graphics13" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>.</P>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__427_909453735"></A><A NAME="__RefHeading__511_224920304"></A>
+an ICAT server, use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
+&rarr; Close connection</SPAN></FONT> menu or the Disconnect
+button 
+<FONT COLOR="#000000"><IMG SRC="../icons/progress_stop.gif" NAME="graphics13" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.</P>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__427_909453735"></A>
 Displaying entities</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Once connected to
 the ICAT server, a list of available entities (Dataset, Datafile,
 etc.) can be displayed in the left panel. To show or hide the list,
 double-click on the server or click the little arrow before the
-server URL. Select an entity and use the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
-&rarr; Open entity</SPAN></FONT></FONT> menu or the Open entity
-button <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/open.gif" NAME="graphics3" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>.
+server URL. Select an entity and use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
+&rarr; Open entity</SPAN></FONT> menu or the Open entity
+button 
+<FONT COLOR="#000000"><IMG SRC="../icons/open.gif" NAME="graphics3" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.
 This will open a new view in the right panel showing the accessible
 entities of that type.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">A new view will be
@@ -190,56 +192,57 @@ entity name are displayed in the tab.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Be careful when you
 access several ICAT server at the same time and check the tab name to
 make sure you are interacting with the right server.</P>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__429_909453735"></A><A NAME="__RefHeading__513_224920304"></A>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__429_909453735"></A>
 Display options, sorting and filtering</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">By default,
 entities are displayed by page of 50 and sorted by descending ids
 (latest created first). You can change the page size by using the
-combo box at the top of the view, next to the <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/first.png" NAME="graphics4" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
-First / <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/prev.gif" NAME="graphics5" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
-Previous / <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/next.gif" NAME="graphics6" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
+combo box at the top of the view, next to the 
+<FONT COLOR="#000000"><IMG SRC="../icons/first.png" NAME="graphics4" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
+First / 
+<FONT COLOR="#000000"><IMG SRC="../icons/prev.gif" NAME="graphics5" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
+Previous / 
+<FONT COLOR="#000000"><IMG SRC="../icons/next.gif" NAME="graphics6" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
 Next buttons. On the top left of the view you will see the entity
 name and the number and indices of the displayed entities (e.g.
 'Dataset from 1 to 50').</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">You can sort the
 entities by clicking on column headers. Click a second time on the
 header to reverse the sort order. The column used for sorting is
-flagged with a sort marker in the column header, either <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/arrow_down.png" NAME="graphics19" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
-or <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/arrow_up.png" NAME="graphics20" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
+flagged with a sort marker in the column header, either 
+<FONT COLOR="#000000"><IMG SRC="../icons/arrow_down.png" NAME="graphics19" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
+or 
+<FONT COLOR="#000000"><IMG SRC="../icons/arrow_up.png" NAME="graphics20" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
 depending on the sort order.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">If you sort by an
 associated entity (e.g. sorting datafiles by their associated
 dataset), the sorting is done on the entity ids by default. If you
-want to sort by entity names, use the Sort by name button <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/name_sort.png" NAME="graphics7" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>.</P>
+want to sort by entity names, use the Sort by name button 
+<FONT COLOR="#000000"><IMG SRC="../icons/name_sort.png" NAME="graphics7" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.</P>
 <P STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">You
 can filter the list of entities by entering a valid query in the
 'Filter' box using the </SPAN>Concise syntax<SPAN STYLE="font-style: normal">.
 For details on the query syntax please refer to the ICAT manual
 <A HREF="http://icatproject.org/mvn/site/icat/client/4.3.3/manual.html">http://icatproject.org/mvn/site/icat/client/4.3.3/manual.html</A>.
-To clear the query, use the Clear query button </SPAN><FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/clear_co.gif" NAME="graphics8" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT><SPAN STYLE="font-style: normal">.</SPAN></P>
+To clear the query, use the Clear query button </SPAN>
+<FONT COLOR="#000000"><IMG SRC="../icons/clear_co.gif" NAME="graphics8" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
+<SPAN STYLE="font-style: normal">.</SPAN></P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Each time you
 change the display options of the filtering a new query will be made
 to the ICAT server. If you want the refresh the displayed data sue
-the Refresh button <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/refresh.gif" NAME="graphics9" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
-or the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
-&rarr; Refresh</SPAN></FONT></FONT> menu.</P>
+the Refresh button 
+<FONT COLOR="#000000"><IMG SRC="../icons/refresh_nav.gif" NAME="graphics9" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
+or the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
+&rarr; Refresh</SPAN></FONT> menu.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Note that columns
 can be reordered by dragging their header.</P>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__431_909453735"></A><A NAME="__RefHeading__515_224920304"></A>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__431_909453735"></A>
 Editing entities</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">If you select a
 line in the right panel, you can edit the selected entity by using
-the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
-&rarr; Edit entity</SPAN></FONT></FONT> menu of the Edit button <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/write_obj.gif" NAME="graphics10" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>.
+the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
+&rarr; Edit entity</SPAN></FONT> menu of the Edit button 
+<FONT COLOR="#000000"><IMG SRC="../icons/write_obj.gif" NAME="graphics10" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.
 This will open the Entity editing dialog that allows to modify any
 field. If the field is a character or numeric value you can type the
 value in the field. Booleans are represented by check boxes (selected
@@ -260,12 +263,12 @@ search is case sensitive.</P>
 also have a full name (e.g. Facilities) you can type part of the full
 name too. For entities that have neither a name or a full name you
 have to use the full id.</P>
-<H2 CLASS="western"><A NAME="__RefHeading__435_909453735"></A><A NAME="__RefHeading__517_224920304"></A>
+<H2 CLASS="western"><A NAME="__RefHeading__435_909453735"></A>
 In place editing</H2>
 <P>Alternatively, you can use in-place editing in the right panel.
 For activating the feature, click on the Toggle in-place editing
-button <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/editor_area.gif" NAME="graphics11" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
+button 
+<FONT COLOR="#000000"><IMG SRC="../icons/editor_area.gif" NAME="graphics11" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
 in the right panel. Note that in-place editing does not allow to edit
 association fields for the moment.</P>
 <P>Please be careful with this feature as all modifications are
@@ -273,38 +276,37 @@ immediately sent to the ICAT server and there is no undo.</P>
 <H2 CLASS="western"><A NAME="__RefHeading__433_909453735"></A>Adding
 entities</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">You can add an
-entity by using the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
-&rarr; New entity</SPAN></FONT></FONT> menu or the New entity button
-<FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/add_obj.gif" NAME="graphics18" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>.
+entity by using the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
+&rarr; New entity</SPAN></FONT> menu or the New entity button
+<FONT COLOR="#000000"><IMG SRC="../icons/add_obj.gif" NAME="graphics18" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.
 When you do so, the same Entity editing dialog is shown, but all
 fields are empty.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Note that there is
 no verification that the creation will be successful, i.e. the
 software does not check the mandatory fields are filled nor that you
 have the right to create the entity.</P>
-<H2 CLASS="western"><A NAME="__RefHeading__437_909453735"></A><A NAME="__RefHeading__519_224920304"></A>
+<H2 CLASS="western"><A NAME="__RefHeading__437_909453735"></A>
 Deleting entities</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">When you select one
-or several lines from the right panel, you can use the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
-&rarr; Delete entity</SPAN></FONT></FONT> menu or the Delete button <FONT COLOR="#000000">
-<FONT COLOR="#000000"><IMG SRC="../icons/delete.gif" NAME="graphics12" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT></FONT>
+or several lines from the right panel, you can use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
+&rarr; Delete entity</SPAN></FONT> menu or the Delete button 
+<FONT COLOR="#000000"><IMG SRC="../icons/delete.gif" NAME="graphics12" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
 to delete them. Please keep in mind that the delete method of ICAT
 propagates to dependent entities (cascade delete), so for example
 deleting a facility will remove everything related to this facility
 recursively, i.e. the entire catalogue.</P>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__439_909453735"></A><A NAME="__RefHeading__521_224920304"></A>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__439_909453735"></A>
 Updating the software</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Updates of the
 software will be announced on the icatgroup mailing lists.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">You can use the
-<FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Help
-&rarr; Check for updates &hellip;</SPAN></FONT></FONT> menu to check
+<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Help
+&rarr; Check for updates &hellip;</SPAN></FONT> menu to check
 for updates of the software. If it finds one (and it should if it has
 been announced and you configured your proxy correctly) you will be
 prompted for confirmation and then, if you accept the update, for
 restarting the software after the update.</P>
-<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__441_909453735"></A><A NAME="__RefHeading__523_224920304"></A>
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__441_909453735"></A>
 Support</H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Most errors are
 traced in the log\icat_manager.log file in the installation folder.
@@ -314,8 +316,8 @@ not work as you think it should, first check the log.</P>
 operations that can help you:</P>
 <UL>
 	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">If your
-	interface is scrambled, you can use the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Help
-	&rarr; Reset interface</SPAN></FONT></FONT> menu to restore the
+	interface is scrambled, you can use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Help
+	&rarr; Reset interface</SPAN></FONT> menu to restore the
 	interface to its default (necessitates a restart).</P>
 	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">If the program
 	refuses to start, or if the list of servers is broken, you can try
@@ -324,14 +326,14 @@ operations that can help you:</P>
 </UL>
 <P STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">Support
 requests can be sent to <A HREF="mailto:christophe.cleva@esrf.fr">christophe.cleva@esrf.fr</A>.</SPAN></P>
-<H2 CLASS="western"><A NAME="__RefHeading__443_909453735"></A><A NAME="__RefHeading__525_224920304"></A>
+<H2 CLASS="western"><A NAME="__RefHeading__443_909453735"></A>
 Known issues</H2>
 <UL>
 	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">Due to a bug
 	in the Eclipse platform, if you close the right panel when it is
 	empty it will disappear from the application interface. Until a
-	workaround is found, you can use the <FONT FACE="Consolas, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Help
-	&rarr; Reset interface</SPAN></FONT></FONT> menu to restore the
+	workaround is found, you can use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Help
+	&rarr; Reset interface</SPAN></FONT> menu to restore the
 	interface (necessitates a restart).</P>
 	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">On linux, the
 	combobox used for setting the pagination size does not work
