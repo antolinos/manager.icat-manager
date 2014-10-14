@@ -37,12 +37,15 @@ import org.osgi.framework.FrameworkUtil;
 public class BrowserHelp {
 
 	public static final String HELP_URL = "html/ICATManagerHelp.html";
+	public static final String ICONS_URL = "icons";
 	
 	@PostConstruct
 	public void postConstruct(final Composite parent) throws IOException {
 		Browser browser = new Browser(parent, SWT.NONE);
 	    Bundle bundle = FrameworkUtil.getBundle(BrowserHelp.class);
 	    URL url = FileLocator.find(bundle, new Path(HELP_URL), null);
+	    URL icons = FileLocator.find(bundle, new Path(ICONS_URL), null);
+	    FileLocator.toFileURL(icons);
 		browser.setUrl(FileLocator.toFileURL(url).toString());
 	}
 	
