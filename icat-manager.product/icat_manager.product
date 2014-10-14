@@ -3,7 +3,6 @@
 
 <product name="icat-manager :: product" uid="icat_manager.product" id="icat-manager.core.icat_manager_product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.2.0.qualifier" useFeatures="true" includeLaunchers="true">
 
-
    <configIni use="">
    </configIni>
 
@@ -11,17 +10,23 @@
       <vmArgs>-Djavax.xml.accessExternalSchema=all</vmArgs>
    </launcherArgs>
 
-   <windowImages/>
-
+   <windowImages i16="/icat-manager.core/icons/icatmanager_logo_16.png" i32="/icat-manager.core/icons/icatmanager_logo_32.png" i48="/icat-manager.core/icons/icatmanager_logo_48.png" i64="/icat-manager.core/icons/icatmanager_logo_64.png" i128="/icat-manager.core/icons/icatmanager_logo_128.png"/>
 
    <launcher name="IcatManager">
+      <linux icon="icons/icatmanager_logo_256.xpm"/>
       <solaris/>
-      <win useIco="false">
+      <win useIco="true">
+         <ico path="icons/icatmanager.ico"/>
          <bmp
-            winExtraLargeHigh="/icat-manager.core/icons/icatmanager_logo_256.bmp"/>
+            winSmallHigh="/icat-manager.product/icons/icatmanager_logo_16.bmp"
+            winSmallLow="/icat-manager.product/icons/icatmanager_logo_16_8.bmp"
+            winMediumHigh="/icat-manager.product/icons/icatmanager_logo_32.bmp"
+            winMediumLow="/icat-manager.product/icons/icatmanager_logo_32_8.bmp"
+            winLargeHigh="/icat-manager.product/icons/icatmanager_logo_48.bmp"
+            winLargeLow="/icat-manager.product/icons/icatmanager_logo_48_8.bmp"
+            winExtraLargeHigh="/icat-manager.product/icons/icatmanager_logo_256.bmp"/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>

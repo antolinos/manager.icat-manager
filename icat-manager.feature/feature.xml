@@ -4,7 +4,11 @@
       label="icat-manager Feature"
       version="1.2.0.qualifier">
 
-   <license url="">
+   <copyright>
+      Copyright (C) 2014 ESRF - The European Synchrotron
+   </copyright>
+
+   <license url="http://www.apache.org/licenses/LICENSE-2.0.html">
       
    </license>
 
