@@ -11,115 +11,140 @@
 		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
 		H1.cjk { font-family: "Microsoft YaHei"; font-size: 16pt }
 		H1.ctl { font-family: "Mangal"; font-size: 16pt }
-		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: normal }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: normal; margin-top: 1em }
 		H2.cjk { font-family: "HG Mincho Light J"; font-size: 14pt; font-style: italic }
 		H2.ctl { font-family: "Arial Unicode MS"; font-size: 14pt; font-style: italic }
-		A:link { so-language: zxx; background: transparent }
+		A:link { so-language: zxx; background: transparent; text-decoration: none}
 	-->
 	</STYLE>
 </HEAD>
 <BODY LANG="en-GB" BGCOLOR="#fcfff3" DIR="LTR">
+<A NAME="__Top"></A>
 <DIV  STYLE="background: #4e5c99; line-height: 70px">
 <img alt="ESRF logo" src="../icons/ESRF-Logo-WHITE_64.png" STYLE="float: right; margin-top: 3px">
 <img alt="ICAT manager logo" src="../icons/icatmanager_logo_64.png" STYLE="float: left; margin-top: 3px">
 <H1 CLASS="western" ALIGN=CENTER>
 <FONT SIZE=5 COLOR="#ffffff">ICAT Manager Help</FONT></H1>
 </DIV>
-<P STYLE="font-style: normal">ICAT Manager is a standalone Java
+<P STYLE="font-style: normal; font-size: 125%">ICAT Manager is a standalone Java
 client for visualizing and managing ICAT instances.</P>
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__415_909453735"></A>
 Features</H2>
-<UL>
-	<LI><P STYLE="font-style: normal">Works for any version of ICAT
-	starting from version 4.2.0 thanks to a JAXWS dynamic client.</P>
+<UL STYLE="line-height: 200%;">
+	<LI>Works for any version of ICAT starting from version 4.2.0 thanks to a JAX-WS dynamic client.
+	<LI>Allows display, editing and creation of any ICAT entity (based on your access rights).
+	<LI>Configurable pagination, adapted to large instances. Sorting and filtering entities on any field.
+	<LI>Remote update: install once, update from the interface (and no need to update the software when you update your ICAT).
 </UL>
-<UL>
-	<LI><P STYLE="font-style: normal">Allows display and editing of all
-	entities (based on your access rights).</P>
-</UL>
-<UL>
-	<LI><P STYLE="font-style: normal">Configurable pagination, adapted
-	to large instances. Sorting and filtering entities on any field.</P>
-</UL>
-<UL>
-	<LI><P STYLE="font-style: normal">Remote update: install once,
-	update from the interface (and no need to update the software when
-	you update your ICAT).</P>
-</UL>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <DIV ID="Table of Contents1" DIR="LTR">
 	<DIV ID="Table of Contents1_Head" DIR="LTR">
-		<P STYLE="margin-top: 0.42cm; margin-bottom: 0.5cm; page-break-after: avoid">
+		<P STYLE="margin-top: 0.42cm; margin-bottom: 0.5cm; page-break-after: avoid;">
 		<FONT FACE="Arial, sans-serif" SIZE=4 STYLE="font-size: 16pt"><B>Document
 		organisation</B></FONT></P>
 	</DIV>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__415_909453735">Features</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__417_909453735">Prerequisites</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__419_909453735">Installation
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__415_909453735">Features</A></P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__417_909453735">Prerequisites</A></P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__419_909453735">Installation
 	and launch</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__421_909453735">Proxy
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__12345678">Setting JVM options</A></P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__421_909453735">Proxy
 	configuration</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__423_909453735">Defining
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__423_909453735">Defining
 	a new ICAT server</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__425_909453735">Connecting
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__425_909453735">Connecting
 	to an ICAT instance</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__427_909453735">Displaying
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__427_909453735">Displaying
 	entities</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__429_909453735">Display
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__429_909453735">Display
 	options, sorting and filtering</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__431_909453735">Editing
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__431_909453735">Editing
 	entities</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__435_909453735">In
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__435_909453735">In
 	place editing</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__433_909453735">Adding
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__433_909453735">Adding
 	entities</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__437_909453735">Deleting
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__437_909453735">Deleting
 	entities</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__439_909453735">Updating
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__439_909453735">Updating
 	the software</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__441_909453735">Support</A></P>
-	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm"><A HREF="#__RefHeading__443_909453735">Known
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__441_909453735">Support</A></P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__443_909453735">Known
 	issues</A></P>
 </DIV>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western"><A NAME="__RefHeading__417_909453735"></A>
-Prerequisites</H2>
+Prerequisites  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P>For running this program you need a JDK 7 installed (tested only
 with Oracle JDK 1.7, which you can download here
 <A HREF="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html"><SPAN STYLE="font-weight: normal">http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html</SPAN></A>).</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__419_909453735"></A>
-Installation and launch</H2>
+Installation and launch  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">Download
 the archive for your platform at
 </SPAN><A HREF="http://ftp.esrf.fr/pub/bliss/icatmanager/">http://ftp.esrf.fr/pub/bliss/icatmanager/</A>.</P>
 <P STYLE="margin-bottom: 0cm">Unzip / untar the archive. It will
 create a folder named 'icatmanager' that contains the complete
-software. On MacOS and linux, you might need to set the executable
-bit manually on the launcher (do<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">
-chmod u+x IcatManager</FONT> on linux).</P>
+software.</P>
+<P>On MacOS and linux, you might need to set the executable
+bit manually on the launcher. For that, do from the icatmanager folder:</P>
+<UL STYLE="line-height: 150%;">
+	<LI>On linux: <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt; font-style: italic">
+	chmod u+x IcatManager</FONT>
+	</LI>
+	<LI>On MaxOS: <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt; font-style: italic">
+	chmod u+x IcatManager.app/Contents/MacOS/IcatManager</FONT>
+	</LI>
+</UL>
 <P STYLE="margin-bottom: 0cm">ICAT Manager needs a JDK to run (as it
 generates the client classes on-the-fly), in order to do so you need
 to:</P>
-<UL>
-	<LI><P STYLE="margin-bottom: 0cm">On linux: set the JAVA_HOME
-	environment variable to point to a JDK, execute 
-	<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">IcatManager
-	(./IcatManager)</FONT></P>
+<UL STYLE="line-height: 150%;">
+	<LI>On linux, either:<UL> 
+	<LI>Set the JAVA_HOME environment variable to point to a JDK and execute 
+	<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt; font-style: italic">./IcatManager</FONT> from the icatmanager folder to start the program.</LI>
+	<LI>Execute <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt; font-style: italic"> ./IcatManager -vm PATH_TO_JDK/bin/java</FONT> from the icatmanager folder to start the program.</LI>
+	<LI>Edit the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt;">IcatManager.ini</FONT> file (see <A HREF="#__RefHeading__12345678">below</A> for details). Execute 
+	<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt; font-style: italic">./IcatManager</FONT> from the icatmanager folder to start the program.
+	</UL>
+	</LI>
+
+	<LI>On Windows, either:<UL> 
+	<LI>Create a shortcut to the IcatManager.exe file, edit its properties and add to the 'Target' field 
+	<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt; font-style: italic">-vm &quot;PATH_TO_JDK\bin\javaw.exe&quot;</FONT> (with the
+	quotes). Use the shortcut to start the program.</LI>
+	<LI>From the console, execute from the icatmanager folder <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt; font-style: italic">
+	IcatManager -vm &quot;PATH_TO_JDK\bin\javaw.exe&quot;</FONT> (with the quotes) to start the program.</LI>
+	<LI>Edit the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt;">IcatManager.ini</FONT> file (see <A HREF="#__RefHeading__12345678">below</A> for details).
+	Then double-click directly on the executable to start the program (or call it from the command line).
+	</UL>
+	</LI>
+
+	<LI>On MacOS you will need to edit the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt;">
+	IcatManager.app/Contents/MacOS/IcatManager.ini</FONT> file (see <A HREF="#__RefHeading__12345678">below</A> for details).
+	 Then double-click on the application to start the program.</LI>
 </UL>
-<UL>
-	<LI><P STYLE="margin-bottom: 0cm">On Windows: execute
-	<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">
-	IcatManager.exe -vm &quot;Path_to_jdk\bin\javaw.exe&quot;</FONT> (with the
-	quotes, you can create a shortcut that includes the option)</P>
-</UL>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__12345678"></A>
+Setting JVM options  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
+<P>For setting options to the JVM used by IcatManager, you have to edit the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt;">IcatManager.ini</FONT> file. 
+You can also configure the JDK to use by this method on linux and Windows, and only by this method on MacOS.</P>
+<P>Details on this operation and the available options can be found on 
+<A HREF="https://wiki.eclipse.org/Eclipse.ini">the eclipse wiki</A>.</P>	
+<P>Pay attention to the order of the options in the ini file, this is critical for this to work.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__421_909453735"></A>
-Proxy configuration</H2>
+Proxy configuration  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">If you are behind a
 proxy, add the following lines at the end of the IcatManager.ini file
 (replace the example values with the correct settings for your
 location):</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal"><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">-Dhttp.proxyHost=proxy.url<BR>
 -Dhttp.proxyPort=1234<BR>-Dhttps.proxyHost=proxy.url<BR>-Dhttps.proxyPort=1234<BR>-Dhttp.nonProxyHosts=localhost|*.local</FONT></P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__423_909453735"></A>
-Defining a new ICAT server</H2>
+Defining a new ICAT server  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Add an ICAT server
 by using the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
 &rarr; New server</SPAN></FONT> menu or the New server button
@@ -147,7 +172,7 @@ on the left panel, you will then be prompted for the server URL. You can set eit
 <P STYLE="margin-bottom: 0cm; font-style: normal">You can define as
 many ICAT servers as you want.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">The status of each
-server defined in the list is shown with an icon: 
+server defined in the list is shown with an icon next to its name: 
 <FONT COLOR="#000000"><IMG SRC="../icons/server_unknown.gif" NAME="graphics15" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
 means there is no active connection to this server, 
 <FONT COLOR="#000000"><IMG SRC="../icons/passed.png" NAME="graphics16" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
@@ -158,8 +183,9 @@ means the software attempted to connect but failed.</P>
 server from the list of servers, use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
 &rarr; Delete server</SPAN></FONT> menu or the Delete button
 <FONT COLOR="#000000"><IMG SRC="../icons/delete.gif" NAME="graphics14" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__425_909453735"></A>
-Connecting to an ICAT instance</H2>
+Connecting to an ICAT instance  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">To connect to the
 ICAT server you defined, double-click on it in the list of servers,
 or select it and use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
@@ -185,8 +211,9 @@ an ICAT server, use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size
 &rarr; Close connection</SPAN></FONT> menu or the Disconnect
 button 
 <FONT COLOR="#000000"><IMG SRC="../icons/progress_stop.gif" NAME="graphics13" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__427_909453735"></A>
-Displaying entities</H2>
+Displaying entities  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Once connected to
 the ICAT server, a list of available entities (Dataset, Datafile,
 etc.) can be displayed in the left panel. To show or hide the list,
@@ -203,8 +230,9 @@ entity name are displayed in the tab.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Be careful when you
 access several ICAT server at the same time and check the tab name to
 make sure you are interacting with the right server.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__429_909453735"></A>
-Display options, sorting and filtering</H2>
+Display options, sorting and filtering  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">By default,
 entities are displayed by page of 50 and sorted by descending ids
 (latest created first). You can change the page size by using the
@@ -247,8 +275,9 @@ or the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STY
 &rarr; Refresh</SPAN></FONT> menu.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Note that columns
 can be reordered by dragging their header.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__431_909453735"></A>
-Editing entities</H2>
+Editing entities  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">If you select a
 line in the right panel, you can edit the selected entity by using
 the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
@@ -274,8 +303,9 @@ search is case sensitive.</P>
 also have a full name (e.g. Facilities) you can type part of the full
 name too. For entities that have neither a name or a full name you
 have to use the full id.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western"><A NAME="__RefHeading__435_909453735"></A>
-In place editing</H2>
+In place editing  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P>Alternatively, you can use in-place editing in the right panel.
 For activating the feature, click on the Toggle in-place editing
 button 
@@ -284,20 +314,22 @@ in the right panel. Note that in-place editing does not allow to edit
 association fields for the moment.</P>
 <P>Please be careful with this feature as all modifications are
 immediately sent to the ICAT server and there is no undo.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western"><A NAME="__RefHeading__433_909453735"></A>Adding
-entities</H2>
+entities  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">You can add an
 entity by using the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
 &rarr; New entity</SPAN></FONT> menu or the New entity button
 <FONT COLOR="#000000"><IMG SRC="../icons/add_obj.gif" NAME="graphics18" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.
-When you do so, the same Entity editing dialog is shown, but all
+When you do so, the Entity editing dialog is shown, but all
 fields are empty.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Note that there is
 no verification that the creation will be successful, i.e. the
 software does not check the mandatory fields are filled nor that you
 have the right to create the entity.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western"><A NAME="__RefHeading__437_909453735"></A>
-Deleting entities</H2>
+Deleting entities  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">When you select one
 or several lines from the right panel, you can use the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
 &rarr; Delete entity</SPAN></FONT> menu or the Delete button 
@@ -306,8 +338,9 @@ to delete them. Please keep in mind that the delete method of ICAT
 propagates to dependent entities (cascade delete), so for example
 deleting a facility will remove everything related to this facility
 recursively, i.e. the entire catalogue.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__439_909453735"></A>
-Updating the software</H2>
+Updating the software  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Updates of the
 software will be announced on the icatgroup mailing lists.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">You can use the
@@ -317,8 +350,9 @@ for updates of the software. If it finds one (and it should if it has
 been announced and you configured your proxy correctly) you will be
 prompted for confirmation and then, if you accept the update, for
 restarting the software after the update.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__441_909453735"></A>
-Support</H2>
+Support  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Most errors are
 traced in the log\icat_manager.log file in the installation folder.
 In particular all queries to ICAT are logged, so if something does
@@ -337,9 +371,10 @@ operations that can help you:</P>
 </UL>
 <P STYLE="margin-bottom: 0cm"><SPAN STYLE="font-style: normal">Support
 requests can be sent to <A HREF="mailto:christophe.cleva@esrf.fr">christophe.cleva@esrf.fr</A>.</SPAN></P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western"><A NAME="__RefHeading__443_909453735"></A>
-Known issues</H2>
-<UL>
+Known issues  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
+<UL STYLE="line-height: 150%;">
 	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">Due to a bug
 	in the Eclipse platform, if you close the right panel when it is
 	empty it will disappear from the application interface. Until a
@@ -349,13 +384,13 @@ Known issues</H2>
 	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">On linux, the
 	combobox used for setting the pagination size does not work
 	properly.</P>
-	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">On linux, the
-	x bit needs to be set manually on the launcher in some cases
+	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">On linux and MacOS, the
+	executable bit needs to be set manually on the launcher in some cases
 	(depends on the build process).</P>
 	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">This software has
 	never been tested on MacOS</P>
 </UL>
-<HR STYLE="margin-bottom: 0.5cm; margin-top: 1cm; margin-left: 1cm; margin-right: 1cm;">
+<HR align="CENTER" width="80%" STYLE="margin-bottom: 0.5cm; margin-top: 1cm; ">
 <P ALIGN=CENTER STYLE="margin-bottom: 0.5cm "><FONT SIZE=2>Copyright
 (C) 2014 ESRF - The European Synchrotron<BR>Licensed under the Apache
 License, Version 2.0<BR>See the NOTICE.txt file for details</FONT></P>
