@@ -124,15 +124,26 @@ Defining a new ICAT server</H2>
 by using the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Server
 &rarr; New server</SPAN></FONT> menu or the New server button
 <FONT COLOR="#000000"><IMG SRC="../icons/add_obj.gif" NAME="graphics1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>
-on the left panel, you will then be prompted for the server URL. The
-URL to use is the root URL of the ICAT server (the part before
-ICATService). For example:</P>
-<P STYLE="margin-bottom: 0cm"><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">
-https://wwws.esrf.fr/icat/</SPAN></FONT>
-<SPAN STYLE="font-style: normal">for ESRF ICAT</SPAN></P>
-<P STYLE="margin-bottom: 0cm"><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">
-https://icatisis.esc.rl.ac.uk</SPAN></FONT>
-<SPAN STYLE="font-style: normal">for ISIS ICAT</SPAN></P>
+on the left panel, you will then be prompted for the server URL. You can set either the service, wsdl or server URL.</P> 
+<P>For example these are all valid inputs:</P>
+<table style="width:90%" border="1" align="CENTER">
+	<tr STYLE="font-style: normal">
+		<td>For ESRF ICAT:</td>
+		<td>For ISIS ICAT:</td>
+	</tr>
+	<tr STYLE="margin-bottom: 0cm">
+		<td><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">https://wwws.esrf.fr/icat</FONT></td>
+		<td><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">https://icatisis.esc.rl.ac.uk/</FONT></td>
+	</tr>	
+	<tr STYLE="margin-bottom: 0cm">
+		<td><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">https://wwws.esrf.fr/icat/ICATService</FONT></td>
+		<td><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">https://icatisis.esc.rl.ac.uk/ICATService/</FONT></td>
+	</tr>	
+	<tr STYLE="margin-bottom: 0cm">
+		<td><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">https://wwws.esrf.fr/icat/ICATService/ICAT?wsdl</FONT></td>
+		<td><FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt">https://icatisis.esc.rl.ac.uk/ICATService/ICAT?wsdl</FONT></td>
+	</tr>	
+</table>
 <P STYLE="margin-bottom: 0cm; font-style: normal">You can define as
 many ICAT servers as you want.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">The status of each
@@ -164,7 +175,7 @@ authenticator ), 'uows' (ISIS custom authenticator). In case of doubt
 ask your local ICAT administrator.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">The user name and
 password are the ones you usually use to connect to ICAT. If you use
-the 'anon' authentication leave both fields empty. Note that the
+the anonymous ('anon') authentication leave both fields empty. Note that the
 software only displays the content you have access to according to
 the credentials you use.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Once connected the

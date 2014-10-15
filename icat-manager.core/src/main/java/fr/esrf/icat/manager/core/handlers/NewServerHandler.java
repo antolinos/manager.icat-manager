@@ -21,11 +21,14 @@ package fr.esrf.icat.manager.core.handlers;
  */
 
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.validator.routines.UrlValidator;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
@@ -34,13 +37,16 @@ import fr.esrf.icat.manager.core.icatserver.ICATServer;
 
 public class NewServerHandler {
 
-	  private static final String SLASH = "/";
+	  private final static Pattern URL_PATTERN = Pattern.compile("^(.+?)/?(?:ICATService)?/?(?:ICAT\\?wsdl)?\\z");
 
 	@Execute
 	  public void execute(final Shell shell) {
-		  InputDialog dlg = new InputDialog(shell, "New ICAT server", "Enter the URL of the new ICAT server", "",
+		boolean notok = true;
+  		final UrlValidator validator = new UrlValidator(new String[]{"http","https"});
+		while(notok) {
+		  InputDialog dlg = new InputDialog(shell, "New ICAT server",
+				  "Enter the URL of the new ICAT server\nYou can set either the service, wsdl or server URL", "",
 				  new IInputValidator() {
-			  		private final UrlValidator validator = new UrlValidator(new String[]{"http","https"});
 					@Override
 					public String isValid(String newText) {
 						if(null == newText || newText.isEmpty()) {
@@ -49,16 +55,27 @@ public class NewServerHandler {
 						if(!validator.isValid(newText)) {
 							return "Invalid URL";
 						}
-						// Extra validation to avoid issue with URL relative path
-						if(StringUtils.countMatches(newText, SLASH) > 2 && !newText.endsWith(SLASH)) {
-							return "Please set a terminal '/' on the URL";
-						}
 						return null;
 					}
 				});
 		  if(dlg.open() == Window.OK) {
-			  ICATDataService.getInstance().addServer(new ICATServer(dlg.getValue()));
+			  final String s = dlg.getValue();			  
+			  final Matcher matcher = URL_PATTERN.matcher(s);
+			  if(matcher.find()) {
+				  final String serverURL = matcher.group(1) + "/";
+				  if(validator.isValid(serverURL)) {
+					  ICATDataService.getInstance().addServer(new ICATServer(serverURL));
+					  notok = false;
+				  } else {
+					  MessageDialog.openError(shell, "Invalid server", serverURL + " appears to be invalid");
+				  }
+			  } else {
+				  MessageDialog.openError(shell, "Invalid URL", s + " appears to be invalid");
+			  }
+		  } else {
+			  notok = false;
 		  }
+		}
 	  }
 
 }
