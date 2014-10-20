@@ -53,6 +53,8 @@ public class ICATDataService {
 	
 	public final static String DATA_SERVICE_CONTENT = "fr.esrf.icat.manager.core.ICATDataService.CONTENT";
 
+	private static final String DOT_SPLIT_PATTERN = "\\.";
+
 	private final File configfile = new File(System.getProperty("user.home"), ".icat_servers");
 
 	private final static Logger LOG = LoggerFactory.getLogger(ICATDataService.class);
@@ -280,6 +282,23 @@ public class ICATDataService {
 	
 	public static boolean isDataServiceOperational() {
 		return ModifiedDynamicClientFactory.isCompilerAvailable();
+	}
+
+	public final static int compareVersion(final String thisVersion, final String otherVersion) {
+	    final String[] vals1 = thisVersion.split(DOT_SPLIT_PATTERN);
+	    final String[] vals2 = otherVersion.split(DOT_SPLIT_PATTERN);
+	    int i = 0;
+	    // set index to first non-equal ordinal or length of shortest version string
+	    while (i < vals1.length && i < vals2.length && vals1[i].equals(vals2[i])) {
+	      i++;
+	    }
+	    // compare first non-equal ordinal number
+	    if (i < vals1.length && i < vals2.length) {
+	        return Integer.signum(Integer.valueOf(vals1[i]).compareTo(Integer.valueOf(vals2[i])));
+	    }
+	    // the strings are equal or one string is a substring of the other
+	    // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
+        return Integer.signum(vals1.length - vals2.length);
 	}
 
 }

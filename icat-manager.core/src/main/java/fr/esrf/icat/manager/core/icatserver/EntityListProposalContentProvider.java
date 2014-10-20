@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import fr.esrf.icat.client.ICATClientException;
 import fr.esrf.icat.client.SimpleICATClient;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
+import fr.esrf.icat.manager.core.ICATDataService;
 import fr.esrf.icat.manager.core.part.EntityEditDialog;
 
 public class EntityListProposalContentProvider implements IContentProposalProvider {
@@ -56,6 +57,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 	private Label imglbl;
 	private Label txtlbl;
 	private Composite container;
+	private boolean canDoCaseInsensitive = false;
 	
 	public EntityListProposalContentProvider(final SimpleICATClient client, final String simpleName, final WrappedEntityBean initialValue,
 			final Label imageField, final Label textField, final Composite parent) {
@@ -73,12 +75,15 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 			this.hasFullName = this.initialBean.exists(ICATEntity.FULLNAME_FIELD);
 			this.nameChecked = true;
 		}
-		
+		try {
+			this.canDoCaseInsensitive = ICATDataService.compareVersion(client.getServerVersion(), "4.3.3") >= 0;
+		} catch (ICATClientException e) {
+			LOG.error("Error fetching version", e);
+		}
 	}
 
 	@Override
 	public IContentProposal[] getProposals(String contents, int position) {
-		LOG.debug("Reveived: " + contents + " (position: " + position + ")");
 		currentItems.clear();
 		if(null != initialBean) {
 			currentItems.add(initialBean);
@@ -87,7 +92,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 		caretPosition = position;
 		boolean hasResult = false;
 		try {
-			hasResult = currentItems.addAll(client.search(makeSearchString(contents)));
+			hasResult = currentItems.addAll(client.search(canDoCaseInsensitive ? makeSearchStringJPQL(contents) : makeSearchString(contents)));
 		} catch (ICATClientException e) {
 			LOG.error("Unable to load entity content for entity " + entityName, e);
 		}
@@ -132,6 +137,42 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 			nameChecked = true;
 		}
 		return getCurrentItems();
+	}
+
+	private String makeSearchStringJPQL(String contents) {
+		StringBuilder query = new StringBuilder();
+		query.append("SELECT o FROM ");
+		query.append(entityName);
+		query.append(" o");
+		
+		if(null != contents && !contents.isEmpty()) {
+			if(hasName) {
+				query.append(" WHERE LOWER(o.name) LIKE '%");
+				query.append(contents.toLowerCase());
+				query.append("%'");
+				if(hasFullName) {
+					query.append(" OR LOWER(o.fullName) LIKE '%");
+					query.append(contents.toLowerCase());
+					query.append("%'");
+				}
+			} else if(hasFullName) {
+				query.append(" WHERE LOWER(o.fullName) LIKE '%");
+				query.append(contents.toLowerCase());
+				query.append("%'");
+			} else {
+				try {
+					Integer.parseInt(contents);
+					query.append(" WHERE o.id=");
+					query.append(contents);
+				} catch (NumberFormatException e) {
+					//pass
+				}
+			}
+		}
+		
+		query.append(" ORDER BY o.id DESC LIMIT 0, 50");
+		LOG.debug(query.toString());
+		return query.toString();
 	}
 	
 	private String makeSearchString(String contents) {
@@ -208,6 +249,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 			}
 		}
 		sb.append(INITIAL_FILTER);
+		sb.append(canDoCaseInsensitive ? " - case-insentitive" : " - case-sentitive");
 		return sb.toString();
 	}
 

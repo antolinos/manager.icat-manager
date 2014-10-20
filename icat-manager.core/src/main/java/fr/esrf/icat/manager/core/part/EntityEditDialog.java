@@ -134,10 +134,10 @@ public class EntityEditDialog extends Dialog {
 				label.setImage(WARNING_IMAGE);
 				final Label warningLabel = new Label(container, SWT.LEFT);
 				warningLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, false));
-				warningLabel.setText(EntityListProposalContentProvider.INITIAL_FILTER);
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				final EntityListProposalContentProvider proposalProvider = new EntityListProposalContentProvider(
 						client, entity.getReturnType(field).getSimpleName(), (WrappedEntityBean) initialValue, label, warningLabel, container);
+				warningLabel.setText(proposalProvider.getCurrentFilter());
 				final ContentProposalAdapter contentProposalAdapter = new ContentProposalAdapter(
 						combo, new ComboContentAdapter(), proposalProvider, DEFAULT_KEYSTROKE, DEFAULT_ACTIVATION_CHARS);
 				contentProposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
@@ -159,7 +159,6 @@ public class EntityEditDialog extends Dialog {
 							public void run() {
 								final String currentText = proposalProvider.getCurrentText();
 								final int caretPosition = proposalProvider.getCaretPosition();
-								LOG.debug("Setting text: " + currentText);
 								combo.setText(currentText);
 								combo.setSelection(new Point(caretPosition, caretPosition));
 							}
