@@ -27,12 +27,15 @@ import java.util.List;
 import org.eclipse.jface.fieldassist.ContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.esrf.icat.client.ICATClientException;
 import fr.esrf.icat.client.SimpleICATClient;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
+import fr.esrf.icat.manager.core.part.EntityEditDialog;
 
 public class EntityListProposalContentProvider implements IContentProposalProvider {
 
@@ -48,15 +51,23 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 	private boolean hasName = false;
 	private boolean hasFullName = false;
 	private boolean nameChecked = false;
-	private String currentText;
+	private String currentText = "";
+	private int caretPosition = 0;
+	private Label imglbl;
+	private Label txtlbl;
+	private Composite container;
 	
-	public EntityListProposalContentProvider(SimpleICATClient client, String simpleName, WrappedEntityBean initialValue) {
+	public EntityListProposalContentProvider(final SimpleICATClient client, final String simpleName, final WrappedEntityBean initialValue,
+			final Label imageField, final Label textField, final Composite parent) {
 		super();
 		this.client = client;
 		this.entityName = simpleName;
 		this.initialBean = initialValue;
 		this.lblprovider = new EntityLabelProvider();
 		this.currentItems = new LinkedList<>();
+		this.txtlbl = textField;
+		this.imglbl = imageField;
+		this.container = parent;
 		if(null != this.initialBean) {
 			this.hasName = this.initialBean.exists(ICATEntity.NAME_FIELD);
 			this.hasFullName = this.initialBean.exists(ICATEntity.FULLNAME_FIELD);
@@ -67,26 +78,41 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 
 	@Override
 	public IContentProposal[] getProposals(String contents, int position) {
+		LOG.debug("Reveived: " + contents + " (position: " + position + ")");
 		currentItems.clear();
 		if(null != initialBean) {
 			currentItems.add(initialBean);
 		}
 		currentText = contents;
+		caretPosition = position;
+		boolean hasResult = false;
 		try {
-			currentItems.addAll(client.search(makeSearchString(contents)));
+			hasResult = currentItems.addAll(client.search(makeSearchString(contents)));
 		} catch (ICATClientException e) {
 			LOG.error("Unable to load entity content for entity " + entityName, e);
 		}
-		IContentProposal[] props = new IContentProposal[currentItems.size()];
-		String[] items = new String[currentItems.size()];
-		int i = 0;
-		for (WrappedEntityBean bean : currentItems) {
-			final String text = lblprovider.getText(bean);
-			props[i] = new ContentProposal(text);
-			items[i] = text;
-			i++;
+		
+		if(hasResult) {
+			IContentProposal[] props = new IContentProposal[currentItems.size()];
+			String[] items = new String[currentItems.size()];
+			int i = 0;
+			for (WrappedEntityBean bean : currentItems) {
+				final String text = lblprovider.getText(bean);
+				props[i] = new ContentProposal(text);
+				items[i] = text;
+				i++;
+			}
+			imglbl.setImage(EntityEditDialog.WARNING_IMAGE);
+			txtlbl.setText(getCurrentFilter());
+			container.layout();
+			return props;
+		} else {
+			imglbl.setImage(EntityEditDialog.ERROR_IMAGE);
+			txtlbl.setText("No result for " + getCurrentFilter());
+			container.layout();
+			return new IContentProposal[0];
 		}
-		return props;
+		
 	}
 
 	public String[] getInitialItems() {
@@ -154,6 +180,18 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 	
 	public Object[] getCurrentObjects() {
 		return currentItems.toArray();
+	}
+	
+	public String getCurrentText() {
+		final String ret = currentText;
+		currentText = "";
+		return ret;
+	}
+	
+	public int getCaretPosition() {
+		final int ret = caretPosition;
+		caretPosition = 0;
+		return ret;
 	}
 
 	public String getCurrentFilter() {

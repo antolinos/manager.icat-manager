@@ -55,6 +55,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -81,12 +82,15 @@ public class EntityEditDialog extends Dialog {
 	
 	private final static char[] DEFAULT_ACTIVATION_CHARS = ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_12345679890" + SWT.BS + SWT.DEL).toCharArray();
 	private final static KeyStroke DEFAULT_KEYSTROKE = KeyStroke.getInstance(SWT.CTRL, ' ');
-	private final static Image WARNING_IMAGE;
+	public final static Image WARNING_IMAGE;
+	public final static Image ERROR_IMAGE;
 
 	static {
 	    Bundle bundle = FrameworkUtil.getBundle(EntityEditDialog.class);
 	    URL url = FileLocator.find(bundle, new Path("icons/warning.gif"), null);
 	    WARNING_IMAGE = ImageDescriptor.createFromURL(url).createImage();
+	    url = FileLocator.find(bundle, new Path("icons/fail.gif"), null);
+	    ERROR_IMAGE = ImageDescriptor.createFromURL(url).createImage();
 	}
 	
 	private WrappedEntityBean entity;
@@ -133,30 +137,33 @@ public class EntityEditDialog extends Dialog {
 				warningLabel.setText(EntityListProposalContentProvider.INITIAL_FILTER);
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				final EntityListProposalContentProvider proposalProvider = new EntityListProposalContentProvider(
-						client, entity.getReturnType(field).getSimpleName(), (WrappedEntityBean) initialValue);
+						client, entity.getReturnType(field).getSimpleName(), (WrappedEntityBean) initialValue, label, warningLabel, container);
 				final ContentProposalAdapter contentProposalAdapter = new ContentProposalAdapter(
 						combo, new ComboContentAdapter(), proposalProvider, DEFAULT_KEYSTROKE, DEFAULT_ACTIVATION_CHARS);
 				contentProposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
 				contentProposalAdapter.setPropagateKeys(true);
-				contentProposalAdapter.setAutoActivationDelay(800);
+				contentProposalAdapter.setAutoActivationDelay(1000);
 				contentProposalAdapter.addContentProposalListener(new IContentProposalListener2() {
 					@Override
 					public void proposalPopupOpened(ContentProposalAdapter adapter) {
 					}
 					@Override
 					public void proposalPopupClosed(ContentProposalAdapter adapter) {
-						// when the proposal popup closes we update the helper label
-						warningLabel.setText(proposalProvider.getCurrentFilter());
 						// when the proposal popup closes we set the content of the combo to the proposals
-						combo.setItems(proposalProvider.getCurrentItems());
-						// and select the proper item
-						if(hasInitialValue) {
-							combo.select(0);
-						} else {
-							combo.deselectAll();
+						final String[] currentItems = proposalProvider.getCurrentItems();
+						if(currentItems != null && currentItems.length > 0) {
+							combo.setItems(currentItems);
 						}
-						// needed for proper label display
-						container.layout();
+						Display.getCurrent().asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								final String currentText = proposalProvider.getCurrentText();
+								final int caretPosition = proposalProvider.getCaretPosition();
+								LOG.debug("Setting text: " + currentText);
+								combo.setText(currentText);
+								combo.setSelection(new Point(caretPosition, caretPosition));
+							}
+						});
 					}
 				});
 				combo.setItems(proposalProvider.getInitialItems());
