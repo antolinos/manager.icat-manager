@@ -41,6 +41,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -151,22 +152,10 @@ public class DataPart {
 		nextBtn.setImage(IMAGE_NEXT);
 		
 		new Label(top, SWT.NONE).setText("Page size:");
-		final Combo pageSizeCombo = new Combo(top, SWT.DROP_DOWN);
+		final CCombo pageSizeCombo = new CCombo(top, SWT.DROP_DOWN  | SWT.BORDER);
 		pageSizeCombo.setLayoutData(new RowData(SWT.DEFAULT, SWT.DEFAULT));
 		pageSizeCombo.setItems(new String[]{"50", "100", "150", "200"});
 		pageSizeCombo.select(0);
-		pageSizeCombo.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent e) {
-			}
-			@Override
-			public void focusGained(FocusEvent e) {
-
-				Rectangle bounds = pageSizeCombo.getBounds();
-                Point point = new Point(bounds.x, bounds.x + bounds.width);
-                pageSizeCombo.setSelection(point);
-			}
-		});
 		pageSizeCombo.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {
@@ -185,7 +174,6 @@ public class DataPart {
 				contentProvider.setFilterString(filterText.getText());
 				refresh();
 			}
-			
 		});
 		
 		clearFilter = new Button(top, SWT.PUSH);
