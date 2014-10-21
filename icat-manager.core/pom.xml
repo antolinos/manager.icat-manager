@@ -14,7 +14,7 @@
   <description>icat-manager Core Plugin</description>
 
   <properties>
-    <icat.client.version>1.2-SNAPSHOT</icat.client.version>
+    <icat.client.version>1.2</icat.client.version>
   </properties>
 
 	<licenses>
