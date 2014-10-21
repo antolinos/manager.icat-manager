@@ -33,9 +33,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.esrf.icat.client.ICATClientException;
+import fr.esrf.icat.client.ICATUtil;
 import fr.esrf.icat.client.SimpleICATClient;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
-import fr.esrf.icat.manager.core.ICATDataService;
 import fr.esrf.icat.manager.core.part.EntityEditDialog;
 
 public class EntityListProposalContentProvider implements IContentProposalProvider {
@@ -76,7 +76,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 			this.nameChecked = true;
 		}
 		try {
-			this.canDoCaseInsensitive = ICATDataService.compareVersion(client.getServerVersion(), "4.3.3") >= 0;
+			this.canDoCaseInsensitive = ICATUtil.compareVersion(client.getServerVersion(), "4.3.3") >= 0;
 		} catch (ICATClientException e) {
 			LOG.error("Error fetching version", e);
 		}
