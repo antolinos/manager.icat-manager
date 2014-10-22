@@ -154,15 +154,10 @@ public class EntityEditDialog extends Dialog {
 						if(currentItems != null && currentItems.length > 0) {
 							combo.setItems(currentItems);
 						}
-						Display.getCurrent().asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								final String currentText = proposalProvider.getCurrentText();
-								final int caretPosition = proposalProvider.getCaretPosition();
-								combo.setText(currentText);
-								combo.setSelection(new Point(caretPosition, caretPosition));
-							}
-						});
+						final String currentText = proposalProvider.getCurrentText();
+						final int caretPosition = proposalProvider.getCaretPosition();
+						combo.setText(currentText);
+						combo.setSelection(new Point(caretPosition, caretPosition));
 					}
 				});
 				combo.setItems(proposalProvider.getInitialItems());
