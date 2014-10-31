@@ -79,6 +79,9 @@ public class ICATManagerActivator implements BundleActivator {
 	}
 
 	 public static void logProxySettings() {
+		 // Skip the whole thing if debug not logged
+		 if(!LOG.isDebugEnabled()) return;
+		 
 		 final BundleContext bc = FrameworkUtil.getBundle(ICATManagerActivator.class).getBundleContext();
 		 final ServiceReference<?> serviceReference = bc.getServiceReference(IProxyService.class.getName());
 		 
