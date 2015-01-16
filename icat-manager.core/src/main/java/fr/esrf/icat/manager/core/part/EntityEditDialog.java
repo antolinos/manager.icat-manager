@@ -104,6 +104,7 @@ public class EntityEditDialog extends Dialog {
 	private final boolean isSingle;
 	private SimpleICATClient client;
 	private Map<String, Pair<Object[], Combo>> comboMapping;
+	private Map<String, Object> fieldValues;
 	
 	public EntityEditDialog(final Shell parentShell, final List<WrappedEntityBean> beans, final SimpleICATClient client) {
 		super(parentShell);
@@ -140,12 +141,14 @@ public class EntityEditDialog extends Dialog {
 	    layout.marginLeft = 10;
 	    container.setLayout(layout);
 	    comboMapping = new HashMap<>();
-	    // we are sure we have at least one entity, use this 1st one for anything general (field types, etc.)
-	    WrappedEntityBean firstEntity = entities.get(0);
+	    fieldValues = new HashMap<>();
+	    // we are sure we have at least one entity, use the 1st one for anything general (field types, etc.)
+	    final WrappedEntityBean firstEntity = entities.get(0);
 	    for(final String field : firstEntity.getMutableFields()) {
 		    Label lblAuthn = new Label(container, SWT.NONE);
 		    lblAuthn.setText(StringUtils.capitalize(field) + ":");
-		    Label lblIcon = new Label(container, SWT.None);
+		    Button lblIcon = new Button(container, SWT.PUSH);
+		    lblIcon.setVisible(false);
 		    final Class<?> clazz = firstEntity.getReturnType(field);
 		    Object initialValue = null;
 		    for(WrappedEntityBean entity : entities) {
@@ -161,6 +164,7 @@ public class EntityEditDialog extends Dialog {
 			    	} else if(!value.equals(initialValue)) {
 			    		initialValue = null;
 			    		lblIcon.setImage(MULTI_IMAGE);
+			    		lblIcon.setVisible(true);;
 			    		break;
 			    	}
 			    }
@@ -207,6 +211,14 @@ public class EntityEditDialog extends Dialog {
 					combo.select(0);
 				}
 				comboMapping.put(field, new ImmutablePair<Object[], Combo>(new Object[]{proposalProvider}, combo));
+				if(lblIcon.isEnabled()) {
+					lblIcon.addSelectionListener(new SelectionAdapter(){
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							combo.select(0);
+						}
+					});
+				}
 				
 			} else if(Enum.class.isAssignableFrom(clazz)){
 				final Combo combo = new Combo(container, SWT.DROP_DOWN | SWT.BORDER);
@@ -226,6 +238,14 @@ public class EntityEditDialog extends Dialog {
 				}
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				comboMapping.put(field, new ImmutablePair<Object[], Combo>(c, combo));
+				if(lblIcon.isEnabled()) {
+					lblIcon.addSelectionListener(new SelectionAdapter(){
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							combo.deselectAll();;
+						}
+					});
+				}
 				
 			} else if(clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
 				final Button btn = new  Button(container, SWT.CHECK);
@@ -245,15 +265,18 @@ public class EntityEditDialog extends Dialog {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						boolean value = btn.getSelection();
-						for(WrappedEntityBean entity : entities) {
-							try {
-								entity.set(field, value);
-							} catch (Exception e1) {
-								LOG.error("Error setting " + field + " to " + value, e1);
-							}
-						}
+						fieldValues.put(field, value);
 					}
 				});
+				if (lblIcon.isEnabled()) {
+					lblIcon.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							btn.setSelection(false);
+							fieldValues.remove(field);
+						}
+					});
+				}
 				
 			} else if(Calendar.class.isAssignableFrom(clazz)
 					|| Date.class.isAssignableFrom(clazz) ||
@@ -294,15 +317,19 @@ public class EntityEditDialog extends Dialog {
 								}
 							}
 						}
-						for(WrappedEntityBean entity : entities) {
-							try {
-								entity.set(field, o);
-							} catch (Exception e1) {
-								LOG.error("Error setting " + field + " to " + o, e1);
-							}
-						}
+						fieldValues.put(field, o);
 					}
 				});
+				if (lblIcon.isEnabled()) {
+					lblIcon.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							cdt.setSelection(null);
+							fieldValues.remove(field);
+						}
+					});
+				}
+
 				
 			} else if(Number.class.isAssignableFrom(clazz)){
 				final Text text = new Text(container, SWT.BORDER);
@@ -319,16 +346,24 @@ public class EntityEditDialog extends Dialog {
 						if(null == value) {
 							value = ICATEntity.EMPTY_STRING;
 						}
-						for(WrappedEntityBean entity : entities) {
-							try {
-								entity.set(field, clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value));
-							} catch (Exception e1) {
-								LOG.error("Error setting " + field + " to " + value, e1);
-								text.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-							}
+						try {
+							final Object numVal = clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value);
+							fieldValues.put(field, numVal);
+						} catch (Exception e1) {
+							LOG.error("Error setting " + field + " to " + value, e1);
+							text.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 						}
 					}
 				});
+				if (lblIcon.isEnabled()) {
+					lblIcon.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							text.setText("");
+							fieldValues.remove(field);
+						}
+					});
+				}
 				
 			} else { // Assumes String
 				final Text text = new Text(container, SWT.BORDER);
@@ -351,17 +386,19 @@ public class EntityEditDialog extends Dialog {
 						if(null == value) {
 							value = ICATEntity.EMPTY_STRING;
 						}
-						for(WrappedEntityBean entity : entities) {
-							try {
-								entity.set(field, value);
-							} catch (Exception e1) {
-								LOG.error("Error setting " + field + " to " + value, e1);
-							}
-						}
+						fieldValues.put(field, value);
 					}
 				});
-			}
-		    
+				if (lblIcon.isEnabled()) {
+					lblIcon.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							text.setText("");
+							fieldValues.remove(field);
+						}
+					});
+				}
+			}		    
 	    }
 		return container;
 	}
@@ -381,14 +418,26 @@ public class EntityEditDialog extends Dialog {
 			final Object[] left = pair.getLeft();
 			final Object[] objects = left[0] instanceof EntityListProposalContentProvider ?
 					((EntityListProposalContentProvider)left[0]).getCurrentObjects(): left;
-			final Object value = objects[combo.indexOf(combo.getText())];
-			if(!INITIAL_VALUE_NO_CHANGE.equals(value)) {
-				for(WrappedEntityBean entity : entities) {
-					try {
-						entity.set(field, value);
-					} catch (Exception e) {
-						LOG.error("Error setting " + field + " to " + value, e);
+			final int index = combo.indexOf(combo.getText());
+			if(index >= 0) {
+				final Object value = objects[index];
+				if(!INITIAL_VALUE_NO_CHANGE.equals(value)) {
+					for(WrappedEntityBean entity : entities) {
+						try {
+							entity.set(field, value);
+						} catch (Exception e) {
+							LOG.error("Error setting " + field + " to " + value, e);
+						}
 					}
+				}
+			}
+		}
+		for(Entry<String, Object> entry : fieldValues.entrySet()) {
+			for(WrappedEntityBean entity : entities) {
+				try {
+					entity.set(entry.getKey(), entry.getValue());
+				} catch (Exception e) {
+					LOG.error("Error setting " + entry.getKey() + " to " + entry.getValue(), e);
 				}
 			}
 		}

@@ -60,6 +60,8 @@ Features</H2>
 	options, sorting and filtering</A></P>
 	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__431_909453735">Editing
 	entities</A></P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__431_909453736">Editing
+	multiple entities</A></P>
 	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__435_909453735">In
 	place editing</A></P>
 	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__433_909453735">Adding
@@ -271,7 +273,7 @@ Editing entities  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: norm
 <P STYLE="margin-bottom: 0cm; font-style: normal">If you select a
 line in the right panel, you can edit the selected entity by using
 the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
-&rarr; Edit entity</SPAN></FONT> menu of the Edit button 
+&rarr; Edit entity</SPAN></FONT> menu or the Edit button 
 <FONT COLOR="#000000"><IMG SRC="../icons/write_obj.gif" NAME="graphics10" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.
 This will open the Entity editing dialog that allows to modify any
 field. If the field is a character or numeric value you can type the
@@ -293,6 +295,32 @@ search is case sensitive.</P>
 also have a full name (e.g. Facilities) you can type part of the full
 name too. For entities that have neither a name or a full name you
 have to use the full id.</P>
+<P STYLE="margin-bottom: 0cm; font-style: normal">Changes are reflected in ICAT only when the user click OK. 
+	Using Cancel to close the dialog ensures no modification will be made to the entities.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__431_909453736"></A>
+Editing multiple entities  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
+<P STYLE="margin-bottom: 0cm; font-style: normal">If you select several
+lines in the right panel, you can edit all the selected entities at once by using the same 
+<FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
+&rarr; Edit entity</SPAN></FONT> menu or the Edit button 
+<FONT COLOR="#000000"><IMG SRC="../icons/write_obj.gif" NAME="graphics10" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT>.
+This will open the same Entity editing dialog but with several differences:</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">For fields where all entities in the selection 
+	share the same value, this value is displayed (see above for display details).</P>
+	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">For fields where entities do not share the same value,
+	no value is displayed (or the combo box displays "Initial values not changed") and a multiple values icon 
+	<FONT COLOR="#000000"><IMG SRC="../icons/morph2.gif" NAME="graphics10" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT> 
+	is shown.</P>
+	<LI><P STYLE="margin-bottom: 0cm; font-style: normal">Changing the value of a field sets the new value on all selected
+	entities. If entities were not sharing the same value before that, you can click on the multiple values icon 
+	<FONT COLOR="#000000"><IMG SRC="../icons/morph2.gif" NAME="graphics10" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=1></FONT> 
+	to revert the change. In this case no change is made to the entities. Please note that erasing the value manually from the field 
+	is different as this would set an empty value on all entities.</P>
+</UL>
+<P STYLE="margin-bottom: 0cm; font-style: normal">Changes are reflected in ICAT only when the user click OK. 
+	Using Cancel to close the dialog ensures no modification will be made to the entities.</P>
 <HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western"><A NAME="__RefHeading__435_909453735"></A>
 In place editing  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
