@@ -257,7 +257,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 			}
 		}
 		sb.append(INITIAL_FILTER);
-		sb.append(canDoCaseInsensitive ? " - case-insentitive" : " - case-sentitive");
+		sb.append(canDoCaseInsensitive ? " - case-insensitive" : " - case-sensitive");
 		return sb.toString();
 	}
 
