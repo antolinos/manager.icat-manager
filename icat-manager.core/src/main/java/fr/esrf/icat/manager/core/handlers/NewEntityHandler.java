@@ -22,6 +22,8 @@ package fr.esrf.icat.manager.core.handlers;
  */
 
 
+import java.util.Arrays;
+
 import javax.inject.Named;
 
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -57,7 +59,7 @@ public class NewEntityHandler {
 		final SimpleICATClient client = ICATDataService.getInstance().getClient(entity.getServer());
 		try {
 			final WrappedEntityBean newEntity = client.create(entity.getEntityName());
-			EntityEditDialog dlg = new EntityEditDialog(shell, newEntity, client);
+			EntityEditDialog dlg = new EntityEditDialog(shell, Arrays.asList(newEntity), client);
 			if(dlg.open() == Window.OK) {
 				client.create(newEntity);
 				part.refresh();

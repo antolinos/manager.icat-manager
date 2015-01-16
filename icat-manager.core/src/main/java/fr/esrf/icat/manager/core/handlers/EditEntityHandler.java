@@ -22,6 +22,8 @@ package fr.esrf.icat.manager.core.handlers;
  */
 
 
+import java.util.List;
+
 import javax.inject.Named;
 
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -47,7 +49,7 @@ public class EditEntityHandler {
 	private final static Logger LOG = LoggerFactory.getLogger(EditEntityHandler.class);
 
 	@Execute
-	public void execute(final Shell shell, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional WrappedEntityBean bean,
+	public void execute(final Shell shell, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional  List<WrappedEntityBean> beans,
 			@Named(IServiceConstants.ACTIVE_PART) MPart activePart) throws ICATClientException {
 		DataPart part;
 		if(activePart instanceof DataPart) {
@@ -58,9 +60,11 @@ public class EditEntityHandler {
 		final ICATEntity entity = part.getEntity();
 		final SimpleICATClient client = ICATDataService.getInstance().getClient(entity.getServer());
 		try {
-			EntityEditDialog dlg = new EntityEditDialog(shell, bean, client);
+			EntityEditDialog dlg = new EntityEditDialog(shell, beans, client);
 			if(dlg.open() == Window.OK) {
-				client.update(bean);
+				for (WrappedEntityBean bean : beans) {
+					client.update(bean);
+				}
 				part.refresh();
 			}
 		} catch (ICATClientException e) {
@@ -71,8 +75,8 @@ public class EditEntityHandler {
 	
 	
 	@CanExecute
-	public boolean canExecute(@Named(IServiceConstants.ACTIVE_SELECTION)@Optional WrappedEntityBean entity) {
-		return null != entity;
+	public boolean canExecute(@Named(IServiceConstants.ACTIVE_SELECTION)@Optional List<WrappedEntityBean> entities) {
+		return null != entities && !entities.isEmpty();
 	}
 		
 }

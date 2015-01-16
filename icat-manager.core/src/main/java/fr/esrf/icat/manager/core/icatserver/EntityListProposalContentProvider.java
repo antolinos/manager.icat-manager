@@ -46,9 +46,9 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 	
 	private SimpleICATClient client;
 	private String entityName;
-	private WrappedEntityBean initialBean;
+	private Object initialBean;
 	private EntityLabelProvider lblprovider;
-	private List<WrappedEntityBean> currentItems;
+	private List<Object> currentItems;
 	private boolean hasName = false;
 	private boolean hasFullName = false;
 	private boolean nameChecked = false;
@@ -59,7 +59,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 	private Composite container;
 	private boolean canDoCaseInsensitive = false;
 	
-	public EntityListProposalContentProvider(final SimpleICATClient client, final String simpleName, final WrappedEntityBean initialValue,
+	public EntityListProposalContentProvider(final SimpleICATClient client, final String simpleName, final Object initialValue,
 			final Label imageField, final Label textField, final Composite parent) {
 		super();
 		this.client = client;
@@ -70,9 +70,10 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 		this.txtlbl = textField;
 		this.imglbl = imageField;
 		this.container = parent;
-		if(null != this.initialBean) {
-			this.hasName = this.initialBean.exists(ICATEntity.NAME_FIELD);
-			this.hasFullName = this.initialBean.exists(ICATEntity.FULLNAME_FIELD);
+		if(null != this.initialBean && initialBean instanceof WrappedEntityBean) {
+			WrappedEntityBean cast = (WrappedEntityBean) this.initialBean;
+			this.hasName = cast.exists(ICATEntity.NAME_FIELD);
+			this.hasFullName = cast.exists(ICATEntity.FULLNAME_FIELD);
 			this.nameChecked = true;
 		}
 		try {
@@ -101,7 +102,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 			IContentProposal[] props = new IContentProposal[currentItems.size()];
 			String[] items = new String[currentItems.size()];
 			int i = 0;
-			for (WrappedEntityBean bean : currentItems) {
+			for (Object bean : currentItems) {
 				final String text = lblprovider.getText(bean);
 				props[i] = new ContentProposal(text);
 				items[i] = text;
@@ -130,11 +131,18 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 		} catch (ICATClientException e) {
 			LOG.error("Unable to load entity content for entity " + entityName, e);
 		}
-		if(!nameChecked && currentItems.size() > 0) {
-			final WrappedEntityBean w = currentItems.get(0);
-			hasName = w.exists(ICATEntity.NAME_FIELD);
-			hasFullName = w.exists(ICATEntity.FULLNAME_FIELD);
-			nameChecked = true;
+		if(!nameChecked) {
+			if(null == initialBean && currentItems.size() > 0) {
+				final WrappedEntityBean w = (WrappedEntityBean) currentItems.get(0);
+				hasName = w.exists(ICATEntity.NAME_FIELD);
+				hasFullName = w.exists(ICATEntity.FULLNAME_FIELD);
+				nameChecked = true;
+			} else if (null != initialBean && currentItems.size() > 1) {
+				final WrappedEntityBean w = (WrappedEntityBean) currentItems.get(1);
+				hasName = w.exists(ICATEntity.NAME_FIELD);
+				hasFullName = w.exists(ICATEntity.FULLNAME_FIELD);
+				nameChecked = true;
+			}
 		}
 		return getCurrentItems();
 	}
@@ -213,7 +221,7 @@ public class EntityListProposalContentProvider implements IContentProposalProvid
 	public String[] getCurrentItems(){
 		final String[] items = new String[currentItems.size()];
 		int i = 0;
-		for (WrappedEntityBean bean : currentItems) {
+		for (Object bean : currentItems) {
 			items[i++] = lblprovider.getText(bean);
 		}
 		return items;

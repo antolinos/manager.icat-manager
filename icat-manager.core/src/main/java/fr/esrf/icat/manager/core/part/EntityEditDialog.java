@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -73,6 +74,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.esrf.icat.client.SimpleICATClient;
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
+import fr.esrf.icat.manager.core.icatserver.EntityLabelProvider;
 import fr.esrf.icat.manager.core.icatserver.EntityListProposalContentProvider;
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 
@@ -84,6 +86,9 @@ public class EntityEditDialog extends Dialog {
 	private final static KeyStroke DEFAULT_KEYSTROKE = KeyStroke.getInstance(SWT.CTRL, ' ');
 	public final static Image WARNING_IMAGE;
 	public final static Image ERROR_IMAGE;
+	public final static Image MULTI_IMAGE;
+
+	private static final String INITIAL_VALUE_NO_CHANGE = "Initial values not changed";
 
 	static {
 	    Bundle bundle = FrameworkUtil.getBundle(EntityEditDialog.class);
@@ -91,44 +96,79 @@ public class EntityEditDialog extends Dialog {
 	    WARNING_IMAGE = ImageDescriptor.createFromURL(url).createImage();
 	    url = FileLocator.find(bundle, new Path("icons/fail.gif"), null);
 	    ERROR_IMAGE = ImageDescriptor.createFromURL(url).createImage();
+	    url = FileLocator.find(bundle, new Path("icons/morph2.gif"), null);
+	    MULTI_IMAGE = ImageDescriptor.createFromURL(url).createImage();
 	}
 	
-	private WrappedEntityBean entity;
+	private List<WrappedEntityBean> entities;
+	private final boolean isSingle;
 	private SimpleICATClient client;
 	private Map<String, Pair<Object[], Combo>> comboMapping;
 	
-	public EntityEditDialog(final Shell parentShell, final WrappedEntityBean entity, final SimpleICATClient client) {
+	public EntityEditDialog(final Shell parentShell, final List<WrappedEntityBean> beans, final SimpleICATClient client) {
 		super(parentShell);
-		this.entity = entity;
+		this.entities = beans;
 		this.client = client;
+		this.isSingle = beans.size() == 1;
 	}
 
-	public WrappedEntityBean getEntity() {
-		return entity;
+	@Override
+	protected void configureShell(Shell shell) {
+		super.configureShell(shell);
+		StringBuilder b = new StringBuilder();
+		b.append("Editing ");
+		if(isSingle) {
+			WrappedEntityBean bean = entities.get(0);
+			b.append(bean.getWrapped().getClass().getSimpleName());
+			b.append(" ");
+			b.append(new EntityLabelProvider().getText(bean));
+		} else if (entities.size() > 0) {
+			WrappedEntityBean bean = entities.get(0);
+			b.append(entities.size());
+			b.append(" ");
+			b.append(bean.getWrapped().getClass().getSimpleName());
+			b.append('s'); // plural
+		}
+		shell.setText(b.toString());
 	}
 
 	@Override
 	protected Control createDialogArea(final Composite parent) {
 		final Composite container = (Composite) super.createDialogArea(parent);
-	    GridLayout layout = new GridLayout(2, false);
+	    GridLayout layout = new GridLayout(3, false);
 	    layout.marginRight = 5;
 	    layout.marginLeft = 10;
 	    container.setLayout(layout);
 	    comboMapping = new HashMap<>();
-	    
-	    for(final String field : entity.getMutableFields()) {
+	    // we are sure we have at least one entity, use this 1st one for anything general (field types, etc.)
+	    WrappedEntityBean firstEntity = entities.get(0);
+	    for(final String field : firstEntity.getMutableFields()) {
 		    Label lblAuthn = new Label(container, SWT.NONE);
 		    lblAuthn.setText(StringUtils.capitalize(field) + ":");
-		    final Class<?> clazz = entity.getReturnType(field);
+		    Label lblIcon = new Label(container, SWT.None);
+		    final Class<?> clazz = firstEntity.getReturnType(field);
 		    Object initialValue = null;
-		    try {
-				initialValue = entity.get(field);
-			} catch (Exception e) {
-				LOG.error("Error getting initial value for " + field, e);
-			}
+		    for(WrappedEntityBean entity : entities) {
+		    	Object value = null;
+			    try {
+					value = entity.get(field);
+				} catch (Exception e) {
+					LOG.error("Error getting initial value for " + field, e);
+				}
+			    if(null != value) {
+			    	if(null == initialValue) {
+			    		initialValue = value;
+			    	} else if(!value.equals(initialValue)) {
+			    		initialValue = null;
+			    		lblIcon.setImage(MULTI_IMAGE);
+			    		break;
+			    	}
+			    }
+		    }
 		    final boolean hasInitialValue = initialValue != null;
-			if(entity.isEntity(field)) {
+			if(firstEntity.isEntity(field)) {
 				final Combo combo = new Combo(container, SWT.DROP_DOWN | SWT.BORDER);
+				new Label(container, SWT.NONE); //empty left label
 				final Label label = new Label(container, SWT.RIGHT);
 				label.setLayoutData(new GridData(SWT.END, SWT.CENTER, true, false));
 				label.setImage(WARNING_IMAGE);
@@ -136,7 +176,9 @@ public class EntityEditDialog extends Dialog {
 				warningLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, false));
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				final EntityListProposalContentProvider proposalProvider = new EntityListProposalContentProvider(
-						client, entity.getReturnType(field).getSimpleName(), (WrappedEntityBean) initialValue, label, warningLabel, container);
+						client, firstEntity.getReturnType(field).getSimpleName(),
+						isSingle ? initialValue : (hasInitialValue ? initialValue : INITIAL_VALUE_NO_CHANGE),
+						label, warningLabel, container);
 				warningLabel.setText(proposalProvider.getCurrentFilter());
 				final ContentProposalAdapter contentProposalAdapter = new ContentProposalAdapter(
 						combo, new ComboContentAdapter(), proposalProvider, DEFAULT_KEYSTROKE, DEFAULT_ACTIVATION_CHARS);
@@ -161,7 +203,7 @@ public class EntityEditDialog extends Dialog {
 					}
 				});
 				combo.setItems(proposalProvider.getInitialItems());
-				if(hasInitialValue) {
+				if(hasInitialValue || !isSingle) {
 					combo.select(0);
 				}
 				comboMapping.put(field, new ImmutablePair<Object[], Combo>(new Object[]{proposalProvider}, combo));
@@ -189,10 +231,12 @@ public class EntityEditDialog extends Dialog {
 				final Button btn = new  Button(container, SWT.CHECK);
 				btn.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 				if(null == initialValue) {
-					try {
-						entity.set(field, Boolean.FALSE);
-					} catch (Exception e) {
-						LOG.error("Error setting " + field + " to " + Boolean.FALSE);
+					if(isSingle) {
+						try {
+							firstEntity.set(field, Boolean.FALSE);
+						} catch (Exception e) {
+							LOG.error("Error setting " + field + " to " + Boolean.FALSE);
+						}
 					}
 				} else {
 					btn.setSelection((Boolean) initialValue);
@@ -201,10 +245,12 @@ public class EntityEditDialog extends Dialog {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						boolean value = btn.getSelection();
-						try {
-							entity.set(field, value);
-						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value, e1);
+						for(WrappedEntityBean entity : entities) {
+							try {
+								entity.set(field, value);
+							} catch (Exception e1) {
+								LOG.error("Error setting " + field + " to " + value, e1);
+							}
 						}
 					}
 				});
@@ -232,24 +278,28 @@ public class EntityEditDialog extends Dialog {
 					public void widgetSelected(SelectionEvent e) {
 						Date value = cdt.getSelection();
 						Object o = value;
-						if(Calendar.class.isAssignableFrom(clazz)) {
-							Calendar c = GregorianCalendar.getInstance();
-							c.setTime((Date)value);
-							o = c;
-						} else if(clazz.equals(XMLGregorianCalendar.class)) {
-							GregorianCalendar c = (GregorianCalendar) GregorianCalendar.getInstance();
-							c.setTime((Date)value);
-							try {
-								o = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-							} catch (DatatypeConfigurationException e1) {
-								LOG.error("Unable to create XMLGregorianCalendar", e1);
-								return;
+						if(o != null) {
+							if(Calendar.class.isAssignableFrom(clazz)) {
+								Calendar c = GregorianCalendar.getInstance();
+								c.setTime((Date)value);
+								o = c;
+							} else if(clazz.equals(XMLGregorianCalendar.class)) {
+								GregorianCalendar c = (GregorianCalendar) GregorianCalendar.getInstance();
+								c.setTime((Date)value);
+								try {
+									o = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+								} catch (DatatypeConfigurationException e1) {
+									LOG.error("Unable to create XMLGregorianCalendar", e1);
+									return;
+								}
 							}
 						}
-						try {
-							entity.set(field, o);
-						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + o, e1);
+						for(WrappedEntityBean entity : entities) {
+							try {
+								entity.set(field, o);
+							} catch (Exception e1) {
+								LOG.error("Error setting " + field + " to " + o, e1);
+							}
 						}
 					}
 				});
@@ -269,11 +319,13 @@ public class EntityEditDialog extends Dialog {
 						if(null == value) {
 							value = ICATEntity.EMPTY_STRING;
 						}
-						try {
-							entity.set(field, clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value));
-						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value, e1);
-							text.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+						for(WrappedEntityBean entity : entities) {
+							try {
+								entity.set(field, clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value));
+							} catch (Exception e1) {
+								LOG.error("Error setting " + field + " to " + value, e1);
+								text.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+							}
 						}
 					}
 				});
@@ -282,10 +334,12 @@ public class EntityEditDialog extends Dialog {
 				final Text text = new Text(container, SWT.BORDER);
 				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				if(null == initialValue) {
-					try {
-						entity.set(field, ICATEntity.EMPTY_STRING);
-					} catch (Exception e) {
-						LOG.error("Error setting " + field + " to EMPTY_STRING");
+					if(isSingle) {
+						try {
+							firstEntity.set(field, ICATEntity.EMPTY_STRING);
+						} catch (Exception e) {
+							LOG.error("Error setting " + field + " to EMPTY_STRING");
+						}
 					}
 				} else {
 					text.setText(initialValue.toString());
@@ -297,10 +351,12 @@ public class EntityEditDialog extends Dialog {
 						if(null == value) {
 							value = ICATEntity.EMPTY_STRING;
 						}
-						try {
-							entity.set(field, value);
-						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value, e1);
+						for(WrappedEntityBean entity : entities) {
+							try {
+								entity.set(field, value);
+							} catch (Exception e1) {
+								LOG.error("Error setting " + field + " to " + value, e1);
+							}
 						}
 					}
 				});
@@ -326,10 +382,14 @@ public class EntityEditDialog extends Dialog {
 			final Object[] objects = left[0] instanceof EntityListProposalContentProvider ?
 					((EntityListProposalContentProvider)left[0]).getCurrentObjects(): left;
 			final Object value = objects[combo.indexOf(combo.getText())];
-			try {
-				entity.set(field, value);
-			} catch (Exception e) {
-				LOG.error("Error setting " + field + " to " + value, e);
+			if(!INITIAL_VALUE_NO_CHANGE.equals(value)) {
+				for(WrappedEntityBean entity : entities) {
+					try {
+						entity.set(field, value);
+					} catch (Exception e) {
+						LOG.error("Error setting " + field + " to " + value, e);
+					}
+				}
 			}
 		}
 		comboMapping = null;
