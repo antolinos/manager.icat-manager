@@ -223,6 +223,13 @@ public class ICATDataService {
 			server.setStatus(Status.FAILED);
 			fireContentChanged();
 			throw e;
+		} catch (IOException e) {
+			LOG.warn("Unable to connect user " + client.getIcatUsername(), e);
+			server.setConnected(false);
+			server.setVersion(null);
+			server.setStatus(Status.FAILED);
+			fireContentChanged();
+			throw new ICATClientException(e);
 		}
 	}
 
