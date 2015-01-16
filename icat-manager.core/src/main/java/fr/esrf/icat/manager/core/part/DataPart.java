@@ -113,6 +113,7 @@ public class DataPart {
 	private Button firstBtn;
 	private Text filterText;
 	private Button clearFilter;
+	private ISelectionChangedListener selectionListener;
 
 	@PostConstruct
 	public void postConstruct(final Composite parent, final EMenuService menuService, 
@@ -248,14 +249,14 @@ public class DataPart {
 		paginationLabel.setText(contentProvider.getPaginationLabelText());
 		nextBtn.setEnabled(!contentProvider.isLastPage());
 		previousBtn.setEnabled(!contentProvider.isFirstPage());
-	    // make selection available
-	    viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+	    selectionListener = new ISelectionChangedListener() {
 	    	  @Override
 	    	  public void selectionChanged(SelectionChangedEvent event) {
 	    	    IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
 	    	    selectionService.setSelection(selection.toList());
 	    	  }
-    	}); 
+    	};
+		viewer.addSelectionChangedListener(selectionListener); 
 	    // context menu
 	    menuService.registerContextMenu(viewer.getControl(), "icat-manager.core.popupmenu.entity");
 		table.pack();
@@ -342,6 +343,7 @@ public class DataPart {
 					@Override
 					public void run() {
 						viewer.refresh();
+						refreshSelection();
 						paginationLabel.setText(contentProvider.getPaginationLabelText());
 						firstBtn.setEnabled(!contentProvider.isFirstPage());
 						previousBtn.setEnabled(!contentProvider.isFirstPage());
@@ -367,6 +369,11 @@ public class DataPart {
 	public void toggleNameSorting() {
 		contentProvider.toggleNameSorting();
 		refresh();
+	}
+
+	public void refreshSelection() {
+		// needed to refresh potentially modified objects in the selection
+		selectionListener.selectionChanged(null);
 	}
 	
 }
