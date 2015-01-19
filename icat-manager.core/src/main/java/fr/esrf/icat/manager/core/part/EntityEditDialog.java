@@ -350,7 +350,7 @@ public class EntityEditDialog extends Dialog {
 							final Object numVal = clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value);
 							fieldValues.put(field, numVal);
 						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value, e1);
+							LOG.error("Error setting " + field + " to " + value);
 							text.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 						}
 					}
