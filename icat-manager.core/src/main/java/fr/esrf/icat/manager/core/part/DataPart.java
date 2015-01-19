@@ -190,6 +190,10 @@ public class DataPart {
 		contentProvider = new EntityContentProvider();
 		viewer.setContentProvider(contentProvider);
 		entity =(ICATEntity) part.getTransientData().get(ICATEntity.ENTITY_CONTEXT_KEY);
+		final String initialFilter = (String) part.getTransientData().get(ICATEntity.ENTITY_FILTER_KEY);
+		if(null != initialFilter) {
+			contentProvider.setFilterString(initialFilter);
+		}
 
 		pageSizeCombo.addSelectionListener(new SelectionListener() {
 			@Override

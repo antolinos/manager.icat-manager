@@ -28,6 +28,7 @@ public class ICATEntity {
 	public static final String ID_FIELD = "id";
 
 	public static final String ENTITY_CONTEXT_KEY = "entity";
+	public static final String ENTITY_FILTER_KEY = "filter";
 	public static final String EMPTY_STRING = "";
 
 	private ICATServer server;

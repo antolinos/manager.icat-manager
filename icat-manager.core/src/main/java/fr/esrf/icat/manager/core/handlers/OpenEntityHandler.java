@@ -38,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.esrf.icat.manager.core.icatserver.ICATEntity;
+import fr.esrf.icat.manager.core.icatserver.ICATServer;
 import fr.esrf.icat.manager.core.part.DataPart;
 
 public class OpenEntityHandler {
@@ -45,22 +46,38 @@ public class OpenEntityHandler {
 	private final static Logger LOG = LoggerFactory.getLogger(OpenEntityHandler.class);
 	
 	@Execute
-	public void execute(@Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATEntity entity, final EPartService partService,
-			 final EModelService modelService, final MWindow window) {
-		OpenEntityHandler.openEntityPart(partService, modelService, window, entity);
+	public void execute(
+			@Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATEntity entity,
+			final @Named("icat-manager.core.commandparameter.filter")@Optional String filter,
+			final @Named("icat-manager.core.commandparameter.entity")@Optional String entityName,
+			final @Named("icat-manager.core.commandparameter.server")@Optional String serverURL,
+			final EPartService partService, final EModelService modelService, final MWindow window) {
+		if(null == entity) {
+			entity = new ICATEntity(new ICATServer(serverURL), entityName);
+		}
+		OpenEntityHandler.openEntityPart(partService, modelService, window, entity, filter);
 	}
 	
 	
 	@CanExecute
-	public boolean canExecute(@Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATEntity entity) {
-		return entity != null; 
+	public boolean canExecute(
+			@Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATEntity entity,
+			final @Named("icat-manager.core.commandparameter.filter")@Optional String filter,
+			final @Named("icat-manager.core.commandparameter.entity")@Optional String entityName,
+			final @Named("icat-manager.core.commandparameter.server")@Optional String serverURL) {
+		return entity != null || (filter != null && entityName != null && serverURL != null); 
 	}
 
-
-	public static void openEntityPart(final EPartService partService, final EModelService modelService, final MWindow window, ICATEntity entity) {
+	public static void openEntityPart(final EPartService partService, final EModelService modelService, final MWindow window, final ICATEntity entity) {
+		openEntityPart(partService, modelService, window, entity, null);
+	}
+	
+	public static void openEntityPart(final EPartService partService, final EModelService modelService, final MWindow window, final ICATEntity entity, final String filter) {
+		LOG.debug("Opening DataPart for {} using filter {}", entity.getEntityName(), filter);
 		String partID = DataPart.DATA_PART_ELEMENT_HEADER + ":" + entity.getServer().getServerURL() + ":" + entity.getEntityName();
 		MPart mPart = (MPart) modelService.find(partID, window);
 		if(null != mPart) {
+			
 		    partService.showPart(mPart, PartState.ACTIVATE);
 			mPart.getContext().set(ICATEntity.ENTITY_CONTEXT_KEY, entity);
 		    LOG.debug("Showing existing part: " + partID);
@@ -70,6 +87,9 @@ public class OpenEntityHandler {
 		mPart.setElementId(partID);
 		mPart.setLabel(entity.getEntityName() + " [" + entity.getServer().getServerURL() + "]");
 		mPart.getTransientData().put(ICATEntity.ENTITY_CONTEXT_KEY, entity);
+		if(null != filter) {
+			mPart.getTransientData().put(ICATEntity.ENTITY_FILTER_KEY, filter);
+		}
 		MPartStack partstack = (MPartStack) modelService.find(DataPart.ICAT_MANAGER_MAINSTACK, window);
 		partstack.getChildren().add(mPart);
 		partService.showPart(mPart, PartState.ACTIVATE);

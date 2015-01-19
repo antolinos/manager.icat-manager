@@ -49,8 +49,10 @@ public class EditEntityHandler {
 	private final static Logger LOG = LoggerFactory.getLogger(EditEntityHandler.class);
 
 	@Execute
-	public void execute(final Shell shell, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional  List<WrappedEntityBean> beans,
+	public void execute(final Shell shell,
+			@Named(IServiceConstants.ACTIVE_SELECTION)@Optional  List<WrappedEntityBean> beans,
 			@Named(IServiceConstants.ACTIVE_PART) MPart activePart) throws ICATClientException {
+		
 		DataPart part;
 		if(activePart instanceof DataPart) {
 			part = (DataPart) activePart;

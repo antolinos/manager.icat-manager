@@ -77,6 +77,10 @@
       <children xsi:type="menu:HandledMenuItem" xmi:id="_8SXP8B4zEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.editentity" label="Edit entity" iconURI="platform:/plugin/icat-manager.core/icons/write_obj.gif" command="_bwangB4OEeSOsvlmsNpv_A"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_E47dIB40EeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.deleteentity" label="Delete entity" iconURI="platform:/plugin/icat-manager.core/icons/delete.gif" command="_dpqoIB4OEeSOsvlmsNpv_A"/>
       <children xsi:type="menu:MenuSeparator" xmi:id="_s4Fc0B4_EeSOsvlmsNpv_A" elementId="icat-manager.core.menuseparator.2"/>
+      <children xsi:type="menu:Menu" xmi:id="_gKFuIJ_OEeSt4p286u0u_Q" elementId="icat-manager.core.menu.showLinked" label="Show corresponding ...">
+        <children xsi:type="menu:DynamicMenuContribution" xmi:id="_nXvnoJ_OEeSt4p286u0u_Q" elementId="icat-manager.core.dynamicmenucontribution.submenu.linkedentities" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.LinkedEntitiesMenuContribution"/>
+      </children>
+      <children xsi:type="menu:MenuSeparator" xmi:id="_785GsJ_OEeSt4p286u0u_Q" elementId="icat-manager.core.menuseparator.6"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_wMPVMB4_EeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.refresh" label="Refresh" iconURI="platform:/plugin/icat-manager.core/icons/refresh_nav.gif" command="_h8FpUB4_EeSOsvlmsNpv_A"/>
     </menus>
     <toolbar xmi:id="_7FskIB4VEeSOsvlmsNpv_A" elementId="icat-manager.core.toolbar.datapart">
@@ -94,7 +98,11 @@
   <commands xmi:id="_s__VcBvrEeS-S8zgM1nPnA" elementId="org.eclipse.ui.file.exit" commandName="Exit"/>
   <commands xmi:id="_WhRxwB1hEeS-S8zgM1nPnA" elementId="icat-manager.core.command.deleteserver" commandName="Delete server"/>
   <commands xmi:id="_vlX1cB1uEeS-S8zgM1nPnA" elementId="icat-manager.core.command.connectserver" commandName="Connect"/>
-  <commands xmi:id="_9oABsB15EeSOsvlmsNpv_A" elementId="icat-manager.core.command.openentity" commandName="Open"/>
+  <commands xmi:id="_9oABsB15EeSOsvlmsNpv_A" elementId="icat-manager.core.command.openentity" commandName="Open">
+    <parameters xmi:id="_5bcxwJ_bEeSt4p286u0u_Q" elementId="icat-manager.core.commandparameter.filter" name="EntityFilter"/>
+    <parameters xmi:id="_g25b4J_xEeSt4p286u0u_Q" elementId="icat-manager.core.commandparameter.entity" name="EntityName"/>
+    <parameters xmi:id="_jl0gQJ_xEeSt4p286u0u_Q" elementId="icat-manager.core.commandparameter.server" name="EntityServer"/>
+  </commands>
   <commands xmi:id="_YkAV4B4OEeSOsvlmsNpv_A" elementId="icat-manager.core.command.newentity" commandName="New entity"/>
   <commands xmi:id="_bwangB4OEeSOsvlmsNpv_A" elementId="icat-manager.core.command.editentity" commandName="Edit entity"/>
   <commands xmi:id="_dpqoIB4OEeSOsvlmsNpv_A" elementId="icat-manager.core.command.deleteentity" commandName="Delete entity"/>
