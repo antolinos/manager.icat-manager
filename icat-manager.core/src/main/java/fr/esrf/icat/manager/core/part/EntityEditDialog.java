@@ -406,6 +406,7 @@ public class EntityEditDialog extends Dialog {
 	@Override
 	protected void cancelPressed() {
 		comboMapping = null;
+		fieldValues = null;
 		super.cancelPressed();
 	}
 
@@ -442,6 +443,7 @@ public class EntityEditDialog extends Dialog {
 			}
 		}
 		comboMapping = null;
+		fieldValues = null;
 		super.okPressed();
 	}
 
