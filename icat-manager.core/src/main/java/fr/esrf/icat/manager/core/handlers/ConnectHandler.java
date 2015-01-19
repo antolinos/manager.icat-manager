@@ -24,14 +24,19 @@ package fr.esrf.icat.manager.core.handlers;
 
 import javax.inject.Named;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UISynchronize;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Shell;
 
 import fr.esrf.icat.client.ICATClientException;
@@ -43,8 +48,8 @@ import fr.esrf.icat.manager.core.part.ConnectionDialog;
 public class ConnectHandler {
 	
 	@Execute
-	public void execute(final Shell shell, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATServer server) {
-		ConnectHandler.connectServer(server, shell, null);
+	public void execute(final Shell shell, final UISynchronize sync, @Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATServer server) {
+		ConnectHandler.connectServer(server, sync, shell, null);
 	}
 	
 	@CanExecute
@@ -52,7 +57,7 @@ public class ConnectHandler {
 		return server != null && !server.isConnected();
 	}
 	
-	public static void connectServer(final ICATServer server, final Shell shell, final Runnable endAction) {
+	public static void connectServer(final ICATServer server, final UISynchronize sync, final Shell shell, final Runnable endAction) {
 		ConnectionDialog dlg = new ConnectionDialog(shell, server.getLastAuthnMethod(), server.getLastUserName());
 		if(dlg.open() != Window.OK) {
 			return;
@@ -65,19 +70,47 @@ public class ConnectHandler {
 		client.setIcatUsername(user);
 		server.setLastUserName(user);
 		client.setIcatPassword(dlg.getPassword());
-		BusyIndicator.showWhile(null, new Runnable(){
+		
+		final Cursor original = shell.getCursor();
+		final Cursor busyCursor = shell.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
+
+		Job j = new Job("Connection to server"){
+
 			@Override
-			public void run() {
+			protected IStatus run(IProgressMonitor monitor) {
 				try {
+					sync.syncExec(new Runnable(){
+						@Override
+						public void run() {
+							shell.setCursor(busyCursor);
+						}
+					});
 					ICATDataService.getInstance().connect(server);
 					if(null != endAction) {
-						Display.getCurrent().asyncExec(endAction);
+						sync.asyncExec(endAction);
 					}
-				} catch (ICATClientException e) {
-					MessageDialog.openError(shell, "Connection error", "Error connecting to ICAT:\n" + e.getMessage());
+					return Status.OK_STATUS;
+				} catch (final ICATClientException e) {
+					sync.syncExec(new Runnable(){
+						@Override
+						public void run() {
+							MessageDialog.openError(shell, "Connection error", "Error connecting to ICAT:\n" + e.getMessage());
+						}
+					});
+					return Status.CANCEL_STATUS;
+				} finally {
+					sync.syncExec(new Runnable(){
+						@Override
+						public void run() {
+							shell.setCursor(original);
+						}
+					});
 				}
 			}
-		});
+			
+		};
+		j.schedule();
+		
 	}
 		
 }

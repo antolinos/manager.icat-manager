@@ -29,6 +29,7 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -37,8 +38,10 @@ import org.eclipse.e4.ui.workbench.modeling.IWindowCloseHandler;
 import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
 
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UISynchronize;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -64,6 +67,9 @@ public class ServerPart implements PropertyChangeListener {
 	
 	private final static Logger LOG = LoggerFactory.getLogger(ServerPart.class);
 
+	@Inject
+	private UISynchronize sync;
+	
 	private TreeViewer viewer;
 	private IcatServerContentProvider icatContentProvider;
 	private ICATDataService service;
@@ -107,7 +113,7 @@ public class ServerPart implements PropertyChangeListener {
 	    	    if(selectedNode instanceof ICATServer) {
 	    	    	final ICATServer server = (ICATServer)selectedNode;
 	    	    	if(!server.isConnected()) {
-	    	    		ConnectHandler.connectServer(server, parent.getShell(), new Runnable(){
+	    	    		ConnectHandler.connectServer(server, sync, parent.getShell(), new Runnable(){
 							@Override
 							public void run() {
 				    	    	if(server.isConnected()) {
@@ -138,7 +144,12 @@ public class ServerPart implements PropertyChangeListener {
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		viewer.refresh();
+		Display.getDefault().asyncExec(new Runnable(){
+			@Override
+			public void run() {
+				viewer.refresh();
+			}
+		});
 	}
 
 	@Focus
