@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 public class ICATManagerActivator implements BundleActivator {
 	
 	private final static Logger LOG = LoggerFactory.getLogger(ICATManagerActivator.class);
-	public static final String UPDATE_FLAG_FILENAME = ".need_clear_persisted_state";
+	public  final static String UPDATE_FLAG_FILENAME = ".need_clear_persisted_state";
 	private final static String[] PATHS = new String[]{".metadata", ".plugins", "org.eclipse.e4.workbench", "workbench.xmi"};
 	
 	@Override
@@ -158,4 +158,6 @@ public class ICATManagerActivator implements BundleActivator {
 		 proxyData.setPort(port);
 		 proxyService.setProxyData(new IProxyData[] { proxyData });
 	 }
+	 
+	 
 }
