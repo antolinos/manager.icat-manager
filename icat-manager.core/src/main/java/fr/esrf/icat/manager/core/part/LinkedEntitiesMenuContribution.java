@@ -161,9 +161,8 @@ public class LinkedEntitiesMenuContribution {
 	private String makeAssociatedEntityFilter(final List<WrappedEntityBean> selection, final String associatedFieldName) {
 		final Set<Long> idSet = new HashSet<>();
 		for(WrappedEntityBean bean : selection) {
-			Long ido = null;
 			try {
-				ido = (Long) bean.get(ICATEntity.ID_FIELD);
+				idSet.add((Long) bean.get(ICATEntity.ID_FIELD));
 			} catch (Exception e) {
 				String simpleName = null;
 				try {
@@ -174,7 +173,6 @@ public class LinkedEntitiesMenuContribution {
 					LOG.error("Error getting id from {} {}", simpleName, "ERROR getting name: " + e1.getMessage(), e);
 				}
 			}
-			idSet.add(ido);
 		}
 		if(idSet.size() == 0) {
 			return null;
@@ -191,7 +189,6 @@ public class LinkedEntitiesMenuContribution {
 		final Set<Long> idSet = new HashSet<>();
 		for(WrappedEntityBean bean : selection) {
 			WrappedEntityBean o = null;
-			Long ido = null;
 			try {
 				o = (WrappedEntityBean) bean.get(fieldName);
 			} catch (Exception e) {
@@ -205,7 +202,7 @@ public class LinkedEntitiesMenuContribution {
 			}
 			if(null != o) {
 				try {
-					ido = (Long) o.get(ICATEntity.ID_FIELD);
+					idSet.add((Long) o.get(ICATEntity.ID_FIELD));
 				} catch (Exception e) {
 					String simpleName = null;
 					try {
@@ -217,7 +214,6 @@ public class LinkedEntitiesMenuContribution {
 					}
 				}
 			}
-			idSet.add(ido);
 		}
 		if(idSet.size() == 0) {
 			return null;
