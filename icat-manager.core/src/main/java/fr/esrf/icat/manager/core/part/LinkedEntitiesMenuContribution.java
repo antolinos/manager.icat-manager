@@ -123,13 +123,15 @@ public class LinkedEntitiesMenuContribution {
 		}
 		for(String fieldName: firstEntityBean.getAssociationFields()) {
 		    String entityName;
+		    String methodName;
 			try {
-				entityName = firstEntityBean.getAssociatedEntity(fieldName);
+				entityName = firstEntityBean.getAssociatedEntityName(fieldName);
+				methodName = firstEntityBean.getAssociatedMethodName(fieldName);
 			} catch (NoSuchMethodException e) {
-				LOG.error("Error getting associated entity class for {}.{}", firstEntityBean.getEntityName(), fieldName, e);
+				LOG.error("Error getting associated entity and method for {}.{}", firstEntityBean.getEntityName(), fieldName, e);
 				continue;
 			}
-			String entityFilter = makeAssociatedEntityFilter(selection, StringUtils.uncapitalize(firstEntityBean.getEntityName()));
+			String entityFilter = makeAssociatedEntityFilter(selection, methodName);
 			if(null == entityFilter) {
 				continue;
 			}
@@ -156,7 +158,7 @@ public class LinkedEntitiesMenuContribution {
 		
 	}
 
-	private String makeAssociatedEntityFilter(final List<WrappedEntityBean> selection, final String entityName) {
+	private String makeAssociatedEntityFilter(final List<WrappedEntityBean> selection, final String associatedFieldName) {
 		final Set<Long> idSet = new HashSet<>();
 		for(WrappedEntityBean bean : selection) {
 			Long ido = null;
@@ -178,7 +180,7 @@ public class LinkedEntitiesMenuContribution {
 			return null;
 		}
 		StringBuilder b = new StringBuilder();
-		b.append(entityName);
+		b.append(associatedFieldName);
 		b.append(".id IN(");
 		b.append(StringUtils.join(idSet, ','));
 		b.append(")");
