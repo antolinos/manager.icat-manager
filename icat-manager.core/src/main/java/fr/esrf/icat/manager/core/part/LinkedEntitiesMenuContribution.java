@@ -137,7 +137,7 @@ public class LinkedEntitiesMenuContribution {
 			}
 			MHandledMenuItem dynamicItem = MMenuFactory.INSTANCE.createHandledMenuItem();
 			dynamicItem.setCommand(command);
-			dynamicItem.setLabel(entityName);
+			dynamicItem.setLabel(entityName + "s");
 		    MParameter p = MCommandsFactory.INSTANCE.createParameter();
 		    p.setName("icat-manager.core.commandparameter.filter");
 			p.setValue(entityFilter);
