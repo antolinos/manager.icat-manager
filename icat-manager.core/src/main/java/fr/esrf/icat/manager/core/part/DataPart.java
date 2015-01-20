@@ -21,14 +21,21 @@ package fr.esrf.icat.manager.core.part;
  */
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.e4.ui.di.PersistState;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
@@ -81,6 +88,10 @@ public class DataPart {
 	
 	private final static Logger LOG = LoggerFactory.getLogger(DataPart.class);
 	
+	private final static File configfile = new File(System.getProperty("user.home"), ".icat_column_orders");
+
+	private final static Properties columnProps;
+	
 	private final static Image IMAGE_UP;
 	private final static Image IMAGE_DOWN;
 	private final static Image IMAGE_NEXT;
@@ -102,6 +113,26 @@ public class DataPart {
 	    IMAGE_FIRST = ImageDescriptor.createFromURL(url).createImage();
 	    url = FileLocator.find(bundle, new Path("icons/clear_co.gif"), null);
 	    IMAGE_CLEAR = ImageDescriptor.createFromURL(url).createImage();
+	    columnProps = new Properties();
+		LOG.debug("Reading column order file at: " + configfile.getAbsolutePath());
+		if(configfile.exists()) {
+			FileInputStream inStream = null;
+			try {
+				inStream = new FileInputStream(configfile);
+				columnProps.load(inStream);
+			} catch(IOException e) {
+				LOG.error("Error reading column file " + configfile.getAbsolutePath(), e);
+			} finally {
+				if(inStream != null) {
+					try {
+						inStream.close();
+					} catch (Exception e) {
+						LOG.warn("Error closing file " + configfile.getAbsolutePath(), e);
+					}
+				}
+			}
+		}
+
 	}
 	
 	private TableViewer viewer;
@@ -254,6 +285,7 @@ public class DataPart {
 		paginationLabel.setText(contentProvider.getPaginationLabelText());
 		nextBtn.setEnabled(!contentProvider.isLastPage());
 		previousBtn.setEnabled(!contentProvider.isFirstPage());
+		// needed to have the selection in the service ...
 	    selectionListener = new ISelectionChangedListener() {
 	    	  @Override
 	    	  public void selectionChanged(SelectionChangedEvent event) {
@@ -264,6 +296,25 @@ public class DataPart {
 		viewer.addSelectionChangedListener(selectionListener); 
 	    // context menu
 	    menuService.registerContextMenu(viewer.getControl(), "icat-manager.core.popupmenu.entity");
+	    // reset column order if saved
+	    try {
+		    final String pState = columnProps.getProperty(getPersistenceID());
+		    if(pState != null) {
+		    	String[] idxS = pState.split(",");
+		    	if(idxS.length == viewer.getTable().getColumnCount()) {
+			    	int[] indices = new int[idxS.length];
+			    	for(int i = 0; i < indices.length; i++) {
+			    		indices[i] = Integer.parseInt(idxS[i]);
+			    	}
+				    viewer.getTable().setColumnOrder(indices);
+		    	} else {
+		    		LOG.warn("DataPart viewer has {} columns while the saved state has {}", viewer.getTable().getColumnCount(), idxS.length);
+		    	}
+		    }
+	    } catch (Exception e) {
+	    	LOG.error("Error while setting persisted column back", e);
+	    }
+	    // final show
 		table.pack();
 		refresh();
 	}
@@ -385,5 +436,34 @@ public class DataPart {
 		contentProvider.setFilterString(newFilter);
 		filterText.setText(newFilter);
 		refresh();
+	}
+	
+	@PersistState
+	public void saveColumnOrder(final MPart mPart) {
+		columnProps.put(getPersistenceID(), StringUtils.join(viewer.getTable().getColumnOrder(), ','));
+		updateConfig();
+	}
+
+	private String getPersistenceID() {
+		return entity.getServer().getServerURL() + ":" + entity.getEntityName();
+	}
+	
+	private static void updateConfig(){
+		LOG.debug("Writing column order file at: " + configfile.getAbsolutePath());
+		FileOutputStream outStream = null;
+		try {
+			outStream = new FileOutputStream(configfile);
+			columnProps.store(outStream, null);
+		} catch(IOException e) {
+			LOG.error("Error writing column file " + configfile.getAbsolutePath(), e);
+		} finally {
+			if(outStream != null) {
+				try {
+					outStream.close();
+				} catch (Exception e) {
+					LOG.warn("Error closing file " + configfile.getAbsolutePath(), e);
+				}
+			}
+		}
 	}
 }
