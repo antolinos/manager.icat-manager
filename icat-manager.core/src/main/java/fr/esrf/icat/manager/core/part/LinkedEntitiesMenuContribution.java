@@ -41,6 +41,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MHandledMenuItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuElement;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuFactory;
+import org.eclipse.e4.ui.model.application.ui.menu.MMenuSeparator;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +91,45 @@ public class LinkedEntitiesMenuContribution {
 	    final WrappedEntityBean firstEntityBean = selection.get(0);
 		for(String fieldName : firstEntityBean.getEntityFields()) {
 		    final String entityName = firstEntityBean.getReturnType(fieldName).getSimpleName();
-			String entityFilter = makeFilter(selection, fieldName);
+			String entityFilter = makeFKEntityFilter(selection, fieldName);
+			if(null == entityFilter) {
+				continue;
+			}
+			final MHandledMenuItem dynamicItem = MMenuFactory.INSTANCE.createHandledMenuItem();
+			dynamicItem.setCommand(command);
+			dynamicItem.setLabel(entityName);
+		    MParameter p = MCommandsFactory.INSTANCE.createParameter();
+		    p.setName("icat-manager.core.commandparameter.filter");
+			p.setValue(entityFilter);
+		    dynamicItem.getParameters().add(p);
+		    MParameter pEntity = MCommandsFactory.INSTANCE.createParameter();
+		    pEntity.setName("icat-manager.core.commandparameter.entity");
+		    pEntity.setValue(entityName);
+		    dynamicItem.getParameters().add(pEntity);
+		    MParameter pServer = MCommandsFactory.INSTANCE.createParameter();
+		    pServer.setName("icat-manager.core.commandparameter.server");
+		    pServer.setValue(part.getEntity().getServer().getServerURL());
+		    dynamicItem.getParameters().add(pServer);
+		    dynamicItem.setEnabled(true);
+		    dynamicItem.setToBeRendered(true);
+		    dynamicItem.setVisible(true);
+		    items.add(dynamicItem);
+		}
+		if(items.size() > 0) {
+			final MMenuSeparator separator = MMenuFactory.INSTANCE.createMenuSeparator();
+			separator.setToBeRendered(true);
+			separator.setVisible(true);
+			items.add(separator);
+		}
+		for(String fieldName: firstEntityBean.getAssociationFields()) {
+		    String entityName;
+			try {
+				entityName = firstEntityBean.getAssociatedEntity(fieldName);
+			} catch (NoSuchMethodException e) {
+				LOG.error("Error getting associated entity class for {}.{}", firstEntityBean.getEntityName(), fieldName, e);
+				continue;
+			}
+			String entityFilter = makeAssociatedEntityFilter(selection, StringUtils.uncapitalize(firstEntityBean.getEntityName()));
 			if(null == entityFilter) {
 				continue;
 			}
@@ -117,7 +156,36 @@ public class LinkedEntitiesMenuContribution {
 		
 	}
 
-	private String makeFilter(final List<WrappedEntityBean> selection, final String fieldName) {
+	private String makeAssociatedEntityFilter(final List<WrappedEntityBean> selection, final String entityName) {
+		final Set<Long> idSet = new HashSet<>();
+		for(WrappedEntityBean bean : selection) {
+			Long ido = null;
+			try {
+				ido = (Long) bean.get(ICATEntity.ID_FIELD);
+			} catch (Exception e) {
+				String simpleName = null;
+				try {
+					simpleName = bean.getEntityName();
+					LOG.error("Error getting id from {} {}", simpleName, bean.get(ICATEntity.NAME_FIELD), e);
+				} catch (NoSuchMethodException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException e1) {
+					LOG.error("Error getting id from {} {}", simpleName, "ERROR getting name: " + e1.getMessage(), e);
+				}
+			}
+			idSet.add(ido);
+		}
+		if(idSet.size() == 0) {
+			return null;
+		}
+		StringBuilder b = new StringBuilder();
+		b.append(entityName);
+		b.append(".id IN(");
+		b.append(StringUtils.join(idSet, ','));
+		b.append(")");
+		return b.toString();
+	}
+
+	private String makeFKEntityFilter(final List<WrappedEntityBean> selection, final String fieldName) {
 		final Set<Long> idSet = new HashSet<>();
 		for(WrappedEntityBean bean : selection) {
 			WrappedEntityBean o = null;
