@@ -127,10 +127,10 @@ public class LinkedEntitiesMenuContribution {
 			} catch (Exception e) {
 				try {
 					LOG.error("Error getting entity {} from bean {}[{}]", fieldName,
-							bean.getWrapped().getClass().getSimpleName(), bean.get(ICATEntity.ID_FIELD).toString(), e);
+							bean.getEntityName(), bean.get(ICATEntity.ID_FIELD).toString(), e);
 				} catch (Exception e1) {
 					LOG.error("Error getting entity {} from bean {}[{}]", fieldName, 
-							bean.getWrapped().getClass().getSimpleName(), "ERROR getting ID: " + e1.getMessage(), e);
+							bean.getEntityName(), "ERROR getting ID: " + e1.getMessage(), e);
 				}
 			}
 			if(null != o) {
@@ -139,7 +139,7 @@ public class LinkedEntitiesMenuContribution {
 				} catch (Exception e) {
 					String simpleName = null;
 					try {
-						simpleName = o.getWrapped().getClass().getSimpleName();
+						simpleName = o.getEntityName();
 						LOG.error("Error getting id from {} {}", simpleName, o.get(ICATEntity.NAME_FIELD), e);
 					} catch (NoSuchMethodException | IllegalAccessException
 							| IllegalArgumentException | InvocationTargetException e1) {
