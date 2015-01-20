@@ -151,23 +151,22 @@ public class EntityEditDialog extends Dialog {
 		    lblIcon.setVisible(false);
 		    final Class<?> clazz = firstEntity.getReturnType(field);
 		    Object initialValue = null;
+		    boolean notSet = true;
 		    for(WrappedEntityBean entity : entities) {
-		    	Object value = null;
 			    try {
-					value = entity.get(field);
-				} catch (Exception e) {
-					LOG.error("Error getting initial value for " + field, e);
-				}
-			    if(null != value) {
-			    	if(null == initialValue) {
+					Object value = entity.get(field);
+			    	if(notSet) {
 			    		initialValue = value;
-			    	} else if(!value.equals(initialValue)) {
+			    		notSet = false;
+			    	} else if((null == value && null != initialValue) || (!value.equals(initialValue))) {
 			    		initialValue = null;
 			    		lblIcon.setImage(MULTI_IMAGE);
 			    		lblIcon.setVisible(true);;
 			    		break;
 			    	}
-			    }
+				} catch (Exception e) {
+					LOG.error("Error getting initial value for " + field, e);
+				}
 		    }
 		    final boolean hasInitialValue = initialValue != null;
 			if(firstEntity.isEntity(field)) {
