@@ -77,10 +77,18 @@ public class OpenEntityHandler {
 		String partID = DataPart.DATA_PART_ELEMENT_HEADER + ":" + entity.getServer().getServerURL() + ":" + entity.getEntityName();
 		MPart mPart = (MPart) modelService.find(partID, window);
 		if(null != mPart) {
-			
-		    partService.showPart(mPart, PartState.ACTIVATE);
-			mPart.getContext().set(ICATEntity.ENTITY_CONTEXT_KEY, entity);
 		    LOG.debug("Showing existing part: " + partID);
+		    partService.showPart(mPart, PartState.ACTIVATE);
+			if(null != filter) {
+				DataPart part;
+				if(mPart instanceof DataPart) {
+					part = (DataPart) mPart;
+				} else {
+					part = (DataPart) mPart.getObject();
+				}
+			    LOG.debug("Updating part filter: {}", filter);
+			    part.updateFilter(filter);
+			}
 		    return;
 		}
 		mPart = partService.createPart(DataPart.DATA_PART_DESCRIPTOR);

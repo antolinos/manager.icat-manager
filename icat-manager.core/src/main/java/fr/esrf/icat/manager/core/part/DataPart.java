@@ -193,6 +193,7 @@ public class DataPart {
 		final String initialFilter = (String) part.getTransientData().get(ICATEntity.ENTITY_FILTER_KEY);
 		if(null != initialFilter) {
 			contentProvider.setFilterString(initialFilter);
+			filterText.setText(initialFilter);
 		}
 
 		pageSizeCombo.addSelectionListener(new SelectionListener() {
@@ -379,5 +380,10 @@ public class DataPart {
 		// needed to refresh potentially modified objects in the selection
 		selectionListener.selectionChanged(null);
 	}
-	
+
+	public void updateFilter(final String newFilter) {
+		contentProvider.setFilterString(newFilter);
+		filterText.setText(newFilter);
+		refresh();
+	}
 }

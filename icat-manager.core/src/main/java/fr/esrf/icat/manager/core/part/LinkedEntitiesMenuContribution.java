@@ -1,7 +1,31 @@
  
 package fr.esrf.icat.manager.core.part;
 
+/*
+ * #%L
+ * icat-manager :: core
+ * %%
+ * Copyright (C) 2014 - 2015 ESRF - The European Synchrotron
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,6 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.esrf.icat.client.wrapper.WrappedEntityBean;
+import fr.esrf.icat.manager.core.icatserver.ICATEntity;
 
 public class LinkedEntitiesMenuContribution {
 	
@@ -62,18 +87,23 @@ public class LinkedEntitiesMenuContribution {
 			part = (DataPart) activePart.getObject();
 		}
 		
-	    for(String entityName : selection.get(0).getEntityFields()) {
+	    final WrappedEntityBean firstEntityBean = selection.get(0);
+		for(String fieldName : firstEntityBean.getEntityFields()) {
+		    final String entityName = firstEntityBean.getReturnType(fieldName).getSimpleName();
+			String entityFilter = makeFilter(selection, fieldName);
+			if(null == entityFilter) {
+				continue;
+			}
 			MHandledMenuItem dynamicItem = MMenuFactory.INSTANCE.createHandledMenuItem();
 			dynamicItem.setCommand(command);
-		    final String entityLabel = StringUtils.capitalize(entityName);
-			dynamicItem.setLabel(entityLabel);
+			dynamicItem.setLabel(entityName);
 		    MParameter p = MCommandsFactory.INSTANCE.createParameter();
 		    p.setName("icat-manager.core.commandparameter.filter");
-		    p.setValue("id < 100");
+			p.setValue(entityFilter);
 		    dynamicItem.getParameters().add(p);
 		    MParameter pEntity = MCommandsFactory.INSTANCE.createParameter();
 		    pEntity.setName("icat-manager.core.commandparameter.entity");
-		    pEntity.setValue(entityLabel);
+		    pEntity.setValue(entityName);
 		    dynamicItem.getParameters().add(pEntity);
 		    MParameter pServer = MCommandsFactory.INSTANCE.createParameter();
 		    pServer.setName("icat-manager.core.commandparameter.server");
@@ -85,6 +115,48 @@ public class LinkedEntitiesMenuContribution {
 		    items.add(dynamicItem);
 		}
 		
+	}
+
+	private String makeFilter(final List<WrappedEntityBean> selection, final String fieldName) {
+		final Set<Long> idSet = new HashSet<>();
+		for(WrappedEntityBean bean : selection) {
+			WrappedEntityBean o = null;
+			Long ido = null;
+			try {
+				o = (WrappedEntityBean) bean.get(fieldName);
+			} catch (Exception e) {
+				try {
+					LOG.error("Error getting entity {} from bean {}[{}]", fieldName,
+							bean.getWrapped().getClass().getSimpleName(), bean.get(ICATEntity.ID_FIELD).toString(), e);
+				} catch (Exception e1) {
+					LOG.error("Error getting entity {} from bean {}[{}]", fieldName, 
+							bean.getWrapped().getClass().getSimpleName(), "ERROR getting ID: " + e1.getMessage(), e);
+				}
+			}
+			if(null != o) {
+				try {
+					ido = (Long) o.get(ICATEntity.ID_FIELD);
+				} catch (Exception e) {
+					String simpleName = null;
+					try {
+						simpleName = o.getWrapped().getClass().getSimpleName();
+						LOG.error("Error getting id from {} {}", simpleName, o.get(ICATEntity.NAME_FIELD), e);
+					} catch (NoSuchMethodException | IllegalAccessException
+							| IllegalArgumentException | InvocationTargetException e1) {
+						LOG.error("Error getting id from {} {}", simpleName, "ERROR getting name: " + e1.getMessage(), e);
+					}
+				}
+			}
+			idSet.add(ido);
+		}
+		if(idSet.size() == 0) {
+			return null;
+		}
+		StringBuilder b = new StringBuilder();
+		b.append("id IN(");
+		b.append(StringUtils.join(idSet, ','));
+		b.append(")");
+		return b.toString();
 	}
 		
 }
