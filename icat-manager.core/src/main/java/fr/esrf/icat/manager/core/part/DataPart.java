@@ -428,6 +428,11 @@ public class DataPart {
 		contentProvider.toggleNameSorting();
 		refresh();
 	}
+	
+	public void toggleKeepCount() {
+		contentProvider.toggleKeepCount();
+		refresh();
+	}
 
 	public void refreshSelection() {
 		// needed to refresh potentially modified objects in the selection
