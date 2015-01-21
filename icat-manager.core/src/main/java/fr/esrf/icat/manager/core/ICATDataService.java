@@ -158,9 +158,22 @@ public class ICATDataService {
 	}
 
 	public long getEntityCount(final ICATEntity entity) throws ICATClientException {
+		return getEntityCount(entity, null);
+	}
+
+	public long getEntityCount(final ICATEntity entity, final String filter) throws ICATClientException {
 		SimpleICATClient client = clientMap.get(entity.getServer());
 		List<WrappedEntityBean> result;
-		result = client.search("COUNT(" + entity.getEntityName() + ")");
+		StringBuilder sb = new StringBuilder();
+		sb.append("COUNT(");
+		sb.append(entity.getEntityName());
+		sb.append(")");
+		if(null != filter) {
+			sb.append(" [");
+			sb.append(filter);
+			sb.append("]");
+		}
+		result = client.search(sb.toString());
 		if(null == result || result.size() == 0) {
 			return 0;
 		}

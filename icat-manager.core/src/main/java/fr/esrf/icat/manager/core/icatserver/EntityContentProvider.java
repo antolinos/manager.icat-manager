@@ -52,6 +52,8 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 	private Object[] elements;
 	private String filterText;
 	private boolean sortByName;
+	private boolean keepCount;
+	private long count;
 	
 	public EntityContentProvider() {
 		super();
@@ -63,6 +65,7 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 		this.currentPageSize = 0;
 		this.filterText = null;
 		this.sortByName = false;
+		this.keepCount = false;
 	}
 
 	@Override
@@ -189,6 +192,10 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 			}
 			sb.append(entity.getEntityName());
 			sb.append(" to display");
+			if(keepCount && offset > 0) {
+				sb.append(" / ");
+				sb.append(count);
+			}
 		} else {
 			if(null != filterText && !filterText.isEmpty()) {
 				sb.append("Filtered ");
@@ -198,6 +205,10 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 			sb.append(offset + 1);
 			sb.append(" to ");
 			sb.append(offset + currentPageSize);
+			if(keepCount) {
+				sb.append(" / ");
+				sb.append(count);
+			}
 		}
 		return sb.toString();
 	}
@@ -218,12 +229,34 @@ public class EntityContentProvider implements  IStructuredContentProvider {
 			LOG.error("Unable to load entity content for entity " + entity.getEntityName(), e);
 			elements = null;
 			currentPageSize = 0;
+			count = 0;
 			throw e;
 		}
+		
+		if(keepCount) {
+			try {
+				count = ICATDataService.getInstance().getEntityCount(entity, filterText);
+			} catch (ICATClientException e) {
+				LOG.error("Unable to load entity content for entity " + entity.getEntityName(), e);
+				count = 0;
+			}
+		}
+
 	}
 
 	public void toggleNameSorting() {
 		sortByName = !sortByName;
 	}
 
+	public void setNameSorting(final boolean sortByName) {
+		this.sortByName = sortByName;
+	}
+
+	public void toggleKeepCount() {
+		keepCount = !keepCount;
+	}
+
+	public void setKeepCount(final boolean keepCount) {
+		this.keepCount = keepCount;
+	}
 }
