@@ -56,6 +56,8 @@ Features</H2>
 	to an ICAT instance</A></P>
 	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__427_909453735">Displaying
 	entities</A></P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__427_909453736">Counting
+	entities</A></P>
 	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__429_909453735">Display
 	options, sorting and filtering</A></P>
 	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm; line-height: 75%;"><A HREF="#__RefHeading__429_909453736">Displaying
@@ -222,8 +224,17 @@ entities of that type.</P>
 opened for each type of entity on a given server. The server and the
 entity name are displayed in the tab.</P>
 <P STYLE="margin-bottom: 0cm; font-style: normal">Be careful when you
-access several ICAT server at the same time and check the tab name to
+access several ICAT servers at the same time and check the tab name to
 make sure you are interacting with the right server.</P>
+<HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
+<H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__427_909453736"></A>
+Counting entities  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
+<P STYLE="margin-bottom: 0cm; font-style: normal">You can display the number of entities of a given type in ICAT by selecting 
+an entity in the left panel and using the <FONT FACE="Consolas, monospace" SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: #e6e6ff">Entities
+&rarr; Count entities</SPAN></FONT> menu. The count will be displayed next to the entity name.</P>
+<P STYLE="margin-bottom: 0cm; font-style: normal">Note that this command counts the number of entities available to the user, not 
+all the entities in the database. Counting entities can be slow on large instances, this is why this value is never updated 
+automatically.</P>
 <HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__429_909453735"></A>
 Display options, sorting and filtering  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
@@ -273,8 +284,8 @@ can be reordered by dragging their header.</P>
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__429_909453736"></A>
 Displaying related entities  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>
 <P STYLE="margin-bottom: 0cm; font-style: normal">When you right-click on an entity or a selection of several entities, a context menu is displayed. In addition to 
-the usual commands available on entitites (New, Edit, ...) there is a submenu labeled "View associated ...". This submenu contains a list of entities associated with the 
-selected one(s). By selecting an entity in this submenu you can navigate from entities to related entities.</P>
+the usual commands available on entitites (New, Edit, ...) there is a submenu labeled "Show corresponding ...". This submenu contains a list of entities associated with the 
+selected one(s). By selecting an entity in this submenu you will be shown the entries of that type in ICAT that relate to the selected entity or entities.</P>
 <HR width="35%" align="CENTER" STYLE="margin-top: 2em;">
 <H2 CLASS="western" STYLE="font-style: normal"><A NAME="__RefHeading__431_909453735"></A>
 Editing entities  <FONT SIZE=1 STYLE="font-size: 9pt"><A STYLE="font-style: normal" HREF="#__Top">Back to top</A></FONT></H2>

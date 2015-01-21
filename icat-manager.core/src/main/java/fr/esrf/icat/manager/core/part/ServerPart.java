@@ -72,8 +72,10 @@ public class ServerPart implements PropertyChangeListener {
 	
 	private TreeViewer viewer;
 	private IcatServerContentProvider icatContentProvider;
+	private IcatServerLabelProvider serverLabelProvider;
 	private ICATDataService service;
 	private boolean displayWarning = true;
+
 	
 	@PostConstruct
 	public void postConstruct(final Composite parent, final EMenuService menuService,
@@ -91,7 +93,8 @@ public class ServerPart implements PropertyChangeListener {
 		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 	    icatContentProvider = new IcatServerContentProvider();
 		viewer.setContentProvider(icatContentProvider);
-	    viewer.setLabelProvider(new IcatServerLabelProvider());
+	    serverLabelProvider = new IcatServerLabelProvider();
+		viewer.setLabelProvider(serverLabelProvider);
 	    viewer.setInput(service);
 	    
 	    // make selection available
@@ -160,4 +163,8 @@ public class ServerPart implements PropertyChangeListener {
 		displayWarning = false;
 	}
 	
+	public void setEntityCount(final ICATEntity entity, final Long count) {
+		serverLabelProvider.setEntityCount(entity, count);
+		propertyChange(null);
+	}
 }

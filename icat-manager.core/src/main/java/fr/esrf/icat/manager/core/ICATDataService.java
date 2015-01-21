@@ -157,15 +157,10 @@ public class ICATDataService {
 		return client;
 	}
 
-	public int getEntityCount(final ICATEntity entity) {
+	public long getEntityCount(final ICATEntity entity) throws ICATClientException {
 		SimpleICATClient client = clientMap.get(entity.getServer());
 		List<WrappedEntityBean> result;
-		try {
-			result = client.search("COUNT(" + entity.getEntityName() + ")");
-		} catch (ICATClientException e) {
-			e.printStackTrace();
-			return 0;
-		}
+		result = client.search("COUNT(" + entity.getEntityName() + ")");
 		if(null == result || result.size() == 0) {
 			return 0;
 		}
@@ -173,7 +168,7 @@ public class ICATDataService {
 		if(!(number instanceof Number)) {
 			return 0;
 		}
-		return ((Number)number).intValue(); 
+		return ((Number)number).longValue(); 
 	}
 
 	public void stop() {

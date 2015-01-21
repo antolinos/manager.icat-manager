@@ -13,6 +13,7 @@
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_cKa3oB15EeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.popup.removeserver" label="Remove server" iconURI="platform:/plugin/icat-manager.core/icons/delete.gif" command="_WhRxwB1hEeS-S8zgM1nPnA"/>
                 <children xsi:type="menu:MenuSeparator" xmi:id="_dI2j4B17EeSOsvlmsNpv_A" elementId="icat-manager.core.menuseparator.1"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_MDgMgB17EeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.popup.openentity" label="Open" iconURI="platform:/plugin/icat-manager.core/icons/open.gif" command="_9oABsB15EeSOsvlmsNpv_A"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_Izt2wKFREeSlcKZxY5sAAA" elementId="icat-manager.core.handledmenuitem.countentities" label="Count entities" command="_CTS-EKFOEeSlcKZxY5sAAA"/>
               </menus>
               <toolbar xmi:id="_5X5VcBGnEeS4Ovmd0tDIfg" elementId="icat-manager.core.toolbar.server">
                 <children xsi:type="menu:HandledToolItem" xmi:id="_KHNf8B1wEeSNFfcyL4ZZog" elementId="icat-manager.core.handledtoolitem.newserver" label="New server" iconURI="platform:/plugin/icat-manager.core/icons/add_obj.gif" command="_osJhsBvrEeS-S8zgM1nPnA"/>
@@ -41,6 +42,7 @@
       </children>
       <children xsi:type="menu:Menu" xmi:id="_dUdhcB5AEeSOsvlmsNpv_A" elementId="icat-manager.core.menu.entities" label="Entities">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_pxlwgB5AEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.openentity" label="Open entity" iconURI="platform:/plugin/icat-manager.core/icons/open.gif" command="_9oABsB15EeSOsvlmsNpv_A"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_3uCIMKFQEeSlcKZxY5sAAA" elementId="icat-manager.core.handledmenuitem.countserver" label="Count entities" command="_CTS-EKFOEeSlcKZxY5sAAA"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_vtaOsB5AEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.refresh" label="Refresh" iconURI="platform:/plugin/icat-manager.core/icons/refresh_nav.gif" command="_h8FpUB4_EeSOsvlmsNpv_A"/>
         <children xsi:type="menu:MenuSeparator" xmi:id="_05fSAB5AEeSOsvlmsNpv_A" elementId="icat-manager.core.menuseparator.3"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_1Xif8B5AEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.new" label="New entity" iconURI="platform:/plugin/icat-manager.core/icons/add_obj.gif" command="_YkAV4B4OEeSOsvlmsNpv_A"/>
@@ -71,6 +73,7 @@
   <handlers xmi:id="_FSSVwEAJEeSf8ufRL14heA" elementId="icat-manager.core.handler.update" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.UpdateHandler" command="_DDUj0EAJEeSf8ufRL14heA"/>
   <handlers xmi:id="_WkpaME4GEeSYiLlUVYqdMQ" elementId="icat-manager.core.handler.helphandler" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.HelpHandler" command="_Ucv5kE4GEeSYiLlUVYqdMQ"/>
   <handlers xmi:id="_8ALLEFLpEeSz0I3xFhxcTA" elementId="icat-manager.core.handler.resethandler" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.ResetInterfaceHandler" command="_4LL2gFLpEeSz0I3xFhxcTA"/>
+  <handlers xmi:id="_Gr59EKFOEeSlcKZxY5sAAA" elementId="icat-manager.core.handler.countinserverhandler" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.handlers.CountEntitiesInServerHandler" command="_CTS-EKFOEeSlcKZxY5sAAA"/>
   <descriptors xmi:id="_1IEIEB4VEeSOsvlmsNpv_A" elementId="icat-manager.core.partdescriptor.datapart" label="Data part" allowMultiple="true" closeable="true" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.DataPart">
     <menus xsi:type="menu:PopupMenu" xmi:id="_Ln-yEB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.popupmenu.entity" label="Entity menu">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_OyUAEB4TEeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.newentity" label="New entity" iconURI="platform:/plugin/icat-manager.core/icons/add_obj.gif" command="_YkAV4B4OEeSOsvlmsNpv_A"/>
@@ -113,6 +116,7 @@
   <commands xmi:id="_DDUj0EAJEeSf8ufRL14heA" elementId="icat-manager.core.command.update" commandName="Update"/>
   <commands xmi:id="_Ucv5kE4GEeSYiLlUVYqdMQ" elementId="icat-manager.core.command.help" commandName="Help"/>
   <commands xmi:id="_4LL2gFLpEeSz0I3xFhxcTA" elementId="icat-manager.core.command.resetinterface" commandName="Reset interface"/>
+  <commands xmi:id="_CTS-EKFOEeSlcKZxY5sAAA" elementId="icat-manager.core.command.countinserver" commandName="Count entities"/>
   <addons xmi:id="_2FGrAAzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_2FGrAQzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_2FGrAgzxEeSdFquAzlE5Gg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

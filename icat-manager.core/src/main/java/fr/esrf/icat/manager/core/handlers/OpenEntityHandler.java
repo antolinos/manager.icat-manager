@@ -61,7 +61,7 @@ public class OpenEntityHandler {
 	
 	@CanExecute
 	public boolean canExecute(
-			@Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATEntity entity,
+			final @Named(IServiceConstants.ACTIVE_SELECTION)@Optional ICATEntity entity,
 			final @Named("icat-manager.core.commandparameter.filter")@Optional String filter,
 			final @Named("icat-manager.core.commandparameter.entity")@Optional String entityName,
 			final @Named("icat-manager.core.commandparameter.server")@Optional String serverURL) {

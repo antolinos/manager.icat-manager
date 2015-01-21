@@ -22,6 +22,8 @@ package fr.esrf.icat.manager.core.icatserver;
 
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -52,8 +54,11 @@ public class IcatServerLabelProvider extends StyledCellLabelProvider {
 	    failed_server_image = ImageDescriptor.createFromURL(url).createImage();
 	}
 	
+	private Map<ICATEntity, Long> entitiesCount;
+	
 	public IcatServerLabelProvider() {
 		super();
+		entitiesCount = new HashMap<>();
 	}
 
 	@Override
@@ -76,13 +81,20 @@ public class IcatServerLabelProvider extends StyledCellLabelProvider {
 	      } else if(element instanceof ICATEntity){
 	    	  ICATEntity entity = (ICATEntity)element;
 	    	  text.append(entity.getEntityName());
-//		      text.append(" (" + service.getEntityCount(entity) + ") ", StyledString.COUNTER_STYLER);
+	    	  Long count = entitiesCount.get(entity);
+	    	  if(null != count) {
+			      text.append(" (" + count.toString() + ") ", StyledString.COUNTER_STYLER);
+	    	  }
 	      } else {
 	    	  text.append(element.toString());
 	      }
 	      cell.setText(text.toString());
 	      cell.setStyleRanges(text.getStyleRanges());
 	      super.update(cell);
+	}
+
+	public void setEntityCount(final ICATEntity entity, final Long count) {
+		entitiesCount.put(entity, count);
 	}
 
 }
