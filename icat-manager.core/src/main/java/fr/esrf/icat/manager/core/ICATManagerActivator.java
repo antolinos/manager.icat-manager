@@ -40,6 +40,8 @@ import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.esrf.icat.manager.core.part.DataPart;
+
 @SuppressWarnings("restriction")
 public class ICATManagerActivator implements BundleActivator {
 	
@@ -60,6 +62,7 @@ public class ICATManagerActivator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 		LOG.debug("ICAT Manager stopping");
 		ICATDataService.getInstance().stop();
+		DataPart.updateConfig();
 	}
 	
 	@PostContextCreate

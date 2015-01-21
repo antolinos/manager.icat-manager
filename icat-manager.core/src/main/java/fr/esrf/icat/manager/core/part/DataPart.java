@@ -308,7 +308,9 @@ public class DataPart {
 			    	}
 				    viewer.getTable().setColumnOrder(indices);
 		    	} else {
-		    		LOG.warn("DataPart viewer has {} columns while the saved state has {}", viewer.getTable().getColumnCount(), idxS.length);
+		    		LOG.warn("DataPart viewer has {} columns while the saved state has {}, removing configuration",
+		    				viewer.getTable().getColumnCount(), idxS.length);
+		    		columnProps.remove(getPersistenceID());
 		    	}
 		    }
 	    } catch (Exception e) {
@@ -441,14 +443,14 @@ public class DataPart {
 	@PersistState
 	public void saveColumnOrder(final MPart mPart) {
 		columnProps.put(getPersistenceID(), StringUtils.join(viewer.getTable().getColumnOrder(), ','));
-		updateConfig();
+//		updateConfig();
 	}
 
 	private String getPersistenceID() {
 		return entity.getServer().getServerURL() + ":" + entity.getEntityName();
 	}
 	
-	private static void updateConfig(){
+	public static void updateConfig(){
 		LOG.debug("Writing column order file at: " + configfile.getAbsolutePath());
 		FileOutputStream outStream = null;
 		try {
