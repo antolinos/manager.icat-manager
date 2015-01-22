@@ -34,8 +34,9 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import net.sf.swtaddons.autocomplete.combo.AutocompleteComboSelector;
-
+import net.sf.swtaddons.autocomplete.AutocompleteContentProposalProvider;
+import net.sf.swtaddons.autocomplete.AutocompleteSelectorContentProposalProvider;
+import net.sf.swtaddons.autocomplete.combo.AutocompleteCombo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -88,8 +89,6 @@ public class EntityEditDialog extends Dialog {
 	public final static Image ERROR_IMAGE;
 	public final static Image MULTI_IMAGE;
 
-	private static final String INITIAL_VALUE_NO_CHANGE = "Initial values not changed";
-
 	static {
 	    Bundle bundle = FrameworkUtil.getBundle(EntityEditDialog.class);
 	    URL url = FileLocator.find(bundle, new Path("icons/warning.gif"), null);
@@ -110,7 +109,7 @@ public class EntityEditDialog extends Dialog {
 		super(parentShell);
 		this.entities = beans;
 		this.client = client;
-		this.isSingle = beans.size() == 1;
+		this.isSingle = (beans.size() == 1);
 	}
 
 	@Override
@@ -147,8 +146,9 @@ public class EntityEditDialog extends Dialog {
 	    for(final String field : firstEntity.getMutableFields()) {
 		    Label lblAuthn = new Label(container, SWT.NONE);
 		    lblAuthn.setText(StringUtils.capitalize(field) + ":");
-		    Button lblIcon = new Button(container, SWT.PUSH);
-		    lblIcon.setVisible(false);
+		    final Button checkEdit = new Button(container, SWT.CHECK);
+		    checkEdit.setEnabled(false);
+		    checkEdit.setVisible(false);
 		    final Class<?> clazz = firstEntity.getReturnType(field);
 		    Object initialValue = null;
 		    boolean notSet = true;
@@ -158,10 +158,12 @@ public class EntityEditDialog extends Dialog {
 			    	if(notSet) {
 			    		initialValue = value;
 			    		notSet = false;
-			    	} else if((null == value && null != initialValue) || (!value.equals(initialValue))) {
+			    	} else if((null == value && null != initialValue) || (null != value && !value.equals(initialValue))) {
 			    		initialValue = null;
-			    		lblIcon.setImage(MULTI_IMAGE);
-			    		lblIcon.setVisible(true);;
+			    		checkEdit.setImage(MULTI_IMAGE);
+			    		checkEdit.setSelection(false);
+			    		checkEdit.setEnabled(true);
+			    		checkEdit.setVisible(true);
 			    		break;
 			    	}
 				} catch (Exception e) {
@@ -179,8 +181,7 @@ public class EntityEditDialog extends Dialog {
 				warningLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, true, false));
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				final EntityListProposalContentProvider proposalProvider = new EntityListProposalContentProvider(
-						client, firstEntity.getReturnType(field).getSimpleName(),
-						isSingle ? initialValue : (hasInitialValue ? initialValue : INITIAL_VALUE_NO_CHANGE),
+						client, firstEntity.getReturnType(field).getSimpleName(), initialValue,
 						label, warningLabel, container);
 				warningLabel.setText(proposalProvider.getCurrentFilter());
 				final ContentProposalAdapter contentProposalAdapter = new ContentProposalAdapter(
@@ -206,15 +207,16 @@ public class EntityEditDialog extends Dialog {
 					}
 				});
 				combo.setItems(proposalProvider.getInitialItems());
-				if(hasInitialValue || !isSingle) {
+				if(hasInitialValue) {
 					combo.select(0);
 				}
 				comboMapping.put(field, new ImmutablePair<Object[], Combo>(new Object[]{proposalProvider}, combo));
-				if(lblIcon.isEnabled()) {
-					lblIcon.addSelectionListener(new SelectionAdapter(){
+				if(checkEdit.isEnabled()) {
+					combo.setEnabled(false);
+					checkEdit.addSelectionListener(new SelectionAdapter(){
 						@Override
 						public void widgetSelected(SelectionEvent e) {
-							combo.select(0);
+							combo.setEnabled(checkEdit.getSelection());
 						}
 					});
 				}
@@ -230,18 +232,27 @@ public class EntityEditDialog extends Dialog {
 						selected = i;
 					}
 				}
-				new AutocompleteComboSelector(combo);
+				// replacement for AutocompleteComboSelector to avoid selecting the 1st value in the combo when
+				// no proposal is accepted (or field is emptied)
+				new AutocompleteCombo(combo){
+					@Override
+					protected AutocompleteContentProposalProvider getContentProposalProvider(String[] proposals) {
+						return new AutocompleteSelectorContentProposalProvider(proposals, this.combo);
+					}
+					
+				};
 				combo.setItems(s);
 				if(selected >= 0) {
 					combo.select(selected);
 				}
 				combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				comboMapping.put(field, new ImmutablePair<Object[], Combo>(c, combo));
-				if(lblIcon.isEnabled()) {
-					lblIcon.addSelectionListener(new SelectionAdapter(){
+				if(checkEdit.isEnabled()) {
+					combo.setEnabled(false);
+					checkEdit.addSelectionListener(new SelectionAdapter(){
 						@Override
 						public void widgetSelected(SelectionEvent e) {
-							combo.deselectAll();;
+							combo.setEnabled(checkEdit.getSelection());
 						}
 					});
 				}
@@ -267,12 +278,18 @@ public class EntityEditDialog extends Dialog {
 						fieldValues.put(field, value);
 					}
 				});
-				if (lblIcon.isEnabled()) {
-					lblIcon.addSelectionListener(new SelectionAdapter() {
+				if (checkEdit.isEnabled()) {
+					btn.setEnabled(false);
+					checkEdit.addSelectionListener(new SelectionAdapter() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
-							btn.setSelection(false);
-							fieldValues.remove(field);
+							final boolean selected = checkEdit.getSelection();
+							btn.setEnabled(selected);
+							if(selected) {
+								fieldValues.put(field, btn.getSelection());
+							} else {
+								fieldValues.remove(field);
+							}
 						}
 					});
 				}
@@ -298,33 +315,21 @@ public class EntityEditDialog extends Dialog {
 				cdt.addSelectionListener(new SelectionAdapter(){
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						Date value = cdt.getSelection();
-						Object o = value;
-						if(o != null) {
-							if(Calendar.class.isAssignableFrom(clazz)) {
-								Calendar c = GregorianCalendar.getInstance();
-								c.setTime((Date)value);
-								o = c;
-							} else if(clazz.equals(XMLGregorianCalendar.class)) {
-								GregorianCalendar c = (GregorianCalendar) GregorianCalendar.getInstance();
-								c.setTime((Date)value);
-								try {
-									o = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-								} catch (DatatypeConfigurationException e1) {
-									LOG.error("Unable to create XMLGregorianCalendar", e1);
-									return;
-								}
-							}
-						}
-						fieldValues.put(field, o);
+						fieldValues.put(field, makeCorrectDateValue(clazz, cdt.getSelection()));
 					}
 				});
-				if (lblIcon.isEnabled()) {
-					lblIcon.addSelectionListener(new SelectionAdapter() {
+				if (checkEdit.isEnabled()) {
+					cdt.setEnabled(false);
+					checkEdit.addSelectionListener(new SelectionAdapter() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
-							cdt.setSelection(null);
-							fieldValues.remove(field);
+							final boolean selected = checkEdit.getSelection();
+							cdt.setEnabled(selected);
+							if(selected) {
+								fieldValues.put(field, makeCorrectDateValue(clazz, cdt.getSelection()));
+							} else {
+								fieldValues.remove(field);
+							}
 						}
 					});
 				}
@@ -345,21 +350,26 @@ public class EntityEditDialog extends Dialog {
 						if(null == value) {
 							value = ICATEntity.EMPTY_STRING;
 						}
-						try {
-							final Object numVal = clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value);
-							fieldValues.put(field, numVal);
-						} catch (Exception e1) {
-							LOG.error("Error setting " + field + " to " + value);
+						final Object numVal = makeCorrectNumericValue(clazz, value);
+						if(null == numVal) {
 							text.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+						} else {
+							fieldValues.put(field, numVal);
 						}
 					}
 				});
-				if (lblIcon.isEnabled()) {
-					lblIcon.addSelectionListener(new SelectionAdapter() {
+				if (checkEdit.isEnabled()) {
+					text.setEnabled(false);
+					checkEdit.addSelectionListener(new SelectionAdapter() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
-							text.setText("");
-							fieldValues.remove(field);
+							final boolean selected = checkEdit.getSelection();
+							text.setEnabled(selected);
+							if(selected) {
+								fieldValues.put(field, makeCorrectNumericValue(clazz, text.getText()));
+							} else {
+								fieldValues.remove(field);
+							}
 						}
 					});
 				}
@@ -388,12 +398,18 @@ public class EntityEditDialog extends Dialog {
 						fieldValues.put(field, value);
 					}
 				});
-				if (lblIcon.isEnabled()) {
-					lblIcon.addSelectionListener(new SelectionAdapter() {
+				if (checkEdit.isEnabled()) {
+					text.setEnabled(false);
+					checkEdit.addSelectionListener(new SelectionAdapter() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
-							text.setText("");
-							fieldValues.remove(field);
+							final boolean selected = checkEdit.getSelection();
+							text.setEnabled(selected);
+							if(selected) {
+								fieldValues.put(field, text.getText());
+							} else {
+								fieldValues.remove(field);
+							}
 						}
 					});
 				}
@@ -412,22 +428,26 @@ public class EntityEditDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 		for(Entry<String, Pair<Object[], Combo>> entry : comboMapping.entrySet()) {
-			final String field = entry.getKey();
 			final Pair<Object[], Combo> pair = entry.getValue();
 			final Combo combo = pair.getRight();
+			// added: skip value for disabled combos
+			// needed to not apply changed values on multi value field
+			// when disabled after change
+			if(!combo.isEnabled()) {
+				continue;
+			}
+			final String field = entry.getKey();
 			final Object[] left = pair.getLeft();
 			final Object[] objects = left[0] instanceof EntityListProposalContentProvider ?
 					((EntityListProposalContentProvider)left[0]).getCurrentObjects(): left;
 			final int index = combo.indexOf(combo.getText());
 			if(index >= 0) {
 				final Object value = objects[index];
-				if(!INITIAL_VALUE_NO_CHANGE.equals(value)) {
-					for(WrappedEntityBean entity : entities) {
-						try {
-							entity.set(field, value);
-						} catch (Exception e) {
-							LOG.error("Error setting " + field + " to " + value, e);
-						}
+				for(WrappedEntityBean entity : entities) {
+					try {
+						entity.set(field, value);
+					} catch (Exception e) {
+						LOG.error("Error setting " + field + " to " + value, e);
 					}
 				}
 			}
@@ -444,6 +464,40 @@ public class EntityEditDialog extends Dialog {
 		comboMapping = null;
 		fieldValues = null;
 		super.okPressed();
+	}
+
+	private Object makeCorrectDateValue(final Class<?> clazz, final Date date) {
+		// null date do not change
+		if(null == date) return null;
+		// calendar
+		if(Calendar.class.isAssignableFrom(clazz)) {
+			Calendar c = GregorianCalendar.getInstance();
+			c.setTime(date);
+			return c;
+		}
+		// xml calendar
+		if(clazz.equals(XMLGregorianCalendar.class)) {
+			GregorianCalendar c = (GregorianCalendar) GregorianCalendar.getInstance();
+			c.setTime(date);
+			try {
+				return DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+			} catch (DatatypeConfigurationException e) {
+				LOG.error("Unable to create XMLGregorianCalendar", e);
+				return null;
+			}
+		}
+		// anything else we do not convert
+		return date;
+	}
+	
+	private Object makeCorrectNumericValue(final Class<?> clazz, final String value) {
+		if(null == clazz || null == value) return null;
+		try {
+			return clazz.getMethod("valueOf", new Class<?>[]{String.class}).invoke(null, value);
+		} catch (Exception e) {
+			LOG.error("Error getting {} value from {}", clazz.getSimpleName(), value);
+			return null;
+		}
 	}
 
 }
