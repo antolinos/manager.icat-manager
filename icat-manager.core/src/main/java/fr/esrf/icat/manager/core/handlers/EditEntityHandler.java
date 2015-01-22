@@ -71,6 +71,7 @@ public class EditEntityHandler {
 			}
 		} catch (ICATClientException e) {
 			LOG.error("Error updating entity", e);
+			part.refresh();
 			throw e;
 		}
 	}

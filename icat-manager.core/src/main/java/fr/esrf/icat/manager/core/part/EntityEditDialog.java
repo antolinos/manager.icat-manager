@@ -441,14 +441,15 @@ public class EntityEditDialog extends Dialog {
 			final Object[] objects = left[0] instanceof EntityListProposalContentProvider ?
 					((EntityListProposalContentProvider)left[0]).getCurrentObjects(): left;
 			final int index = combo.indexOf(combo.getText());
+			Object value = null;
 			if(index >= 0) {
-				final Object value = objects[index];
-				for(WrappedEntityBean entity : entities) {
-					try {
-						entity.set(field, value);
-					} catch (Exception e) {
-						LOG.error("Error setting " + field + " to " + value, e);
-					}
+				value = objects[index];
+			}
+			for(WrappedEntityBean entity : entities) {
+				try {
+					entity.set(field, value);
+				} catch (Exception e) {
+					LOG.error("Error setting " + field + " to " + value, e);
 				}
 			}
 		}
