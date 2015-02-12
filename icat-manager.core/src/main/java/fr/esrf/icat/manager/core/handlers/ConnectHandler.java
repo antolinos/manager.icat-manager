@@ -58,11 +58,13 @@ public class ConnectHandler {
 	}
 	
 	public static void connectServer(final ICATServer server, final UISynchronize sync, final Shell shell, final Runnable endAction) {
+		// call that 1st so we start creating the client asap
+		final SimpleICATClient client = ICATDataService.getInstance().getClient(server);
+		// now we can ask for credentials while the client is made
 		ConnectionDialog dlg = new ConnectionDialog(shell, server.getLastAuthnMethod(), server.getLastUserName());
 		if(dlg.open() != Window.OK) {
 			return;
 		}
-		SimpleICATClient client = ICATDataService.getInstance().getClient(server);
 		final String authenticationMethod = dlg.getAuthenticationMethod();
 		client.setIcatAuthnPlugin(authenticationMethod);
 		server.setLastAuthnMethod(authenticationMethod);
