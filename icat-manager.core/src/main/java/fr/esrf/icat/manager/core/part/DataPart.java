@@ -407,6 +407,8 @@ public class DataPart {
 						previousBtn.setEnabled(!contentProvider.isFirstPage());
 						nextBtn.setEnabled(!contentProvider.isLastPage());
 						clearFilter.setEnabled(!filterText.getText().isEmpty());
+						// reset to 1st row
+						viewer.getTable().setTopIndex(0);
 						// this has to be called to avoid the label not resizing properly
 						paginationLabel.getParent().getParent().layout();
 					}

@@ -84,6 +84,9 @@
       <children xsi:type="menu:Menu" xmi:id="_gKFuIJ_OEeSt4p286u0u_Q" elementId="icat-manager.core.menu.showLinked" label="Show corresponding ...">
         <children xsi:type="menu:DynamicMenuContribution" xmi:id="_nXvnoJ_OEeSt4p286u0u_Q" elementId="icat-manager.core.dynamicmenucontribution.submenu.linkedentities" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.LinkedEntitiesMenuContribution"/>
       </children>
+      <children xsi:type="menu:Menu" xmi:id="_D6j6gN0dEeS4d-DVurO6og" elementId="icat-manager.core.menu.showSame" label="Show entities with same ...">
+        <children xsi:type="menu:DynamicMenuContribution" xmi:id="_LVIOoN0dEeS4d-DVurO6og" elementId="icat-manager.core.dynamicmenucontribution.submenu.sameEntity" contributionURI="bundleclass://icat-manager.core/fr.esrf.icat.manager.core.part.SameEntitiesMenuContribution"/>
+      </children>
       <children xsi:type="menu:MenuSeparator" xmi:id="_785GsJ_OEeSt4p286u0u_Q" elementId="icat-manager.core.menuseparator.6"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_wMPVMB4_EeSOsvlmsNpv_A" elementId="icat-manager.core.handledmenuitem.refresh" label="Refresh" iconURI="platform:/plugin/icat-manager.core/icons/refresh_nav.gif" command="_h8FpUB4_EeSOsvlmsNpv_A"/>
     </menus>
