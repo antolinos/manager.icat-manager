@@ -2,7 +2,7 @@
 <feature
       id="icat-manager.feature"
       label="icat-manager Feature"
-      version="1.4.0.qualifier">
+      version="1.5.0.qualifier">
 
    <copyright>
       Copyright (C) 2014 ESRF - The European Synchrotron
@@ -20,7 +20,7 @@
          id="icat-manager.core"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
 </feature>

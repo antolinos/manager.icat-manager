@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="icat-manager :: product" uid="icat_manager.product" id="icat-manager.core.icat_manager_product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.4.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="icat-manager :: product" uid="icat_manager.product" id="icat-manager.core.icat_manager_product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.5.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="">
    </configIni>
