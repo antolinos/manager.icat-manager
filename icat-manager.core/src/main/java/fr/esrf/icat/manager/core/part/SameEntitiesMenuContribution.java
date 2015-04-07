@@ -188,15 +188,19 @@ public class SameEntitiesMenuContribution {
 				b.append(" OR ");
 			}
 			if(v instanceof String) {
+				b.append("(");
 				b.append(fieldName);
 				b.append("=");
 				b.append("'");
 				b.append(v);
 				b.append("'");
+				b.append(")");
 			} else if (v instanceof Boolean) {
+				b.append("(");
 				b.append(fieldName);
 				b.append("=");
 				b.append(v.toString().toUpperCase());
+				b.append(")");
 			} else if (v instanceof XMLGregorianCalendar) {
 				final GregorianCalendar calendar = ((XMLGregorianCalendar)v).toGregorianCalendar();
 				QUERY_DATE_FORMAT.setTimeZone(calendar.getTimeZone());
@@ -215,9 +219,11 @@ public class SameEntitiesMenuContribution {
 				b.append("}");
 				b.append(")");
 			} else {
+				b.append("(");
 				b.append(fieldName);
 				b.append("=");
 				b.append(v);
+				b.append(")");
 			}
 		}
 		return b.toString();
