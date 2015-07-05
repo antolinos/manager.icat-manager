@@ -28,9 +28,9 @@
   </properties>
 
   <scm>
-    <connection>scm:git:http://gitlab.esrf.fr/icat/icat-manager.git</connection>
-    <developerConnection>scm:git:git@gitlab.esrf.fr:icat/icat-manager.git</developerConnection>
-    <url>http://gitlab.esrf.fr/icat/icat-manager</url>
+    <connection>scm:git:https://github.com/icatproject/manager.icat-manager.git</connection>
+    <developerConnection>scm:git:git@github.com:icatproject/manager.icat-manager.git</developerConnection>
+    <url>https://github.com/icatproject/manager.icat-manager</url>
   </scm>
 
   <repositories>
