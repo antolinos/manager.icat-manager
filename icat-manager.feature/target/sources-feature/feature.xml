@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="icat-manager.feature.source" version="1.5.0.20161216-0836" label="icat-manager Feature Developer Resources">
+  <includes id="icat-manager.feature" version="1.5.0.20161216-0836"/>
+  <copyright>
+      Copyright (C) 2014 ESRF - The European Synchrotron
+   </copyright>
+  <license url="http://www.apache.org/licenses/LICENSE-2.0.html">
+    
+      
+   
+  </license>
+  <plugin id="icat-manager.core.source" version="1.5.0.20161216-0836" download-size="0" install-size="0" unpack="false"/>
+</feature>

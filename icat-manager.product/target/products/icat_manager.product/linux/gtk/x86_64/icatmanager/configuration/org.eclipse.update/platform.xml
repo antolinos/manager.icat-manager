@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config date="1481877425008" transient="false">
+	<site updateable="true" url="platform:/base/" enabled="true" policy="USER-EXCLUDE">
+		<feature id="icat-manager.feature" version="1.5.0.20161216-0836" url="features/icat-manager.feature_1.5.0.20161216-0836/">
+		</feature>
+		<feature id="org.eclipse.emf.common" version="2.9.2.v20131212-0545" url="features/org.eclipse.emf.common_2.9.2.v20131212-0545/">
+		</feature>
+		<feature id="org.eclipse.emf.ecore" version="2.9.2.v20131212-0545" url="features/org.eclipse.emf.ecore_2.9.2.v20131212-0545/">
+		</feature>
+		<feature id="org.eclipse.e4.rcp" version="1.2.2.v20140206-1358" url="features/org.eclipse.e4.rcp_1.2.2.v20140206-1358/">
+		</feature>
+		<feature id="org.eclipse.equinox.p2.core.feature" version="1.2.1.v20140221-1852" url="features/org.eclipse.equinox.p2.core.feature_1.2.1.v20140221-1852/">
+		</feature>
+	</site>
+</config>

@@ -1,0 +1,27 @@
+ICAT Manager
+Copyright (C) 2014 ESRF - The European Synchrotron
+
+Licensed under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License. You may obtain a copy of the License at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on
+an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied. See the License for the
+specific language governing permissions and limitations
+under the License.
+
+This project includes libraries released under these licenses:
+
+The Apache Software License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+The BSD 2-Clause License: http://opensource.org/licenses/BSD-2-Clause
+The BSD 3-Clause License: http://opensource.org/licenses/BSD-3-Clause
+Common Development and Distribution License (CDDL) v1.0: https://glassfish.java.net/public/CDDLv1.0.html
+CDDL v1 and GPL Dual License: https://glassfish.java.net/public/CDDL+GPL.html
+Common Public License, version 1.0 (CPL-1.0): http://opensource.org/licenses/cpl1.0.php
+Eclipse Public License - Version 1.0: https://www.eclipse.org/legal/epl-v10.html
+MIT License: http://www.opensource.org/licenses/mit-license.php
+

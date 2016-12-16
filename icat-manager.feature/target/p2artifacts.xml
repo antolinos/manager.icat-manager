@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<artifacts size='3'>
+  <artifact classifier='binary' id='icat-manager.feature_root' version='1.5.0.20161216-0836'>
+    <properties size='5'>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.feature'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='root'/>
+      <property name='maven-extension' value='zip'/>
+    </properties>
+  </artifact>
+  <artifact classifier='org.eclipse.update.feature' id='icat-manager.feature' version='1.5.0.20161216-0836'>
+    <properties size='6'>
+      <property name='artifact.size' value='3521'/>
+      <property name='download.size' value='3521'/>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.feature'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='download.contentType' value='application/zip'/>
+    </properties>
+  </artifact>
+  <artifact classifier='org.eclipse.update.feature' id='icat-manager.feature.source' version='1.5.0.20161216-0836'>
+    <properties size='7'>
+      <property name='artifact.size' value='2386'/>
+      <property name='download.size' value='2386'/>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.feature'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='sources-feature'/>
+      <property name='download.contentType' value='application/zip'/>
+    </properties>
+  </artifact>
+</artifacts>

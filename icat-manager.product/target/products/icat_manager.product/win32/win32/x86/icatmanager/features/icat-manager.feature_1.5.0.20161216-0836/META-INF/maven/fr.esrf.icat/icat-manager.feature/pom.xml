@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>icat-manager</artifactId>
+    <groupId>fr.esrf.icat</groupId>
+    <version>1.5.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>icat-manager.feature</artifactId>
+  <packaging>eclipse-feature</packaging>
+  <name>icat-manager :: feature</name>
+	<licenses>
+	  <license>
+	    <name>The Apache Software License, Version 2.0</name>
+	    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	    <distribution>repo</distribution>
+	  </license>
+	</licenses>
+	<build>
+		<plugins>
+	      <plugin>
+	        <groupId>org.codehaus.mojo</groupId>
+	        <artifactId>license-maven-plugin</artifactId>
+	        <configuration>
+	          <licenseName>apache_v2</licenseName>
+	        </configuration>
+	        <executions>
+	          <execution>
+	            <id>license</id>
+		        <configuration>
+					<generateBundle>true</generateBundle>
+		        </configuration>
+	            <goals>
+	              <goal>update-project-license</goal>
+	            </goals>
+	            <phase>generate-resources</phase>
+	          </execution>
+         	</executions>
+          </plugin>
+		</plugins>
+	</build>
+</project>

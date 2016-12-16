@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: icat-manager.test
+Bundle-Name: icat-manager Test Fragment
+Bundle-Version: 1.5.0.20161216-0836
+Require-Bundle: org.eclipse.jdt.junit4.runtime;bundle-version="1.1.0",
+ org.junit;bundle-version="4.11"
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Vendor: ESRF
+Fragment-Host: icat-manager.core;bundle-version="1.0.0"
+

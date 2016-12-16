@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<artifacts size='6'>
+  <artifact classifier='binary' id='icat_manager.product.executable.win32.win32.x86_64' version='1.5.0.20161216-0836'>
+    <properties size='5'>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.product'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='icat_manager.product.executable.win32.win32.x86_64'/>
+      <property name='maven-extension' value='zip'/>
+    </properties>
+  </artifact>
+  <artifact classifier='binary' id='icat_manager.product.executable.win32.win32.x86' version='1.5.0.20161216-0836'>
+    <properties size='5'>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.product'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='icat_manager.product.executable.win32.win32.x86'/>
+      <property name='maven-extension' value='zip'/>
+    </properties>
+  </artifact>
+  <artifact classifier='binary' id='icat_manager.product.executable.gtk.linux.x86' version='1.5.0.20161216-0836'>
+    <properties size='5'>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.product'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='icat_manager.product.executable.gtk.linux.x86'/>
+      <property name='maven-extension' value='zip'/>
+    </properties>
+  </artifact>
+  <artifact classifier='binary' id='icat_manager.product.executable.cocoa.macosx.x86' version='1.5.0.20161216-0836'>
+    <properties size='5'>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.product'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='icat_manager.product.executable.cocoa.macosx.x86'/>
+      <property name='maven-extension' value='zip'/>
+    </properties>
+  </artifact>
+  <artifact classifier='binary' id='icat_manager.product.executable.gtk.linux.x86_64' version='1.5.0.20161216-0836'>
+    <properties size='5'>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.product'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='icat_manager.product.executable.gtk.linux.x86_64'/>
+      <property name='maven-extension' value='zip'/>
+    </properties>
+  </artifact>
+  <artifact classifier='binary' id='icat_manager.product.executable.cocoa.macosx.x86_64' version='1.5.0.20161216-0836'>
+    <properties size='5'>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.product'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='icat_manager.product.executable.cocoa.macosx.x86_64'/>
+      <property name='maven-extension' value='zip'/>
+    </properties>
+  </artifact>
+</artifacts>

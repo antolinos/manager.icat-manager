@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: icat-manager.core;singleton:=true
+Bundle-Name: icat-manager Core Plugin
+Bundle-Version: 1.5.0.20161216-0836
+Bundle-ClassPath: .,lib/apache-log4j-extras-1.2.17.jar,lib/asm-3.3.1.j
+ ar,lib/commons-beanutils-1.8.3.jar,lib/commons-collections-3.2.1.jar,
+ lib/commons-digester-1.8.jar,lib/commons-lang-2.4.jar,lib/commons-lan
+ g3-3.3.2.jar,lib/commons-logging-1.1.1.jar,lib/commons-validator-1.4.
+ 0.jar,lib/cxf-core-3.0.1.jar,lib/cxf-rt-bindings-soap-3.0.1.jar,lib/c
+ xf-rt-bindings-xml-3.0.1.jar,lib/cxf-rt-databinding-jaxb-3.0.1.jar,li
+ b/cxf-rt-frontend-jaxws-3.0.1.jar,lib/cxf-rt-frontend-simple-3.0.1.ja
+ r,lib/cxf-rt-transports-http-3.0.1.jar,lib/cxf-rt-ws-addr-3.0.1.jar,l
+ ib/cxf-rt-ws-policy-3.0.1.jar,lib/cxf-rt-wsdl-3.0.1.jar,lib/cxf-tools
+ -common-3.0.1.jar,lib/jaxb-core-2.2.10-b140310.1920.jar,lib/jaxb-impl
+ -2.2.10-b140310.1920.jar,lib/jaxb-xjc-2.2.10-b140310.1920.jar,lib/log
+ 4j-1.2.17.jar,lib/neethi-3.0.3.jar,lib/slf4j-api-1.7.5.jar,lib/slf4j-
+ log4j12-1.7.5.jar,lib/stax2-api-3.1.4.jar,lib/swtaddons-0.1.1.jar,lib
+ /velocity-1.7.jar,lib/woodstox-core-asl-4.4.0.jar,lib/wsdl4j-1.6.3.ja
+ r,lib/xml-resolver-1.2.jar,lib/xmlschema-core-2.1.0.jar,lib/client-dy
+ namic-1.5.jar,lib/icat-client-api-1.5.jar
+Require-Bundle: org.eclipse.core.runtime,org.eclipse.e4.ui.di,org.ecli
+ pse.jface,org.eclipse.e4.ui.workbench,org.eclipse.e4.ui.workbench.swt
+ ,org.eclipse.e4.ui.workbench.renderers.swt,org.eclipse.e4.ui.model.wo
+ rkbench,org.eclipse.nebula.jface.cdatetime,org.eclipse.nebula.widgets
+ .cdatetime,org.eclipse.e4.core.di,org.eclipse.e4.core.contexts,javax.
+ inject,org.eclipse.e4.ui.services,org.eclipse.core.net,org.eclipse.eq
+ uinox.p2.core,org.eclipse.equinox.p2.engine,org.eclipse.equinox.p2.me
+ tadata.repository,org.eclipse.equinox.p2.operations,org.eclipse.e4.co
+ re.commands
+Bundle-ManifestVersion: 2
+Bundle-Activator: fr.esrf.icat.manager.core.ICATManagerActivator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: ESRF
+

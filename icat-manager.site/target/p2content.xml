@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='20161216-0836.Default' version='1.0.0.47I-dBfCo-7E7AUAEAU37cIU'>
+    <properties size='3'>
+      <property name='org.eclipse.equinox.p2.name' value='Uncategorized'/>
+      <property name='org.eclipse.equinox.p2.description' value='Default category for otherwise uncategorized features'/>
+      <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+    </properties>
+    <provides size='1'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='20161216-0836.Default' version='1.0.0.47I-dBfCo-7E7AUAEAU37cIU'/>
+    </provides>
+    <requires size='2'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature.source.feature.group' range='[1.5.0.20161216-0836,1.5.0.20161216-0836]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature.feature.group' range='[1.5.0.20161216-0836,1.5.0.20161216-0836]'/>
+    </requires>
+    <touchpoint id='null' version='0.0.0'/>
+  </unit>
+</units>

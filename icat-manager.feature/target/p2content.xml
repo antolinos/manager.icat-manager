@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='5'>
+  <unit id='icat-manager.feature.feature.group' version='1.5.0.20161216-0836' singleton='false'>
+    <update id='icat-manager.feature.feature.group' range='[0.0.0,1.5.0.20161216-0836)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='icat-manager Feature'/>
+      <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.feature'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+    </properties>
+    <provides size='1'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature.feature.group' version='1.5.0.20161216-0836'/>
+    </provides>
+    <requires size='3'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='icat-manager.core' range='[1.5.0.20161216-0836,1.5.0.20161216-0836]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature.feature.jar' range='[1.5.0.20161216-0836,1.5.0.20161216-0836]'>
+        <filter>
+          (org.eclipse.update.install.features=true)
+        </filter>
+      </required>
+      <required namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature_root' range='[1.5.0.20161216-0836,1.5.0.20161216-0836]'/>
+    </requires>
+    <touchpoint id='null' version='0.0.0'/>
+    <licenses size='1'>
+      <license uri='http://www.apache.org/licenses/LICENSE-2.0.html' url='http://www.apache.org/licenses/LICENSE-2.0.html'>
+
+      </license>
+    </licenses>
+    <copyright>
+      Copyright (C) 2014 ESRF - The European Synchrotron
+    </copyright>
+  </unit>
+  <unit id='icat-manager.feature_root' version='1.5.0.20161216-0836'>
+    <provides size='1'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature_root' version='1.5.0.20161216-0836'/>
+    </provides>
+    <artifacts size='1'>
+      <artifact classifier='binary' id='icat-manager.feature_root' version='1.5.0.20161216-0836'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.native' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='2'>
+        <instruction key='uninstall'>
+          cleanupzip(source:@artifact, target:${installFolder});
+        </instruction>
+        <instruction key='install'>
+          unzip(source:@artifact, target:${installFolder});
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='icat-manager.feature.feature.jar' version='1.5.0.20161216-0836'>
+    <properties size='4'>
+      <property name='org.eclipse.equinox.p2.name' value='icat-manager Feature'/>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.feature'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+    </properties>
+    <provides size='3'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature.feature.jar' version='1.5.0.20161216-0836'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
+      <provided namespace='org.eclipse.update.feature' name='icat-manager.feature' version='1.5.0.20161216-0836'/>
+    </provides>
+    <filter>
+      (org.eclipse.update.install.features=true)
+    </filter>
+    <artifacts size='1'>
+      <artifact classifier='org.eclipse.update.feature' id='icat-manager.feature' version='1.5.0.20161216-0836'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='zipped'>
+          true
+        </instruction>
+      </instructions>
+    </touchpointData>
+    <licenses size='1'>
+      <license uri='http://www.apache.org/licenses/LICENSE-2.0.html' url='http://www.apache.org/licenses/LICENSE-2.0.html'>
+
+      </license>
+    </licenses>
+    <copyright>
+      Copyright (C) 2014 ESRF - The European Synchrotron
+    </copyright>
+  </unit>
+  <unit id='icat-manager.feature.source.feature.group' version='1.5.0.20161216-0836' singleton='false'>
+    <update id='icat-manager.feature.source.feature.group' range='[0.0.0,1.5.0.20161216-0836)' severity='0'/>
+    <properties size='6'>
+      <property name='org.eclipse.equinox.p2.name' value='icat-manager Feature Developer Resources'/>
+      <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.feature'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='sources-feature'/>
+    </properties>
+    <provides size='1'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature.source.feature.group' version='1.5.0.20161216-0836'/>
+    </provides>
+    <requires size='3'>
+      <required namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature.feature.group' range='[1.5.0.20161216-0836,1.5.0.20161216-0836]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='icat-manager.core.source' range='[1.5.0.20161216-0836,1.5.0.20161216-0836]'/>
+      <required namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature.source.feature.jar' range='[1.5.0.20161216-0836,1.5.0.20161216-0836]'>
+        <filter>
+          (org.eclipse.update.install.features=true)
+        </filter>
+      </required>
+    </requires>
+    <touchpoint id='null' version='0.0.0'/>
+    <licenses size='1'>
+      <license uri='http://www.apache.org/licenses/LICENSE-2.0.html' url='http://www.apache.org/licenses/LICENSE-2.0.html'>
+
+      </license>
+    </licenses>
+    <copyright>
+      Copyright (C) 2014 ESRF - The European Synchrotron
+    </copyright>
+  </unit>
+  <unit id='icat-manager.feature.source.feature.jar' version='1.5.0.20161216-0836'>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='icat-manager Feature Developer Resources'/>
+      <property name='maven-groupId' value='fr.esrf.icat'/>
+      <property name='maven-artifactId' value='icat-manager.feature'/>
+      <property name='maven-version' value='1.5.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='sources-feature'/>
+    </properties>
+    <provides size='3'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='icat-manager.feature.source.feature.jar' version='1.5.0.20161216-0836'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
+      <provided namespace='org.eclipse.update.feature' name='icat-manager.feature.source' version='1.5.0.20161216-0836'/>
+    </provides>
+    <filter>
+      (org.eclipse.update.install.features=true)
+    </filter>
+    <artifacts size='1'>
+      <artifact classifier='org.eclipse.update.feature' id='icat-manager.feature.source' version='1.5.0.20161216-0836'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='zipped'>
+          true
+        </instruction>
+      </instructions>
+    </touchpointData>
+    <licenses size='1'>
+      <license uri='http://www.apache.org/licenses/LICENSE-2.0.html' url='http://www.apache.org/licenses/LICENSE-2.0.html'>
+
+      </license>
+    </licenses>
+    <copyright>
+      Copyright (C) 2014 ESRF - The European Synchrotron
+    </copyright>
+  </unit>
+</units>
